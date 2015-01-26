@@ -7,7 +7,12 @@ I certify that this assignment is entirely my own work.
 */
 #include "CameraView.h"
 
-void CameraView::getView(M3DMatrix44f& outResult)
+CameraView::CameraView(const Transform& initialTransform /*= Transform()*/)
+{
+	localTransform = initialTransform;
+}
+
+void CameraView::getViewMatrix(M3DMatrix44f& outResult) const
 {
 	return localTransform.getRenderMatrix(outResult);
 
@@ -16,12 +21,18 @@ void CameraView::getView(M3DMatrix44f& outResult)
 	M3DMatrix44f scaleResult;
 
 	m3dLoadIdentity44(outResult);
+	
+	//Translation
 	m3dTranslationMatrix44(translate, localTransform.position.x, localTransform.position.y, localTransform.position.z);
+
+	//Rotation
 	m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(localTransform.rotation.z), 0.0f, 0.0f, 1.0f);
 	m3dRotationMatrix44(rotateY, (float)m3dDegToRad(localTransform.rotation.y), 0.0f, 1.0f, 0.0f);
 	m3dRotationMatrix44(rotateX, (float)m3dDegToRad(localTransform.rotation.x), 1.0f, 0.0f, 0.0f);
 	m3dMatrixMultiply44(rotateResult, rotateX, rotateY);
 	m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);
+	
+	//Scale
 	m3dScaleMatrix44(scaleResult, localTransform.scale.x, localTransform.scale.y, localTransform.scale.z);
 
 	//TRANSLATE -> ROTATE -> SCALE

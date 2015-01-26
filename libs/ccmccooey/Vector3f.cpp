@@ -181,7 +181,7 @@ std::ostream& operator<<(std::ostream& stream, const Vector3f& vector)
 }
 
 //to string
-std::string Vector3f::toString()
+std::string Vector3f::toString() const
 {
 	std::ostringstream ss;
 	ss << (*this);

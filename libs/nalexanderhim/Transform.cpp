@@ -18,26 +18,34 @@ Transform::~Transform()
 {
 }
 
-void Transform::getRenderMatrix(M3DMatrix44f& outResult)
+void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 {
 	M3DMatrix44f translate;
 	M3DMatrix44f rotateResult, rotateX, rotateY, rotateZ;
 	M3DMatrix44f scaleResult;
 
 	m3dLoadIdentity44(outResult);
+	
+	//Translation
 	m3dTranslationMatrix44(translate, position.x, position.y, position.z);
+
+	//Rotation
 	m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
 	m3dRotationMatrix44(rotateY, (float)m3dDegToRad(rotation.y), 0.0f, 1.0f, 0.0f);
 	m3dRotationMatrix44(rotateX, (float)m3dDegToRad(rotation.x), 1.0f, 0.0f, 0.0f);
 	m3dMatrixMultiply44(rotateResult, rotateX, rotateY);
 	m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);
+	
+	//Scale
 	m3dScaleMatrix44(scaleResult, scale.x, scale.y, scale.z);
 	
 	//TRANSLATE -> ROTATE -> SCALE
 	//m3dMatrixMultiply44(outResult, scaleResult, rotateResult);
 	//m3dMatrixMultiply44(outResult, translate, outResult);
-	m3dMatrixMultiply44(outResult, rotateResult, translate);
-	m3dMatrixMultiply44(outResult, scaleResult, outResult);
+	m3dMatrixMultiply44(outResult, rotateResult, scaleResult);
+	m3dMatrixMultiply44(outResult, translate, outResult);
+	//m3dMatrixMultiply44(outResult, rotateResult, translate);
+	//m3dMatrixMultiply44(outResult, scaleResult, outResult);
 }
 
 void Transform::setPosition(const M3DVector3f& newPosition)

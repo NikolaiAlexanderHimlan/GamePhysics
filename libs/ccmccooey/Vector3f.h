@@ -60,7 +60,7 @@ public:
 	bool Vector3f::operator!=(const Vector3f &other) const;
 
 	friend std::ostream& Vector3f::operator<<(std::ostream& stream, const Vector3f& vector);
-	std::string toString();
+	std::string toString() const;
 	void toArray(float floatArray[3]);
 
 	//math functions

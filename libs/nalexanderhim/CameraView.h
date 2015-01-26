@@ -11,19 +11,17 @@ I certify that this assignment is entirely my own work.
 //GLTools
 #include <math3d.h>
 
-#include "Object3D.h"
+#include "Transform.h"
 
 class CameraView
-	: public Object3D
 {
 public:
 	Transform localTransform;
 
-	CameraView(){};
-	CameraView(const Transform& initialTransform) : Object3D(initialTransform){}
 	~CameraView(){};
+	CameraView(const Transform& initialTransform = Transform());
 	
-	void getView(M3DMatrix44f& outResult);
+	void getViewMatrix(M3DMatrix44f& outResult) const;
 };
 
 #endif

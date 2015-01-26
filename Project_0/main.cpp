@@ -4,9 +4,9 @@
 #include <GLFrustum.h>
 
 #include <CameraView.h>
-#include <Model.h>
+#include <Object3D.h>
+#include <DebugTools.h>
 
-GLBatch			triangleBatch;
 GLShaderManager	shaderManager;
 GLfloat			offset;
 GLfloat			counter;
@@ -19,8 +19,8 @@ GLint			width, height;
 
 CameraView* mainView;
 
-Model* model1;
-Model* model2;
+Object3D* model1;
+Object3D* model2;
 
 void ChangeSize(int w, int h)
 {
@@ -29,13 +29,15 @@ void ChangeSize(int w, int h)
 
 	glViewport(0,0,width, height);
 
-
 	viewFrustum.SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
-
 }
 
 void setupWorld()
 {
+	//generate triangle model batch
+	GLBatch* triangleBatch1 = new GLBatch();
+	GLBatch* triangleBatch2 = new GLBatch();
+
 	GLfloat			vVerts[] = {-0.5f, 0.0f, 0.0f, 
 								0.5f, 0.0f, 0.0f, 
 								0.0f, 0.5f, 0.0f};
@@ -44,10 +46,21 @@ void setupWorld()
 								0.0f, 1.0f, 0.0f, 1.0f, 
 								0.0f, 0.0f, 1.0f, 1.0f};
 
-	triangleBatch.Begin(GL_TRIANGLES, 3);
-	triangleBatch.CopyVertexData3f(vVerts);
-	triangleBatch.CopyColorData4f(vColors);
-	triangleBatch.End();
+	triangleBatch1->Begin(GL_TRIANGLES, 3);
+	triangleBatch1->CopyVertexData3f(vVerts);
+	triangleBatch1->CopyColorData4f(vColors);
+	triangleBatch1->End();
+
+	//model1 load batch
+	model1->setBatch(triangleBatch1);
+
+	triangleBatch2->Begin(GL_TRIANGLES, 3);
+	triangleBatch2->CopyVertexData3f(vVerts);
+	triangleBatch2->CopyColorData4f(vColors);
+	triangleBatch2->End();
+
+	//model2 load batch
+	model2->setBatch(triangleBatch2);
 }
 
 void myInit()
@@ -62,48 +75,62 @@ void myInit()
 	//rotateAroundViewZaxis = 0;
 	setupWorld();
 
-	//view
+	{//view setup
 	M3DVector3f viewPosition;
 	M3DVector3f rotateView;
 	viewPosition[0] = 0;//left/right
-	viewPosition[1] = -2;//up/down
-	viewPosition[2] = -10;//towards/away
+		viewPosition[1] = 0;//up/down
+		viewPosition[2] = 0;//towards/away
 	rotateView[0] = 0;
 	rotateView[1] = 0;
 	rotateView[2] = 0;
 	mainView->localTransform.setPosition(viewPosition);
 	mainView->localTransform.setRotation(rotateView);
+	}
 
-	//model position
+	{//Model1 setup
+		//model1 position
 	M3DVector3f model1Position;
-	M3DVector3f model2Position;
 	model1Position[0] = 0;//X, left/right
-	model1Position[1] = 1;//Y, up/down
-	model1Position[2] = 0;//Z, in/out
-	model2Position[0] = 0;//X, left/right
-	model2Position[1] = 1;//Y, up/down
-	model2Position[2] = 0.5f;//Z, in/out
-	model1->localTransform.setPosition(viewPosition);
-	model2->localTransform.setPosition(viewPosition);
+		model1Position[1] = 0;//Y, up/down
+		model1Position[2] = -5.0f;//Z, in/out
+		//model1->localTransform.setPosition(viewPosition);
+		model1->localTransform.setPosition(model1Position);
 
-	//model rotation
+		//model1 rotation
 	M3DVector3f rotateModel1;
-	M3DVector3f rotateModel2;
 	rotateModel1[0] = 0;
 	rotateModel1[1] = 0;
 	rotateModel1[2] = 0;
+		//model1->localTransform.setRotation(rotateView);
+		model1->localTransform.setRotation(rotateModel1);
+	}
+
+	{//Model2 setup
+		//model2 position
+		M3DVector3f model2Position;
+		model2Position[0] = 0;//X, left/right
+		model2Position[1] = 0.5f;//Y, up/down
+		model2Position[2] = -6.0f;//Z, in/out
+		//model2->localTransform.setPosition(viewPosition);
+		model2->localTransform.setPosition(model2Position);
+
+		//model2 rotation
+		M3DVector3f rotateModel2;
 	rotateModel2[0] = 0;
 	rotateModel2[1] = 0;
 	rotateModel2[2] = 0;
-	model1->localTransform.setRotation(rotateView);
-	model2->localTransform.setRotation(rotateView);
+		//model2->localTransform.setRotation(rotateView);
+		model2->localTransform.setRotation(rotateModel2);
 
-	//model scale
+		//model2 scale
 	model2->localTransform.setScale(2.0f);
+	}
 }
 
 void ResetView()
 {
+	//HACK: hack method
 	myInit();
 }
 
@@ -114,36 +141,10 @@ void RenderScene(void)
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
-	M3DMatrix44f mModel1, mModel2, mView, mModelView;
-
-	//Model
-	model1->localTransform.getRenderMatrix(mModel1);
-	model2->localTransform.getRenderMatrix(mModel2);
-
-	//View
-	mainView->getView(mView);
-
-	//TODO: create batch object (model), contains translation and rotation as well as batch information
-	//TODO: create function to draw models in order based on z-axis position (depth)
-	//ModelView
-	m3dMatrixMultiply44(mModelView, mView, mModel1);
-
-	//ModelViewProjection
-	m3dMatrixMultiply44(mvpMatrix, viewFrustum.GetProjectionMatrix(), mModelView);
-
-	shaderManager.UseStockShader(GLT_SHADER_SHADED, mvpMatrix);
-	triangleBatch.Draw();
-
-
-	//ModelView
-	m3dMatrixMultiply44(mModelView, mView, mModel2);
-	//ModelViewProjection
-	m3dMatrixMultiply44(mvpMatrix, viewFrustum.GetProjectionMatrix(), mModelView);
-
-	shaderManager.UseStockShader(GLT_SHADER_SHADED, mvpMatrix);
-//	shaderManager.UseStockShader(GLT_SHADER_TEXTURE_MODULATE, mvpMatrix, vColor, texture);
-
-	triangleBatch.Draw();
+	//TODO: Depth Buffer
+	//Draw all models
+	model1->Draw(mainView, shaderManager, mvpMatrix, viewFrustum);
+	model2->Draw(mainView, shaderManager, mvpMatrix, viewFrustum);
 
 	glutSwapBuffers();
 }
@@ -152,7 +153,6 @@ void Keys(unsigned char key, int x, int y)
 {
 	if(key == 27)//Esc
 		exit(0);
-
 
 	//Move view
 	float viewSpeed = 1;
@@ -195,8 +195,9 @@ void Keys(unsigned char key, int x, int y)
 
 	//Move model2
 	float model2Speed = 1;
-	if((key == 'U')||(key == 'u'))//model position X up
+	if((key == 'L')||(key == 'l'))
 	{
+		//model position X up
 		model2->localTransform.position.x += model2Speed;
 	}
 	if((key == 'J')||(key == 'j'))//model position X down
@@ -215,8 +216,9 @@ void Keys(unsigned char key, int x, int y)
 	{
 		model2->localTransform.position.z += model2Speed;
 	}
-	if((key == 'L')||(key == 'l'))//model position Z down
+	if((key == 'U')||(key == 'u'))
 	{
+		//model position Z down
 		model2->localTransform.position.z -= model2Speed;
 	}
 
@@ -268,14 +270,25 @@ void SpecialKeys(int key, int x, int y)
 void create()
 {
 	mainView = new CameraView();
-	model1 = new Model();
-	model2 = new Model();
+	model1 = new Object3D();
+	model2 = new Object3D();
 }
+	//HACK:
+#include <stdlib.h>
+#include <iostream>
+#include <string>
 void Update()
 {
 	//physics
 	//
 	glutPostRedisplay();
+
+	//Debug_OpenGL::outputText(Vector3f(1, 1), nah::Color(0.5f, 0.5f, 0.5f), GLUT_BITMAP_8_BY_13, text);
+	//HACK: font doesn't load, placeholder
+	std::system("cls");
+	std::cout << "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false) << std::endl;
+	std::cout << "Model1: \n" + model1->localTransform.toStringMultiLine() << std::endl;
+	std::cout << "Model2: \n" + model2->localTransform.toStringMultiLine() << std::endl;
 }
 void cleanup()
 {

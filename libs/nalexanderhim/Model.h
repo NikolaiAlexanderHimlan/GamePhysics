@@ -8,18 +8,26 @@ I certify that this assignment is entirely my own work.
 #ifndef _MODEL_H
 #define _MODEL_H
 
-#include "Object3D.h"
+#ifdef GLTOOLS
+#include <GLBatch.h>//TODO: try to move the include to the source file
+#define BatchData GLBatch
+//class GLBatch;
+//typedef GLBatch BatchData;
+#endif
 
 class Model
-	: public Object3D
 {
+protected:
+	BatchData* mModelBatch;
 public:
 	Model() {};
-	Model(const Transform& initialTransform)
-		: Object3D(initialTransform)
+	Model(BatchData* batch)
 	{
+		setBatch(batch);
 	}
 	~Model();
+
+	void setBatch(BatchData* batch);
 };
 
 #endif

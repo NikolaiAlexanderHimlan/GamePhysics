@@ -10,8 +10,7 @@ I certify that this assignment is entirely my own work.
 
 #include <math3d.h>
 
-//#include <Vector3f.h>
-#include "..\ccmccooey\Vector3f.h"
+#include "ccmccooeyWrapper.h"
 
 class Transform
 {
@@ -24,7 +23,30 @@ public:
 	Transform(const Vector3f& init_position = Vector3f::zero, const Vector3f& init_rotation = Vector3f::zero, const Vector3f& init_scale = Vector3f::one);
 	~Transform();
 
-	void getRenderMatrix(M3DMatrix44f& outResult);
+	void getRenderMatrix(M3DMatrix44f& outResult) const;
+
+	std::string toString(bool pos = true, bool rot = true, bool scl = true) const
+	{
+		std::string textline = "";
+		if (pos)
+			textline += position.toString() + " | ";
+		if (rot)
+			textline += rotation.toString() + " | ";
+		if (scl)
+			textline += scale.toString();
+		return textline;
+	}
+	std::string toStringMultiLine(bool pos = true, bool rot = true, bool scl = true) const
+	{
+		std::string textline = "";
+		if (pos)
+			textline += position.toString() + "\n";
+		if (rot)
+			textline += rotation.toString() + "\n";
+		if (scl)
+			textline += scale.toString() + "\n";
+		return textline;
+	}
 
 	void setPosition(const M3DVector3f& newPosition);
 	void setRotation(const M3DVector3f& newRotation);

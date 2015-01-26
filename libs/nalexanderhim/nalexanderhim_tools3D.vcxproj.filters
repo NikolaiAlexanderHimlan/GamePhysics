@@ -13,34 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\View">
+      <UniqueIdentifier>{7ca78a29-cdcc-4f23-b8bd-b9b0f783f9c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DataTypes">
+      <UniqueIdentifier>{9e10cbd7-3a66-4fba-bd7e-e87149e207d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View">
+      <UniqueIdentifier>{5f8cc771-2eba-4e9a-888f-d8fd79abf205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Space3D">
+      <UniqueIdentifier>{939658a1-8c0a-4f80-8fa2-e26359246dcb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Space3D">
+      <UniqueIdentifier>{20bb24ec-92b8-4ff1-ad27-1e659cf217ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Space2D">
+      <UniqueIdentifier>{5a25ba3e-b658-4dc2-950d-781bf381881d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Space2D">
+      <UniqueIdentifier>{eed7a7d2-d4f4-4974-b92e-4e7d782bdfc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataTypes">
+      <UniqueIdentifier>{ae12ab17-0bc1-4b86-83fe-011834de77d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Include">
+      <UniqueIdentifier>{13422372-9239-49c8-b584-001720fd9968}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities">
+      <UniqueIdentifier>{59fd5d83-5f22-4778-a83b-84d42cf8b8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\OpenGL">
+      <UniqueIdentifier>{9f6e73d4-e8f0-4414-8425-bf6408b9cabc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities">
+      <UniqueIdentifier>{bca61b6e-3855-4529-b1c6-f07763e95234}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utilities\OpenGL">
+      <UniqueIdentifier>{f986266c-3bda-45f0-b058-4a88814e433b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="Object3D.cpp">
+      <Filter>Source Files\Space3D</Filter>
+    </ClCompile>
+    <ClCompile Include="IntCoord.cpp">
+      <Filter>Source Files\Space2D</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\DataTypes</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Space3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Color.cpp">
+      <Filter>Source Files\DataTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="DebugTools.cpp">
+      <Filter>Source Files\Utilities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MeshData.h">
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelData.h">
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
     <ClInclude Include="CameraView.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\View</Filter>
     </ClInclude>
     <ClInclude Include="M3DTools.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utilities\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="IntCoord.h">
+      <Filter>Header Files\Space2D</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\DataTypes</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="ccmccooeyWrapper.h">
+      <Filter>Header Files\Include</Filter>
     </ClInclude>
     <ClInclude Include="Object3D.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugTools.h">
+      <Filter>Header Files\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
