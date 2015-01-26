@@ -10,10 +10,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\GLTools\libs\freeglut_static.lib" />
-    <Library Include="..\GLTools\libs\gltools.lib" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9A174FCB-7254-4172-889C-FE27F9B904E3}</ProjectGuid>
     <RootNamespace>nalexanderhim_tools3D</RootNamespace>
@@ -44,24 +40,25 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.lib</TargetExt>
-    <IncludePath>..\GLTools\include;..\GLTools\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>..\GLTools\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\ccmccooey</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ccmccooey;$(ProjectDir)..\GLTools\include\GL;$(ProjectDir)..\GLTools\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>GLTOOLS;WIN32;GRAPHICS_OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <GenerateXMLDocumentationFiles>true</GenerateXMLDocumentationFiles>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalDependencies>ccmccooey.lib</AdditionalDependencies>
+      <AdditionalDependencies>ccmccooey.lib;freeglut_static.lib;gltools.lib</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\ccmccooey\$(Configuration)\;$(ProjectDir)..\GLTools\libs</AdditionalLibraryDirectories>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>

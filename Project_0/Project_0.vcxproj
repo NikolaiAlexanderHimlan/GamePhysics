@@ -10,10 +10,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\libs\GLTools\libs\freeglut_static.lib" />
-    <Library Include="..\libs\GLTools\libs\gltools.lib" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{FCAF6395-2B5B-45B6-B136-BAE3448DFC3D}</ProjectGuid>
     <RootNamespace>Project_0</RootNamespace>
@@ -45,20 +41,20 @@
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\libs\GLTools\include;..\libs\GLTools\include\GL;$(IncludePath)</IncludePath>
-    <LibraryPath>..\libs\GLTools\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\libs\nalexanderhim;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;GLTOOLS;GRAPHICS_OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\libs\GLTools\include\;..\libs\GLTools\include\GL\;..\libs\nalexanderhim\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>$(SolutionDir)$(Configuration)\nalexanderhim_tools3D.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\libs\nalexanderhim\$(Configuration)\nalexanderhim_tools3D.lib;..\libs\GLTools\libs\gltools.lib;..\libs\GLTools\libs\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
