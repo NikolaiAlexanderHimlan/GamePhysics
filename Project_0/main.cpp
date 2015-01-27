@@ -5,6 +5,7 @@
 
 #include <CameraView.h>
 #include <Object3D.h>
+#include <Color.h>
 #include <DebugTools.h>
 
 GLShaderManager	shaderManager;
@@ -34,10 +35,10 @@ void ChangeSize(int w, int h)
 
 void setupWorld()
 {
-	//generate triangle model batch
-	GLBatch* triangleBatch1 = new GLBatch();
-	GLBatch* triangleBatch2 = new GLBatch();
+	GLBatch* modelBatch1 = new GLBatch();
+	GLBatch* modelBatch2 = new GLBatch();
 
+	/*generate triangle model batch
 	GLfloat			vVerts[] = {-0.5f, 0.0f, 0.0f, 
 								0.5f, 0.0f, 0.0f, 
 								0.0f, 0.5f, 0.0f};
@@ -45,28 +46,86 @@ void setupWorld()
 	GLfloat			vColors[] = {1.0f, 0.0f, 0.0f, 1.0f, 
 								0.0f, 1.0f, 0.0f, 1.0f, 
 								0.0f, 0.0f, 1.0f, 1.0f};
+	//*/
+	//*generate cube model batch
+	GLfloat vVerts[24 * 3];//number of indices times 3 points in a vertex
+	GLfloat vColors[24 * 4];//number of indices times number of values per color
+	int numIndices = 24;
+	{
+		int vectIndx[24] = { 1, 2, 3, 4,
+			5, 8, 7, 6,
+			1, 5, 6, 2,
+			2, 6, 7, 3,
+			3, 7, 8, 4,
+			5, 1, 4, 8 };
 
-	triangleBatch1->Begin(GL_TRIANGLES, 3);
-	triangleBatch1->CopyVertexData3f(vVerts);
-	triangleBatch1->CopyColorData4f(vColors);
-	triangleBatch1->End();
+		Vector3f vectVerts[8];
+		{
+			float x = 0.5f, y = 0.5f, z = 0.5f;
+			vectVerts[0] = Vector3f(x, -y, -z);
+			vectVerts[1] = Vector3f(x, -y, z);
+			vectVerts[2] = Vector3f(-x, -y, z);
+			vectVerts[3] = Vector3f(-x, -y, -z);
+			vectVerts[4] = Vector3f(x, y, -z);
+			vectVerts[5] = Vector3f(x, y, z);
+			vectVerts[6] = Vector3f(-x, y, z);
+			vectVerts[7] = Vector3f(-x, y, -z);
+		}
+		int counterCounter = 0;
+		for (int i = 0; i < numIndices; i++)
+		{
+			vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].x;
+			vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].y;
+			vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].z;
+		}
+
+		nah::Color colorVerts[8];
+		{
+			colorVerts[0] = nah::Color::Red;
+			colorVerts[1] = nah::Color::Aquamarine;
+			colorVerts[2] = nah::Color::Blue;
+			colorVerts[3] = nah::Color::DarkBlue;
+			colorVerts[4] = nah::Color::DarkGreen;
+			colorVerts[5] = nah::Color::DarkRed;
+			colorVerts[6] = nah::Color::Green;
+			colorVerts[7] = nah::Color::Orange;
+		}
+		counterCounter = 0;
+		for (int i = 0; i < numIndices; i++)
+		{
+			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbRed();
+			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbGreen();
+			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbBlue();
+			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbAlpha();
+		}
+	}
+	//*/
+
+	//modelBatch1->Begin(GL_TRIANGLES, 3);
+	modelBatch1->Begin(GL_QUADS, numIndices);
+	modelBatch1->CopyVertexData3f(vVerts);
+	modelBatch1->CopyColorData4f(vColors);
+	modelBatch1->End();
 
 	//model1 load batch
-	model1->setBatch(triangleBatch1);
+	model1->setBatch(modelBatch1);
 
-	triangleBatch2->Begin(GL_TRIANGLES, 3);
-	triangleBatch2->CopyVertexData3f(vVerts);
-	triangleBatch2->CopyColorData4f(vColors);
-	triangleBatch2->End();
+	//modelBatch2->Begin(GL_TRIANGLES, 3);
+	modelBatch2->Begin(GL_QUADS, numIndices);
+	modelBatch2->CopyVertexData3f(vVerts);
+	modelBatch2->CopyColorData4f(vColors);
+	modelBatch2->End();
 
 	//model2 load batch
-	model2->setBatch(triangleBatch2);
+	model2->setBatch(modelBatch2);
 }
 
 void myInit()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	shaderManager.InitializeStockShaders();
+
+	glEnable(GL_DEPTH_TEST);
 
 	//Projection
 	viewFrustum.SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
@@ -304,13 +363,13 @@ int main(int argc, char* argv[])
 	gltSetWorkingDirectory(argv[0]);
 
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE |GLUT_RGBA| GLUT_DEPTH | GLUT_STENCIL);
+	glutInitDisplayMode(GLUT_DOUBLE |GLUT_RGBA| GLUT_DEPTH | GLUT_STENCIL | GLUT_ALPHA);
 
 	width = 800;
 	height = 600;
 	glutInitWindowSize(800,600);
 
-	glutCreateWindow("Triangle");
+	glutCreateWindow("Boxor");
 	glutReshapeFunc(ChangeSize);
 	glutDisplayFunc(RenderScene);
 	glutSpecialFunc(SpecialKeys);

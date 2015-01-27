@@ -5,7 +5,8 @@ Assignment: pa 3
 Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
-#pragma once
+#ifndef _COLOR_H
+#define _COLOR_H
 
 //#include <Trackable.h>
 
@@ -65,13 +66,21 @@ namespace nah
 		static const Color Purple;
 #pragma endregion Pre-defined Color values
 
-		Color(ColorVal red = ALPHA_OPAQUE, ColorVal green = ALPHA_OPAQUE, ColorVal blue = ALPHA_OPAQUE, ColorVal alpha = ALPHA_OPAQUE)
+		Color(ColorVal red, ColorVal green, ColorVal blue, ColorVal alpha = ALPHA_OPAQUE)
 		{
 			mRed = red;
 			mGreen = green;
 			mBlue = blue;
 			mAlpha = alpha;
 		}
+		Color(ColorVal all = ALPHA_OPAQUE)
+		{
+			mRed = all;
+			mGreen = all;
+			mBlue = all;
+			mAlpha = all;
+		}
+
 		~Color(void){}
 
 		inline ColorVal rgbRed()	const { return mRed; }
@@ -91,3 +100,4 @@ namespace nah
 		ColorVal mAlpha;
 	};
 }
+#endif
