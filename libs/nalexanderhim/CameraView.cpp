@@ -7,9 +7,17 @@ I certify that this assignment is entirely my own work.
 */
 #include "CameraView.h"
 
+#include <GLTools.h>
+#include <GLFrustum.h>
+
 CameraView::CameraView(const Transform& initialTransform /*= Transform()*/)
 {
 	localTransform = initialTransform;
+	viewFrustum = new GLFrustum();
+}
+CameraView::~CameraView()
+{
+	delete viewFrustum;
 }
 
 void CameraView::getViewMatrix(M3DMatrix44f& outResult) const

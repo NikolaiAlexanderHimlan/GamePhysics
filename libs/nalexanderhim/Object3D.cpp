@@ -14,7 +14,7 @@ I certify that this assignment is entirely my own work.
 
 #include "CameraView.h"
 
-bool Object3D::Draw(CameraView* renderToView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix, GLFrustum& viewFrustum) const
+bool Object3D::Draw(CameraView* renderToView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const
 {
 	M3DMatrix44f modelTransform, viewMatrix, modelView;
 
@@ -24,7 +24,7 @@ bool Object3D::Draw(CameraView* renderToView, GLShaderManager& shaderManager, M3
 	//ModelView
 	m3dMatrixMultiply44(modelView, viewMatrix, modelTransform);
 	//ModelViewProjection
-	m3dMatrixMultiply44(mvpMatrix, viewFrustum.GetProjectionMatrix(), modelView);
+	m3dMatrixMultiply44(mvpMatrix, renderToView->viewFrustum->GetProjectionMatrix(), modelView);
 
 	shaderManager.UseStockShader(GLT_SHADER_SHADED, mvpMatrix);
 	//	shaderManager.UseStockShader(GLT_SHADER_TEXTURE_MODULATE, mvpMatrix, vColor, texture);

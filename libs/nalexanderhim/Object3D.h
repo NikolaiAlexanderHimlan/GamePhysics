@@ -32,7 +32,7 @@ public:
 	~Object3D(){};
 
 	//TODO: make renderView a const pointer
-	bool Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix, GLFrustum& viewFrustum) const;
+	bool Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const;
 };
 
 #endif

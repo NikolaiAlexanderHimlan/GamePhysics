@@ -13,7 +13,6 @@ GLfloat			offset;
 GLfloat			counter;
 GLboolean		bDoSomething;
 M3DMatrix44f	mvpMatrix;
-GLFrustum		viewFrustum;
 GLint			width, height;
 //GLfloat			rotateAroundModelZaxis;
 //GLfloat			rotateAroundViewZaxis;
@@ -30,7 +29,7 @@ void ChangeSize(int w, int h)
 
 	glViewport(0,0,width, height);
 
-	viewFrustum.SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
+	mainView->viewFrustum->SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
 }
 
 void setupWorld()
@@ -128,7 +127,7 @@ void myInit()
 	glEnable(GL_DEPTH_TEST);
 
 	//Projection
-	viewFrustum.SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
+	mainView->viewFrustum->SetPerspective(35.0f, (float)(width / height), 1.0f, 1000.0f);
 
 	//rotateAroundModelZaxis = 0;
 	//rotateAroundViewZaxis = 0;
@@ -202,8 +201,8 @@ void RenderScene(void)
 
 	//TODO: Depth Buffer
 	//Draw all models
-	model1->Draw(mainView, shaderManager, mvpMatrix, viewFrustum);
-	model2->Draw(mainView, shaderManager, mvpMatrix, viewFrustum);
+	model1->Draw(mainView, shaderManager, mvpMatrix);
+	model2->Draw(mainView, shaderManager, mvpMatrix);
 
 	glutSwapBuffers();
 }
