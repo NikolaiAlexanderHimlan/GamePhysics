@@ -6,7 +6,15 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "Transform.h"
+
+#define _USE_MATH_DEFINES // for C++
+#include <math.h>
+
 #include "M3DTools.h"
+#include "GeneralMath.h"
+#include "RotationMath.h"
+
+const float ROTATION_LIMIT = 180.0f;//89.0 * M_PI / 180.0;
 
 Transform::Transform(const Vector3f& init_position, const Vector3f& init_rotation, const Vector3f& init_scale)
 {
@@ -16,6 +24,21 @@ Transform::Transform(const Vector3f& init_position, const Vector3f& init_rotatio
 }
 Transform::~Transform()
 {
+}
+
+Vector3f Transform::getRightVector(char axis) const
+{
+	float rightX=0.0f, rightY=0.0f, rightZ=0.0f;
+
+	//calculate each axis, unless an axis was specified, in which case only calculate that axis.
+	if (axis != 'y' && axis != 'z')//calculate x-axis
+		rightX = (float)cos(getYaw() - M_PI_2);
+	if (axis != 'x' && axis != 'z')//calculate y-axis
+		rightY = 0.0f;/*(float)sin(getPitch() - M_PI_2)*/
+	if (axis != 'x' && axis != 'y')//calculate z-axis
+		rightZ = (float)sin(getYaw() - M_PI_2);
+	
+	return Vector3f(rightX, rightY, rightZ);
 }
 
 void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
@@ -46,6 +69,8 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dMatrixMultiply44(outResult, translate, outResult);
 	//m3dMatrixMultiply44(outResult, rotateResult, translate);
 	//m3dMatrixMultiply44(outResult, scaleResult, outResult);
+	//m3dMatrixMultiply44(outResult, translate, scaleResult);
+	//m3dMatrixMultiply44(outResult, rotateResult, outResult);
 }
 
 void Transform::setPosition(const M3DVector3f& newPosition)
@@ -65,25 +90,47 @@ void Transform::setScale(float newScale)
 
 void Transform::moveForward(float amount)
 {
-	position.z += amount;
+	//position.z -= amount;
+	float movX = cos(getYaw()) * cos(getPitch());
+	float movY = sin(getPitch());
+	float movZ = sin(getYaw()) * cos(getPitch());
+
+	position += Vector3f(amount * movX, amount * movY, amount * movZ);
 }
 void Transform::moveRight(float amount)
 {
-	position.x -= amount;
+	//position.x += amount;
+	position += Vector3f(amount * getRightVector().x, amount * getRightVector().y, amount * getRightVector().z);
 }
 void Transform::moveUp(float amount)
 {
-	position.y -= amount;
+	position.y += amount;
 }
-void Transform::rotateRollRight(float amount)
+
+void Transform::rotatePitch(float degrees)
 {
-	rotation.z += amount;
+	//rotation.x -= amount;
+	float newAngle = getPitch() + degrees;
+	//newAngle = nah::DegreesToRadians(newAngle);
+
+	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
+	setPitch(newAngle);
 }
-void Transform::rotateTurnRight(float amount)
+void Transform::rotateYaw(float degrees)
 {
-	rotation.y += amount;
+	//rotation.y += amount;
+	float newAngle = getYaw() - degrees;
+	//newAngle = nah::DegreesToRadians(newAngle);
+
+	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
+	setYaw(newAngle);
 }
-void Transform::rotateTurnUp(float amount)
+void Transform::rotateRoll(float degrees)
 {
-	rotation.x -= amount;
+	//rotation.z += degrees;
+	float newAngle = getRoll() + degrees;
+	//newAngle = nah::DegreesToRadians(newAngle);
+
+	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
+	setRoll(newAngle);
 }

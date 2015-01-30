@@ -92,12 +92,14 @@
     <ClInclude Include="ccmccooeyWrapper.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="DebugTools.h" />
+    <ClInclude Include="GeneralMath.h" />
     <ClInclude Include="IntCoord.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="ModelData.h" />
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="M3DTools.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="RotationMath.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -241,14 +241,16 @@ void Keys(unsigned char key, int x, int y)
 
 	//Rotate view
 	float viewSpinSpeed = 10.0f;
-	if ((key == 'Q')||(key == 'q'))//rotate left
+	if ((key == 'Q')||(key == 'q'))
 	{
-		mainView->localTransform.rotateTurnRight(-viewSpinSpeed);
+		//roll left
+		mainView->localTransform.rotateRollRight(-viewSpinSpeed);
 	}
 
-	if ((key == 'E')||(key == 'e'))//rotate right
+	if ((key == 'E')||(key == 'e'))
 	{
-		mainView->localTransform.rotateTurnRight(viewSpinSpeed);
+		//roll right
+		mainView->localTransform.rotateRollRight(viewSpinSpeed);
 	}
 
 	//Move model2
@@ -357,6 +359,7 @@ void cleanup()
 
 int main(int argc, char* argv[])
 {
+	atexit(cleanup);
 	create();
 
 	gltSetWorkingDirectory(argv[0]);

@@ -22,7 +22,11 @@ CameraView::~CameraView()
 
 void CameraView::getViewMatrix(M3DMatrix44f& outResult) const
 {
-	return localTransform.getRenderMatrix(outResult);
+	localTransform.getRenderMatrix(outResult);
+	M3DMatrix44f tempMatrix;
+	m3dInvertMatrix44(tempMatrix, outResult);
+	m3dCopyMatrix44(outResult, tempMatrix);
+	return;//skip
 
 	M3DMatrix44f translate;
 	M3DMatrix44f rotateResult, rotateX, rotateY, rotateZ;

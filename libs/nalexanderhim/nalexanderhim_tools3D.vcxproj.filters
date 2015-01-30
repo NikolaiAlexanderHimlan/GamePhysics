@@ -52,6 +52,9 @@
     <Filter Include="Header Files\Utilities\OpenGL">
       <UniqueIdentifier>{f986266c-3bda-45f0-b058-4a88814e433b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\Math">
+      <UniqueIdentifier>{7af774b1-0f1b-4746-b46d-dd4765e27e96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -64,7 +67,7 @@
       <Filter>Source Files\Space2D</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\DataTypes</Filter>
+      <Filter>Source Files\Space3D</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Space3D</Filter>
@@ -96,7 +99,7 @@
       <Filter>Header Files\Space2D</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Header Files\DataTypes</Filter>
+      <Filter>Header Files\Space3D</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files\Space3D</Filter>
@@ -109,6 +112,12 @@
     </ClInclude>
     <ClInclude Include="DebugTools.h">
       <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralMath.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationMath.h">
+      <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

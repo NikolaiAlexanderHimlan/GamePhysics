@@ -14,25 +14,14 @@ I certify that this assignment is entirely my own work.
 #include <cmath>
 #include <math.h>
 
-///Lawson Tools
-#include <Trackable.h>
-
 using namespace std;
 
 namespace nah
 {
 	//namespace math {
-	/*Apparently I can make the functions global by declaring them outside of any class
-	///<summary>Custom tools for doing math.</summary>
-	//static 
-	class MathTools 
-	: public Trackable
-	{
-	public:
 
-	};
-	*/
-
+	static inline float absInv(float invertThis) { return -abs(invertThis);	};
+	
 	//************************************
 	// Method:    checkWholeNumber
 	// FullName:  checkWholeNumber
@@ -61,6 +50,34 @@ namespace nah
 		if(roundThis >0) return (int)std::floor(roundThis+0.5f);
 		else if(roundThis <0) return (int)std::ceil(roundThis-0.5f);
 		return 0;//roundThis is 0
+	}
+
+	static inline float wrapFloat(float wrapThis, float maxWrap = 1.0f, float minWrap = 0.0f)
+	{
+
+		const float WRAP_RANGE = maxWrap - minWrap;//difference between the min and max ranges
+		const float ACCEPTABLE_RANGE = 0.0f;//maximum acceptable value for the range before the function does nothing
+
+		bool brokeWrap = false;//something went wrong, do simple wrap
+
+		//check if range is acceptable
+		if (WRAP_RANGE <= ACCEPTABLE_RANGE) return WRAP_RANGE;
+		
+		//check min value
+		while (wrapThis < minWrap)
+			wrapThis += WRAP_RANGE;
+		
+		//check max value
+		while (wrapThis > maxWrap)
+			wrapThis -= WRAP_RANGE;
+
+		if (brokeWrap)
+		{
+			if (wrapThis < minWrap) wrapThis = minWrap;
+			else if (wrapThis > maxWrap) wrapThis = maxWrap;
+		}
+
+		return wrapThis;
 	}
 	//}
 }
