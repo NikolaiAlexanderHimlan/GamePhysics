@@ -67,6 +67,13 @@ public:
 	float length() const;
 	float lengthSquared() const;
 	void normalize(); //make the vector length 1
+	//returns a vector of length 1 in the direction of this vector
+	inline Vector3f normalized() const
+	{
+		Vector3f toNormalize = *this;
+		toNormalize.normalize();
+		return toNormalize;
+	}
 	void setLength(float length); //make the vector length a specific value
 	void power(float power);
 

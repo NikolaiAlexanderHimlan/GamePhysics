@@ -26,19 +26,65 @@ Transform::~Transform()
 {
 }
 
+Vector3f Transform::getForwardVector(char axis) const
+{
+	float forwardX = 0.0f, forwardY = 0.0f, forwardZ = 0.0f;
+
+	//calculate each axis, unless an axis was specified, in which case only calculate that axis.
+	//HACK: calculating only specific axes prevents correct normalization
+	/*
+	//if (axis != 'y' && axis != 'z')//calculate x-axis
+		forwardX = cos(getYawRad()) * cos(getPitchRad());
+	//if (axis != 'x' && axis != 'z')//calculate y-axis
+		forwardY = sin(getPitchRad());//probably something extra?
+	//if (axis != 'x' && axis != 'y')//calculate z-axis
+		forwardZ = sin(getYawRad()) * cos(getPitchRad());
+	//^above math is WRONG!!!*/
+
+	forwardX = sin(getYawRad());
+	forwardY = -sin(getPitchRad());
+	forwardZ = cos(getYawRad());
+
+	return -Vector3f(forwardX, forwardY, forwardZ).normalized();
+}
+Vector3f Transform::getUpVector(char axis) const
+{
+	float upX = 0.0f, upY = 0.0f, upZ = 0.0f;
+
+	Vector3f forVect = getForwardVector();
+	upX = forVect.x;
+	upY = -forVect.z;
+	upZ = forVect.y;
+
+	return Vector3f(upX, upY, upZ).normalized();
+}
 Vector3f Transform::getRightVector(char axis) const
 {
 	float rightX=0.0f, rightY=0.0f, rightZ=0.0f;
 
 	//calculate each axis, unless an axis was specified, in which case only calculate that axis.
-	if (axis != 'y' && axis != 'z')//calculate x-axis
-		rightX = (float)cos(getYaw() - M_PI_2);
-	if (axis != 'x' && axis != 'z')//calculate y-axis
-		rightY = 0.0f;/*(float)sin(getPitch() - M_PI_2)*/
-	if (axis != 'x' && axis != 'y')//calculate z-axis
-		rightZ = (float)sin(getYaw() - M_PI_2);
+	//HACK: calculating only specific axes prevents correct normalization
+	/*
+	//if (axis != 'y' && axis != 'z')//calculate x-axis
+		rightX = (float)cos(getYawRad() - M_PI_2);
+	//if (axis != 'x' && axis != 'z')//calculate y-axis
+		rightY = 0.0f;//(float)sin(getPitchRad() - M_PI_2)
+	//if (axis != 'x' && axis != 'y')//calculate z-axis
+		rightZ = (float)sin(getYawRad() - M_PI_2);
+	//^Am certain above math is wrong!!!*/
+
+	/*
+	rightX = sin(getYawRad() - M_PI_2);
+	rightY = -sin(getPitchRad());
+	rightZ = cos(getYawRad() - M_PI_2);
+	//doesn't work quite right*/
+
+	Vector3f forVect = getForwardVector();
+	rightX = forVect.z;
+	rightY = forVect.y;
+	rightZ = -forVect.x;
 	
-	return Vector3f(rightX, rightY, rightZ);
+	return -Vector3f(rightX, rightY, rightZ).normalized();
 }
 
 void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
@@ -91,26 +137,26 @@ void Transform::setScale(float newScale)
 void Transform::moveForward(float amount)
 {
 	//position.z -= amount;
-	float movX = cos(getYaw()) * cos(getPitch());
-	float movY = sin(getPitch());
-	float movZ = sin(getYaw()) * cos(getPitch());
 
-	position += Vector3f(amount * movX, amount * movY, amount * movZ);
+	//Vector3f::EulerForward(getPitchRad(), getYawRad(), getRollRad());
+
+	position += Vector3f(amount * getForwardVector('x').x, amount * getForwardVector('y').y, amount * getForwardVector('z').z);
 }
 void Transform::moveRight(float amount)
 {
 	//position.x += amount;
-	position += Vector3f(amount * getRightVector().x, amount * getRightVector().y, amount * getRightVector().z);
+	position += Vector3f(amount * getRightVector('x').x, amount * getRightVector('y').y, amount * getRightVector('z').z);
 }
 void Transform::moveUp(float amount)
 {
-	position.y += amount;
+	//position.y += amount;
+	position += Vector3f(amount * getUpVector('x').x, amount * getUpVector('y').y, amount * getUpVector('z').z);
 }
 
 void Transform::rotatePitch(float degrees)
 {
 	//rotation.x -= amount;
-	float newAngle = getPitch() + degrees;
+	float newAngle = getPitchDeg() + degrees;
 	//newAngle = nah::DegreesToRadians(newAngle);
 
 	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
@@ -119,7 +165,7 @@ void Transform::rotatePitch(float degrees)
 void Transform::rotateYaw(float degrees)
 {
 	//rotation.y += amount;
-	float newAngle = getYaw() - degrees;
+	float newAngle = getYawDeg() - degrees;
 	//newAngle = nah::DegreesToRadians(newAngle);
 
 	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
@@ -128,7 +174,7 @@ void Transform::rotateYaw(float degrees)
 void Transform::rotateRoll(float degrees)
 {
 	//rotation.z += degrees;
-	float newAngle = getRoll() + degrees;
+	float newAngle = getRollDeg() + degrees;
 	//newAngle = nah::DegreesToRadians(newAngle);
 
 	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);

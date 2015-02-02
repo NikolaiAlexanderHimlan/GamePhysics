@@ -75,8 +75,8 @@ namespace nah
 #pragma region Conversion
 	//make these constants so the program doesn't keep having to do the same division
 	//TODO: make private/move from header to source file
-	const float TO_RADIAN = (float)(M_PI / 180);
-	const float TO_DEGREE = (float)(180 / M_PI);
+	extern const float TO_RADIAN;
+	extern const float TO_DEGREE;
 
 #define DegToRad DegreesToRadians
 	static inline float DegreesToRadians(float degrees)

@@ -232,11 +232,15 @@ void Keys(unsigned char key, int x, int y)
 	}
 	if((key == 'R')||(key == 'r'))//view rise
 	{
-		mainView->localTransform.moveUp(viewSpeed);
+		//mainView->localTransform.moveUp(viewSpeed);
+		//want to move up/down in world
+		mainView->localTransform.position.y += viewSpeed;
 	}
 	if((key == 'F')||(key == 'f'))//view fall
 	{
-		mainView->localTransform.moveUp(-viewSpeed);
+		//mainView->localTransform.moveUp(-viewSpeed);
+		//want to move up/down in world
+		mainView->localTransform.position.y -= viewSpeed;
 	}
 
 	//Rotate view
