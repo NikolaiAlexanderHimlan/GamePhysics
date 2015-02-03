@@ -79,6 +79,9 @@ public:
 	inline void rotateTurnRight(float degrees) { return rotateYaw(degrees);	};
 	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
 
+	void lookAt(const Transform* worldTransform);
+	void setTarget(const Transform* worldTransform);
+
 	std::string toString(bool pos = true, bool rot = true, bool scl = true) const
 	{
 		std::string textline = "";

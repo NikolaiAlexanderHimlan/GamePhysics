@@ -89,6 +89,8 @@ Vector3f Transform::getRightVector(char axis) const
 
 void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 {
+	//TODO: only recalculate matrices if they are changed
+
 	M3DMatrix44f translate;
 	M3DMatrix44f rotateResult, rotateX, rotateY, rotateZ;
 	M3DMatrix44f scaleResult;
@@ -99,11 +101,11 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dTranslationMatrix44(translate, position.x, position.y, position.z);
 
 	//Rotation
-	m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
+	//m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
 	m3dRotationMatrix44(rotateY, (float)m3dDegToRad(rotation.y), 0.0f, 1.0f, 0.0f);
 	m3dRotationMatrix44(rotateX, (float)m3dDegToRad(rotation.x), 1.0f, 0.0f, 0.0f);
-	m3dMatrixMultiply44(rotateResult, rotateX, rotateY);
-	m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);
+	m3dMatrixMultiply44(rotateResult, rotateY, rotateX);
+	//m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);
 	
 	//Scale
 	m3dScaleMatrix44(scaleResult, scale.x, scale.y, scale.z);
