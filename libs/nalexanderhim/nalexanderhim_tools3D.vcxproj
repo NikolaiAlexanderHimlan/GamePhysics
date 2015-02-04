@@ -87,12 +87,14 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="RotationMath.cpp" />
+    <ClCompile Include="StringTools.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CameraView.h" />
     <ClInclude Include="ccmccooeyWrapper.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="CountedArray.h" />
     <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugTools.h" />
     <ClInclude Include="GeneralMath.h" />

@@ -6,7 +6,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #pragma once
-#include <Trackable.h>
+//#include <Trackable.h>
 
 ///System Tools
 #include <map>
@@ -20,7 +20,7 @@ namespace nah
 
 	//TODO: rename DataReader
 	class DataSystem
-		: public Trackable
+		//: public Trackable
 	{
 	private:
 		//2 keys, first key is ini section, second key is the ini key, and the second map value is the ini key value

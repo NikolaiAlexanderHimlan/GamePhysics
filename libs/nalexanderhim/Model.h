@@ -28,6 +28,11 @@ public:
 	~Model();
 
 	void setBatch(BatchData* batch);
+	//TODO: move functionality to static functions which return the batch
+	//TODO: triangle function which takes 3 vectors
+	void setBatchTriangle(float distUp, float distLeft, float distRight /*TODO: optional color parameters*/);//distance of each corner from the center
+	void setBatchCube(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/);
+	void setBatchSphere(float radius /*TODO: optional color parameters*/);
 };
 
 #endif
