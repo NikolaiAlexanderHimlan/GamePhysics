@@ -81,6 +81,7 @@
   <ItemGroup>
     <ClCompile Include="CameraView.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="DataSystem.cpp" />
     <ClCompile Include="DebugTools.cpp" />
     <ClCompile Include="IntCoord.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -92,6 +93,7 @@
     <ClInclude Include="CameraView.h" />
     <ClInclude Include="ccmccooeyWrapper.h" />
     <ClInclude Include="Color.h" />
+    <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugTools.h" />
     <ClInclude Include="GeneralMath.h" />
     <ClInclude Include="IntCoord.h" />

@@ -58,6 +58,12 @@
     <Filter Include="Source Files\Utilities\Math">
       <UniqueIdentifier>{46435713-a99b-46ef-b045-4c57c22e3abe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\Files">
+      <UniqueIdentifier>{a95a34ab-ae41-4224-86ad-8caaf496ac4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utilities\Files">
+      <UniqueIdentifier>{027d8baf-fda4-4918-860d-f0461676bb07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -83,6 +89,9 @@
     </ClCompile>
     <ClCompile Include="RotationMath.cpp">
       <Filter>Source Files\Utilities\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSystem.cpp">
+      <Filter>Source Files\Utilities\Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="RotationMath.h">
       <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSystem.h">
+      <Filter>Header Files\Utilities\Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
