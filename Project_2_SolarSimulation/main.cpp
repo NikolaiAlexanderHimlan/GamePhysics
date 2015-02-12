@@ -104,6 +104,10 @@ void ResetView()
 	myInit();
 }
 
+//HACK: using console output for debugging, inefficient and needs to be replaced
+#include <stdlib.h>
+#include <iostream>
+#include <string>
 void RenderScene(void)
 {
 	//Swap Colors
@@ -115,6 +119,19 @@ void RenderScene(void)
 	//Draw all models
 	model1->Draw(mainView, shaderManager, mvpMatrix);
 	model2->Draw(mainView, shaderManager, mvpMatrix);
+
+	//Debug output
+	std::string text = "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false);
+	Debug_OpenGL::outputText(Vector3f(1, 1), nah::Color(0.5f, 0.5f, 0.5f), 
+		//GLUT_STROKE_ROMAN
+		GLUT_BITMAP_8_BY_13
+		, text.c_str());
+	/*HACK: font doesn't load, placeholder
+	std::system("cls");
+	std::cout << "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false) << std::endl;
+	std::cout << "Model1: \n" + model1->localTransform.toStringMultiLine() << std::endl;
+	std::cout << "Model2: \n" + model2->localTransform.toStringMultiLine() << std::endl;
+	//*/
 
 	glutSwapBuffers();
 }
@@ -250,21 +267,10 @@ void create()
 	model1 = new Object3D();
 	model2 = new Object3D();
 }
-//HACK: using console output for debugging, inefficient and needs to be replaced
-#include <stdlib.h>
-#include <iostream>
-#include <string>
 void Update()
 {
 	//physics
 	glutPostRedisplay();
-
-	//Debug_OpenGL::outputText(Vector3f(1, 1), nah::Color(0.5f, 0.5f, 0.5f), GLUT_BITMAP_8_BY_13, text);
-	//HACK: font doesn't load, placeholder
-	std::system("cls");
-	std::cout << "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false) << std::endl;
-	std::cout << "Model1: \n" + model1->localTransform.toStringMultiLine() << std::endl;
-	std::cout << "Model2: \n" + model2->localTransform.toStringMultiLine() << std::endl;
 }
 void cleanup()
 {
