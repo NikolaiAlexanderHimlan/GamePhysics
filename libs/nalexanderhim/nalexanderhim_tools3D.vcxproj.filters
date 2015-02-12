@@ -70,6 +70,9 @@
     <Filter Include="Source Files\Utilities\DataTypeExtenders">
       <UniqueIdentifier>{80b551d5-29d7-4df5-bad8-36c0efacffd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\Debug">
+      <UniqueIdentifier>{894fc81a-1453-480f-90c8-c6f7dabc21f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -135,9 +138,12 @@
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
     <ClInclude Include="DebugTools.h">
-      <Filter>Header Files\Utilities</Filter>
+      <Filter>Header Files\Utilities\Debug</Filter>
     </ClInclude>
     <ClInclude Include="GeneralMath.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="RandMath.h">
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
     <ClInclude Include="RotationMath.h">

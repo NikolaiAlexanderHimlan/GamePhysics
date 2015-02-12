@@ -32,6 +32,7 @@ void ChangeSize(int w, int h)
 
 void setupWorld()
 {
+	//model1->setBatchSphere(1.0f, 7);
 	model1->setBatchCube(0.5f, 0.5f, 0.5f);
 	model2->setBatchCube(0.5f, 0.5f, 0.5f);
 }

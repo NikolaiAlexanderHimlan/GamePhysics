@@ -92,7 +92,7 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	//TODO: only recalculate matrices if they are changed
 
 	M3DMatrix44f translate;
-	M3DMatrix44f rotateResult, rotateX, rotateY, rotateZ;
+	M3DMatrix44f rotateResult, rotateX, rotateY;// , rotateZ;
 	M3DMatrix44f scaleResult;
 
 	m3dLoadIdentity44(outResult);
@@ -111,14 +111,8 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dScaleMatrix44(scaleResult, scale.x, scale.y, scale.z);
 	
 	//TRANSLATE -> ROTATE -> SCALE
-	//m3dMatrixMultiply44(outResult, scaleResult, rotateResult);
-	//m3dMatrixMultiply44(outResult, translate, outResult);
 	m3dMatrixMultiply44(outResult, rotateResult, scaleResult);
 	m3dMatrixMultiply44(outResult, translate, outResult);
-	//m3dMatrixMultiply44(outResult, rotateResult, translate);
-	//m3dMatrixMultiply44(outResult, scaleResult, outResult);
-	//m3dMatrixMultiply44(outResult, translate, scaleResult);
-	//m3dMatrixMultiply44(outResult, rotateResult, outResult);
 }
 
 void Transform::setPosition(const M3DVector3f& newPosition)

@@ -104,6 +104,7 @@
     <ClInclude Include="Object3D.h" />
     <ClInclude Include="M3DTools.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="RandMath.h" />
     <ClInclude Include="RotationMath.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>

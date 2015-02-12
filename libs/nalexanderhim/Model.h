@@ -32,7 +32,8 @@ public:
 	//TODO: triangle function which takes 3 vectors
 	void setBatchTriangle(float distUp, float distLeft, float distRight /*TODO: optional color parameters*/);//distance of each corner from the center
 	void setBatchCube(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/);
-	void setBatchSphere(float radius /*TODO: optional color parameters*/);
+	//HACK: currently has 2 infinite points, problem resolved in DirectX version but not here
+	void setBatchSphere(float radius , int numSegments = 8 /*TODO: optional color parameters*/);
 };
 
 #endif
