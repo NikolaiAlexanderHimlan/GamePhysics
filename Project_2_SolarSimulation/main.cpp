@@ -3,6 +3,7 @@
 #include <GL/glut.h>
 #include <GLFrustum.h>
 
+#include <GraphicsGlobals.h>
 #include <CameraView.h>
 #include <Object3D.h>
 #include <Color.h>
@@ -14,6 +15,9 @@ GLfloat			counter;
 GLboolean		bDoSomething;
 M3DMatrix44f	mvpMatrix;
 GLint			width, height;
+
+int getWindowWidth() { return width;	};
+int getWindowHeight() { return height;	};
 
 CameraView* mainView;
 
