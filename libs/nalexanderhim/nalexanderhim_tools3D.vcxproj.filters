@@ -70,8 +70,23 @@
     <Filter Include="Source Files\Utilities\DataTypeExtenders">
       <UniqueIdentifier>{80b551d5-29d7-4df5-bad8-36c0efacffd5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{51543435-2398-4588-8a1e-7b2021ed30e2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Utilities\Debug">
       <UniqueIdentifier>{894fc81a-1453-480f-90c8-c6f7dabc21f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics">
+      <UniqueIdentifier>{972e28f4-5977-4276-adae-39a44cbf723e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managment">
+      <UniqueIdentifier>{7c64ea9a-a944-4a96-8a2b-70b77e27154e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Management">
+      <UniqueIdentifier>{6f4a2ba5-a728-4180-8921-b137d5dacfa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Definitions">
+      <UniqueIdentifier>{67b4033f-ec42-4708-aa54-cd0c6d4eb855}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -154,6 +169,15 @@
     </ClInclude>
     <ClInclude Include="StringTools.h">
       <Filter>Header Files\Utilities\DataTypeExtenders</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineDefines.h">
+      <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsGlobals.h">
+      <Filter>Header Files\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

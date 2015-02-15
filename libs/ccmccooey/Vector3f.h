@@ -16,6 +16,8 @@
 
 #include <ostream>
 
+#define Vector2f(x,y) Vector3f(x,y,0.0f)
+
 class Vector3f
 {
 public:
@@ -25,7 +27,7 @@ public:
 
 public:
 	Vector3f();
-	Vector3f(float x);
+	Vector3f(float allValues);
 	Vector3f(float x, float y);
 	Vector3f(float x, float y, float z);
 	Vector3f(const Vector3f &rhs);
@@ -41,6 +43,7 @@ public:
 
 	//operators overloads
 	Vector3f& operator = ( const Vector3f& rhs );
+	Vector3f& operator = ( const float& rhs );//[NAH]
 	Vector3f& operator += ( const Vector3f& rhs );
 	Vector3f& operator -= ( const Vector3f& rhs );
 	Vector3f& operator *= ( const Vector3f& rhs );

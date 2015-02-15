@@ -6,14 +6,6 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "Model.h"
-/*
-Author: Nikolai Alexander-Himlan
-Class: EPG-425 <Section 51>
-Assignment: pa 0
-Certification of Authenticity:
-I certify that this assignment is entirely my own work.
-*/
-#include "ModelData.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>

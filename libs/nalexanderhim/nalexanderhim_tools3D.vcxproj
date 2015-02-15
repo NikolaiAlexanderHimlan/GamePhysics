@@ -59,6 +59,7 @@
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(ProjectDir)..\ccmccooey\$(Configuration)\;$(ProjectDir)..\GLTools\libs</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
     <ProjectReference>
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
@@ -97,7 +98,10 @@
     <ClInclude Include="CountedArray.h" />
     <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugTools.h" />
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="GeneralMath.h" />
+    <ClInclude Include="EngineDefines.h" />
+    <ClInclude Include="GraphicsGlobals.h" />
     <ClInclude Include="IntCoord.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="ModelData.h" />

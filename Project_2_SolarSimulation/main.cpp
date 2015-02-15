@@ -100,13 +100,13 @@ void myInit()
 
 void ResetView()
 {
-	//HACK: hack method
+	//HACK: reset camera
 	myInit();
 }
 
 //HACK: using console output for debugging, inefficient and needs to be replaced
-#include <stdlib.h>
-#include <iostream>
+//#include <stdlib.h>
+//#include <iostream>
 #include <string>
 void RenderScene(void)
 {
@@ -239,7 +239,6 @@ void SpecialKeys(int key, int x, int y)
 {
 	if(key == GLUT_KEY_HOME)//reset camera
 		ResetView();
-		ResetView();//HACK: reset camera
 
 	//Rotate view
 	float viewTurnSpeed = 5.0f;
@@ -291,7 +290,7 @@ int main(int argc, char* argv[])
 
 	width = 800;
 	height = 600;
-	glutInitWindowSize(800,600);
+	glutInitWindowSize(getWindowWidth(), getWindowHeight());
 
 	glutCreateWindow("Boxor");
 	glutReshapeFunc(ChangeSize);

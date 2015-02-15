@@ -17,12 +17,18 @@ void Debug_OpenGL::outputText(const Vector3f& location, const nah::Color& color,
 	const char* charText = text;// text.c_str();
 	int len = (int)strlen(charText);
 
-	glPushMatrix();
 	glColor3f(color.rgbRed(), color.rgbGreen(), color.rgbBlue());
+
+	//*2D Text
+	//(x,y) is from the bottom left of the window
 	glRasterPos2f(location.x, location.y);
+	//*/
+	/*/3D Text
 	//glTranslatef(location.x, location.y, location.z);
+	//*/
+
 	for (int i = 0; i < len; i++) {
-		glutBitmapCharacter(&font, charText[i]);
+		glutBitmapCharacter(font, charText[i]);
+		//glutStrokeCharacter(font, charText[i]);
 	}
-	glPopMatrix();
 }
