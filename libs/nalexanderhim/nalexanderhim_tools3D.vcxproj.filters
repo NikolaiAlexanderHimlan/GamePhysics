@@ -120,6 +120,18 @@
     <ClCompile Include="StringTools.cpp">
       <Filter>Source Files\Utilities\DataTypeExtenders</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagerBase.cpp">
+      <Filter>Source Files\Management</Filter>
+    </ClCompile>
+    <ClCompile Include="ManagedBase.cpp">
+      <Filter>Source Files\Management</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -170,13 +182,34 @@
     <ClInclude Include="StringTools.h">
       <Filter>Header Files\Utilities\DataTypeExtenders</Filter>
     </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagedBase.h">
+      <Filter>Header Files\Managment</Filter>
+    </ClInclude>
+    <ClInclude Include="ManageTypes.h">
+      <Filter>Header Files\Managment</Filter>
+    </ClInclude>
+    <ClInclude Include="ManagerBase.h">
+      <Filter>Header Files\Managment</Filter>
+    </ClInclude>
     <ClInclude Include="Defines.h">
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
     <ClInclude Include="EngineDefines.h">
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
+    <ClInclude Include="PhysicsDefines.h">
+      <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
     <ClInclude Include="GraphicsGlobals.h">
+      <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsGlobals.h">
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
