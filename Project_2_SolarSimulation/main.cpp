@@ -294,7 +294,7 @@ void Update()
 	//graphics
 	glutPostRedisplay();
 
-	engineTimer.reset();
+	engineTimer.Reset();
 }
 void cleanup()
 {
