@@ -207,47 +207,47 @@ void Keys(unsigned char key, int x, int y)
 	if((key == 'L')||(key == 'l'))
 	{
 		//model position X up
-		model2->localTransform.position.x += model2Speed;
+		model2->getLocalTransformRef().position.x += model2Speed;
 	}
 	if((key == 'J')||(key == 'j'))//model position X down
 	{
-		model2->localTransform.position.x -= model2Speed;
+		model2->getLocalTransformRef().position.x -= model2Speed;
 	}
 	if((key == 'I')||(key == 'i'))//model position Y up
 	{
-		model2->localTransform.position.y += model2Speed;
+		model2->getLocalTransformRef().position.y += model2Speed;
 	}
 	if((key == 'K')||(key == 'k'))//model position Y down
 	{
-		model2->localTransform.position.y -= model2Speed;
+		model2->getLocalTransformRef().position.y -= model2Speed;
 	}
 	if((key == 'O')||(key == 'o'))//model position Z up
 	{
-		model2->localTransform.position.z += model2Speed;
+		model2->getLocalTransformRef().position.z += model2Speed;
 	}
 	if((key == 'U')||(key == 'u'))
 	{
 		//model position Z down
-		model2->localTransform.position.z -= model2Speed;
+		model2->getLocalTransformRef().position.z -= model2Speed;
 	}
 
 	//Rotate models
 	float modelSpinSpeed = 10.0f;
 	if ((key == 'V')||(key == 'v'))
 	{
-		model1->localTransform.rotateTurnRight(-modelSpinSpeed);
+		model1->getLocalTransformRef().rotateTurnRight(-modelSpinSpeed);
 	}
 	if ((key == 'C')||(key=='c'))
 	{
-		model1->localTransform.rotateTurnRight(modelSpinSpeed);
+		model1->getLocalTransformRef().rotateTurnRight(modelSpinSpeed);
 	}
 	if ((key == 'Z') || (key == 'z'))
 	{
-		model2->localTransform.rotateTurnRight(-modelSpinSpeed);
+		model2->getLocalTransformRef().rotateTurnRight(-modelSpinSpeed);
 	}
 	if ((key == 'X') || (key == 'x'))
 	{
-		model2->localTransform.rotateTurnRight(modelSpinSpeed);
+		model2->getLocalTransformRef().rotateTurnRight(modelSpinSpeed);
 	}
 }
 

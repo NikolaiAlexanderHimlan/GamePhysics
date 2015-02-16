@@ -167,6 +167,9 @@
     <ClInclude Include="Object3D.h">
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
+    <ClInclude Include="CountedArray.h">
+      <Filter>Header Files\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="DebugTools.h">
       <Filter>Header Files\Utilities\Debug</Filter>
     </ClInclude>
