@@ -88,6 +88,9 @@
     <Filter Include="Header Files\Definitions">
       <UniqueIdentifier>{67b4033f-ec42-4708-aa54-cd0c6d4eb855}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\Time">
+      <UniqueIdentifier>{ec1aab75-bb5a-4cb2-b31c-ab84aaadaf8c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -211,6 +214,12 @@
     </ClInclude>
     <ClInclude Include="PhysicsGlobals.h">
       <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsObject.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\Utilities\Time</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

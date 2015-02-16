@@ -10,14 +10,18 @@ I certify that this assignment is entirely my own work.
 #include "PhysicsGlobals.h"
 #include "ParticleSystem.h"
 
-Particle::Particle(void)
-{
-	setMass(mMass);
-}
+ManagerBase* Particle::getManager() const
+{ 
+	//return getGlobalParticleSystem();
+	return gpParticleSystem;
+};
 
-void Particle::ApplyForce(const Vector3f& forceVector)
+bool Particle::ApplyForce(const Vector3f& forceVector)
 {
-	mAcceleration += forceVector * mcMassFactor;
-}
+	if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
+	mAcceleration = forceVector * mcMassFactor;
+
+	return true;//applied force successfully
+}
 

@@ -25,7 +25,7 @@ public:
 	{
 		setBatch(batch);
 	}
-	~Model();
+	virtual ~Model();
 
 	void setBatch(BatchData* batch);
 	//TODO: move functionality to static functions which return the batch

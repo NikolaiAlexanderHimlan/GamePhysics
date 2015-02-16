@@ -18,20 +18,17 @@ class Particle
 	: public ManagedBase
 {
 private:
-	void addToManager();
-	void removeFromManager();
-
 	float mMass;//Since 0 mass doesn't work, have values <=0 indicate infinite mass (no physics calculations)
 	float mcMassFactor;//DO NOT MODIFY UNLESS mMass CHANGES!
 
 	//Maintainers
-	inline void resetMassFactor()
+	inline void RecalculateMassFactor()
 	{
 		if (InfiniteMass())
 			mcMassFactor = 1.0f / mMass;
 		else mcMassFactor = 0.0f;
 	}
-	inline void resetMomentum(float oldMass)
+	inline void RecalculateMomentum(float oldMass)
 	{
 		//Get old momentum
 		Vector3f oldMomentum = mVelocity * oldMass;
@@ -40,6 +37,7 @@ private:
 	}
 
 protected:
+	virtual ManagerBase* getManager() const;
 	/**
 	* Holds the linear position of the particle in
 	* world space.
@@ -65,21 +63,31 @@ protected:
 	*/
 	udouble mDamping = 0.999;
 
-	void UpdatePosition(Time elapsedTime)
+	void UpdatePosition(Time elapsedSeconds)
 	{
 		//Update Position
 		mPosition += //previous position
 #ifdef COMPLEX_POSITION
 			//floating point powers are expensive, thus the #ifdef
-			(mAcceleration*0.5f*powf((float)elapsedTime, 2)) + //movement due to acceleration
+			(mAcceleration*0.5f*powf((float)elapsedSeconds, 2)) + //movement due to acceleration
 #endif
-			(mVelocity*(float)elapsedTime);//movement due to velocity
+			(mVelocity*(float)elapsedSeconds);//movement due to velocity
 	}
-	void UpdateVelocity(Time elapsedTime)
+	void UpdateVelocity(Time elapsedSeconds)
 	{
+		if (InfiniteMass()) return;//velocity does not change for an object of infinite mass
+
 		//NOTE: expensive pow calculation, details (Ian Millington, pg. 57)
 		//Update Velocity
-		mVelocity = (mVelocity * (float)pow(mDamping, elapsedTime)) + (mAcceleration*(float)elapsedTime);
+
+		//Acceleration
+		mVelocity += (mAcceleration*(float)elapsedSeconds);
+
+		//Damping
+		mVelocity *= (float)pow(mDamping, elapsedSeconds);
+
+		//Clear Forces? (need to reapply force every frame)
+		ClearForce();
 	}
 
 	//Getters
@@ -92,37 +100,47 @@ protected:
 		//float oldMassFactor = mcMassFactor;
 		mMass = newMass;
 
-		resetMassFactor();
+		RecalculateMassFactor();
 
-		resetMomentum(oldMass);
-		//resetMomentum(oldMassFactor);
+		RecalculateMomentum(oldMass);
+		//recalculateMomentum(oldMassFactor);
 	}
-	void setMomentum(const Vector3f& newMomentum);
+
+	//Actions
+	inline void ClearForce() { ApplyForce(Vector3f(0.0f));	};
 
 public:
-	Particle(void);
-	virtual ~Particle();
-
-	inline void Update(Time elapsedTime)
+	Particle(float initialMass)
 	{
-		UpdatePosition(elapsedTime);
+		setMass(initialMass);
+	}
+	virtual ~Particle(){};
 
-		UpdateVelocity(elapsedTime);
+	virtual inline void UpdatePhysics(Time elapsedSeconds)
+	{
+		UpdatePosition(elapsedSeconds);
+
+		UpdateVelocity(elapsedSeconds);
 
 		//Update Physics
 	}
 
 	//Getters
+	Vector3f Simulation_getPosition() const { return mPosition;	};
 	inline float getMass() const { return mMass;	};//TODO: Handle infinite mass
-	Vector3f Simulation_getPosition() const;
+	Vector3f getVelocity() const { return mVelocity;	};
+	Vector3f getMomentum() const;
 
 	//Setters
 	void Simulation_setPosition(const Vector3f& newSimulationPos);
+	void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
+	void setMomentum(const Vector3f& newMomentum);
 	
 	//Properties
 	inline bool InfiniteMass() const { return mMass <= 0.0f;	};
+	inline float Speed() const { return mVelocity.length();	};
 
 	//Actions
-	void ApplyForce(const Vector3f& forceVector);
+	bool ApplyForce(const Vector3f& forceVector);
 };
 #endif

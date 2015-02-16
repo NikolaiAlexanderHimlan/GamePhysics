@@ -8,6 +8,12 @@
 #include <Object3D.h>
 #include <Color.h>
 #include <DebugTools.h>
+#include <ParticleSystem.h>
+#include <Timer.h>
+
+#include "Planet.h"
+
+Timer engineTimer;
 
 GLShaderManager	shaderManager;
 GLfloat			offset;
@@ -21,8 +27,8 @@ int getWindowHeight() { return height;	};
 
 CameraView* mainView;
 
-Object3D* model1;
-Object3D* model2;
+Planet* model1;
+Planet* model2;
 
 void ChangeSize(int w, int h)
 {
@@ -34,25 +40,14 @@ void ChangeSize(int w, int h)
 	mainView->viewFrustum->SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
 }
 
-void setupWorld()
+void setupModels()
 {
 	//model1->setBatchSphere(1.0f, 7);
 	model1->setBatchCube(0.5f, 0.5f, 0.5f);
 	model2->setBatchCube(0.5f, 0.5f, 0.5f);
 }
-
-void myInit()
+void setupWorld()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	shaderManager.InitializeStockShaders();
-
-	glEnable(GL_DEPTH_TEST);
-
-	//Projection
-	mainView->viewFrustum->SetPerspective(35.0f, (float)(width / height), 1.0f, 1000.0f);
-
-	setupWorld();
-
 	{//view setup
 		M3DVector3f viewPosition;
 		M3DVector3f rotateView;
@@ -72,14 +67,14 @@ void myInit()
 		model1Position[0] = 0;//X, left/right
 		model1Position[1] = 0;//Y, up/down
 		model1Position[2] = -5.0f;//Z, in/out
-		model1->localTransform.setPosition(model1Position);
+		model1->getLocalTransformRef().setPosition(model1Position);
 
 		//model1 rotation
 		M3DVector3f rotateModel1;
 		rotateModel1[0] = 0;
 		rotateModel1[1] = 0;
 		rotateModel1[2] = 0;
-		model1->localTransform.setRotation(rotateModel1);
+		model1->getLocalTransformRef().setRotation(rotateModel1);
 	}
 
 	{//Model2 setup
@@ -88,24 +83,41 @@ void myInit()
 		model2Position[0] = 0;//X, left/right
 		model2Position[1] = 0.5f;//Y, up/down
 		model2Position[2] = -6.0f;//Z, in/out
-		model2->localTransform.setPosition(model2Position);
+		model2->getLocalTransformRef().setPosition(model2Position);
 
 		//model2 rotation
 		M3DVector3f rotateModel2;
 		rotateModel2[0] = 0;
 		rotateModel2[1] = 0;
 		rotateModel2[2] = 0;
-		model2->localTransform.setRotation(rotateModel2);
+		model2->getLocalTransformRef().setRotation(rotateModel2);
 
 		//model2 scale
-		model2->localTransform.setScale(2.0f);
+		model2->getLocalTransformRef().setScale(2.0f);
+
+		//model2 physics
+		model2->setVelocity(Vector3f(1.0f, 0.0f, 0.0f));
 	}
 }
+void myInit()
+{
+	engineTimer.Reset();
 
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	shaderManager.InitializeStockShaders();
+
+	glEnable(GL_DEPTH_TEST);
+
+	//Projection
+	mainView->viewFrustum->SetPerspective(35.0f, (float)(width / height), 1.0f, 1000.0f);
+
+	setupModels();
+
+	setupWorld();
+}
 void ResetView()
 {
-	//HACK: reset camera
-	myInit();
+	setupWorld();
 }
 
 //HACK: using console output for debugging, inefficient and needs to be replaced
@@ -266,20 +278,35 @@ void SpecialKeys(int key, int x, int y)
 
 void create()
 {
+	ParticleSystem::InstantiateGlobal();
+	
 	mainView = new CameraView();
-	model1 = new Object3D();
-	model2 = new Object3D();
+	model1 = new Planet(1.0f);
+	model1->manage();
+	model2 = new Planet(1.0f);
+	model2->manage();
 }
 void Update()
 {
 	//physics
+	gpParticleSystem->Update(engineTimer.ElapsedSeconds());
+
+	//graphics
 	glutPostRedisplay();
+
+	engineTimer.reset();
 }
 void cleanup()
 {
 	delete mainView;
+	mainView = NULL;
+
 	delete model1;
+	model1 = NULL;
 	delete model2;
+	model2 = NULL;
+
+	ParticleSystem::ClearGlobal();
 }
 
 int main(int argc, char* argv[])

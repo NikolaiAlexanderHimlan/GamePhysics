@@ -23,12 +23,18 @@ private:
 	void addToManager();//adds this to the manager
 	void removeFromManager();//removes this object from the manager
 
+	static inline void handleAdd(void* ptr);//does shenanigans to add to manager
+	static inline void handleRemove(void* ptr);//handles removing
+
 protected:
 	ManageID getManagedID() const { return mManagedID;	};
 	virtual ManagerBase* getManager() const = 0;
 
 public:
 	virtual ~ManagedBase() {};//make sure subclass destructor is called
+	
+	//HACK: temporarily make this public until I can fix the management
+	inline void manage() { addToManager();	};//adds this to the manager
 
 	void* operator new(std::size_t size);
 	void operator delete(void *ptr);

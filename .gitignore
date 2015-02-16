@@ -6,7 +6,6 @@
 # [Nn]otes/
 # [Rr]eferences/ # NOTE: find a better/more accurate name
 # [Cc]redits/
-Debug*/
 
 # Always Include
 !*.ini

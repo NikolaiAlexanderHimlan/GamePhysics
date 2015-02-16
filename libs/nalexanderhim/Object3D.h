@@ -20,19 +20,27 @@ class CameraView;
 class Object3D
 	: public Model
 {
-public:
-	Transform localTransform;//The local transform of the 3D object
+protected:
+	Transform mLocalTransform;//The local transform of the 3D object
 
+public:
 	Object3D(void){};
 	Object3D(BatchData* batch)
 		: Model(batch)
 	{
-		localTransform = Transform();
+		mLocalTransform = Transform();
 	}
-	~Object3D(){};
+	virtual ~Object3D(){};
+
+	//Getters
+	inline Transform getLocalTransform() const { return mLocalTransform;	};
+	virtual inline Transform& getLocalTransformRef() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
+
+	//Setters
+	inline void setLocalTransform(const Transform& newTransform) { getLocalTransformRef() = newTransform; };//done using getLocalTransformRef for convenience to subclasses
 
 	//TODO: make renderView a const pointer
-	bool Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const;
+	virtual bool Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const;
 };
 
 #endif

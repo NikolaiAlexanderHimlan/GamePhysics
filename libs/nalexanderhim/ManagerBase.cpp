@@ -51,3 +51,10 @@ void ManagerBase::deleteManage(ManageID removeID)
 	delete mManagedList[removeID];
 }
 
+void ManagerBase::clearManagedList()
+{
+	for (uint i = 0; i < numManaged(); i++)
+	{
+		deleteManage(i);
+	}
+}

@@ -19,6 +19,7 @@ namespace std {
 #include "Defines.h"
 
 //TODO: CONSIDER: make generic T class, where T is the managed class
+//TODO: alternatively, make the generic T the key type
 class ManagerBase
 {
 	friend ManagedBase;
@@ -38,10 +39,13 @@ protected:
 
 
 public:
+	virtual ~ManagerBase() { clearManagedList();	};
+
 	//Properties
 	inline uint numManaged(void) const { return mManagedList.size();	};
 
 	//Actions
 	void deleteManage(ManageID removeIndex);
+	void clearManagedList();//deletes all managed objects
 };
 #endif

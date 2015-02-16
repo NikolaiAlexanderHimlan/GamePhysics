@@ -11,13 +11,32 @@ I certify that this assignment is entirely my own work.
 #include "ManagerBase.h"
 
 class Particle;
+class ParticleSystem;
+
+extern ParticleSystem* gpParticleSystem;
 
 class ParticleSystem
 	: public ManagerBase//TODO: try to move this requirement to the management base classes
 {
 	friend Particle;
+protected:
+	ParticleSystem(){};
+	~ParticleSystem(){};
 public:
-	void Update(Time elapsedTime);
+	static bool InstantiateGlobal()
+	{
+		if (gpParticleSystem != NULL) return false;
+
+		gpParticleSystem = new ParticleSystem();
+
+		return true;
+	}
+	static void ClearGlobal()
+	{
+		delete gpParticleSystem;
+		gpParticleSystem = NULL;
+	}
+	void Update(Time elapsedSeconds);
 
 	//Getters
 	inline Particle* getParticle(ManageID getID) const { return (Particle*)getManaged(getID);	};//TODO: safe cast
@@ -27,5 +46,4 @@ public:
 	//Properties
 	inline uint numParticles(void) const { return numManaged();	};
 };
-extern ParticleSystem* gpParticleSystem;
 #endif

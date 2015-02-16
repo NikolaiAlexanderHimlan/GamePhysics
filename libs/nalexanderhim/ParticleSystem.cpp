@@ -22,7 +22,7 @@ void ParticleSystem::Update(Time elapsedTime)
 {
 	for (uint i = 0; i < numParticles(); i++)
 	{
-		getParticle(i)->Update(elapsedTime);
+		getParticle(i)->UpdatePhysics(elapsedTime);
 	}
 }
 
