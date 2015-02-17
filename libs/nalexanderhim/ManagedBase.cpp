@@ -22,7 +22,7 @@ void ManagedBase::removeFromManager()
 	getManager()->removeManage(this, getManagedID());
 }
 
-void* ManagedBase::operator new(std::size_t size)
+void* ManagedAuto::operator new(std::size_t size)
 {
 	void* ptr = malloc(size);
 
@@ -30,13 +30,13 @@ void* ManagedBase::operator new(std::size_t size)
 
 	return ptr;
 }
-void ManagedBase::operator delete(void *ptr)
+void ManagedAuto::operator delete(void *ptr)
 {
 	handleRemove(ptr);
 
 	free(ptr);
 }
-void* ManagedBase::operator new[](std::size_t size)
+void* ManagedAuto::operator new[](std::size_t size)
 {
 	void* ptr = malloc(size);
 
@@ -45,7 +45,7 @@ void* ManagedBase::operator new[](std::size_t size)
 
 	return ptr;
 }
-void ManagedBase::operator delete[](void *ptr)
+void ManagedAuto::operator delete[](void *ptr)
 {
 	//TODO: WARNING: I don't know if this removes the other objects in the array from the manager
 	handleRemove(ptr);
@@ -53,13 +53,13 @@ void ManagedBase::operator delete[](void *ptr)
 	free(ptr);
 }
 
-void ManagedBase::handleAdd(void* ptr)
+void ManagedAuto::handleAdd(void* ptr)
 {
 	//WARNING: can't call addToManager here as the virtual function table has not been allocated and will not be allocated until after the return.  Instead a local variable is created which calls addToManager on this object in its destructor, which will be called when it leaves this function scope.
 	ManagedBase* addThis = (ManagedBase*)ptr;
 	//addThis->addToManager();
 }
-void ManagedBase::handleRemove(void* ptr)
+void ManagedAuto::handleRemove(void* ptr)
 {
 	ManagedBase* deleteThis = (ManagedBase*)ptr;
 	deleteThis->removeFromManager();

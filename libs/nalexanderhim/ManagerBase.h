@@ -39,13 +39,24 @@ protected:
 
 
 public:
-	virtual ~ManagerBase() { clearManagedList();	};
+	virtual ~ManagerBase() { deleteAllManaged();	};
+
+	//Getters
+	ManageID getManagedID(ManagedBase* findThis) const;
 
 	//Properties
 	inline uint numManaged(void) const { return mManagedList.size();	};
 
 	//Actions
+	bool checkManaged(ManagedBase* checkThis, ManageID verifyID = INVALID_ID) const;
 	void deleteManage(ManageID removeIndex);
-	void clearManagedList();//deletes all managed objects
+	void deleteManage(ManagedBase* removeThis);
+	inline void deleteAllManaged()//deletes all managed objects
+	{
+		for (uint i = 0; i < numManaged(); i++)
+		{
+			deleteManage(i);
+		}
+	};
 };
 #endif

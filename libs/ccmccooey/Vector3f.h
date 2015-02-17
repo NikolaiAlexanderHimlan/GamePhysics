@@ -90,6 +90,13 @@ public:
 	static Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second);
 	static Vector3f ThreeQuaterpoint(const Vector3f &first, const Vector3f &second);
 	static Vector3f Betweenpoint(const Vector3f &first, const Vector3f &second, float value); //value between 0 and 1
+	static Vector3f Normalpoint(const Vector3f &first, const Vector3f &second);//[NAH] //gets a unit vector pointing from first to second
+	/// <summary>Gets the point a given distance between 2 vectors. </summary>
+	/// <param name="first"></param>
+	/// <param name="second"></param>
+	/// <param name="distance"> actual distance value, will move this amount from first to second. </param>
+	/// <returns>Location of the point.</returns>
+	static Vector3f Distancepoint(const Vector3f &first, const Vector3f &second, float distance) { return Normalpoint(first, second) * distance;	};//[NAH]
 	static Vector3f Reciprical(const Vector3f &vector);
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f *vectorArray, int vectorArraySize); //fill a float array from an array of vector3s

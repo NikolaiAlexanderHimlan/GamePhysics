@@ -138,6 +138,9 @@
     <ClCompile Include="ManagedBase.cpp">
       <Filter>Source Files\Management</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleGravity.cpp">
+      <Filter>Source Files\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -226,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files\Utilities\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleForceGenerator.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleGravity.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

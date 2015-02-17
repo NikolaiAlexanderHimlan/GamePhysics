@@ -2,5 +2,11 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="PlanetaryGravity.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Planet.h" />
+    <ClInclude Include="PlanetaryGravity.h" />
   </ItemGroup>
 </Project>

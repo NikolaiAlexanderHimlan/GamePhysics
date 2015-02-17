@@ -33,7 +33,6 @@ void ManagerBase::removeManage(ManageID removeID)
 }
 void ManagerBase::removeManage(ManagedBase* removeThis)
 {
-	//TODO: verify ID
 	mManagedList.erase(std::find(mManagedList.begin(), mManagedList.end(), removeThis));
 
 	//TODO: update other IDs
@@ -47,14 +46,9 @@ void ManagerBase::removeManage(ManagedBase* removeThis, ManageID verifyID)
 
 void ManagerBase::deleteManage(ManageID removeID)
 {
+	if (mManagedList[removeID] != nullptr)
 	//HACK: this will result in indexes changing, fix later
 	delete mManagedList[removeID];
-}
 
-void ManagerBase::clearManagedList()
-{
-	for (uint i = 0; i < numManaged(); i++)
-	{
-		deleteManage(i);
-	}
+	mManagedList.erase(mManagedList.begin() + removeID);
 }

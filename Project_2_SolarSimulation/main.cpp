@@ -12,6 +12,7 @@
 #include <Timer.h>
 
 #include "Planet.h"
+#include "PlanetaryGravity.h"
 
 Timer engineTimer;
 
@@ -20,7 +21,7 @@ GLfloat			offset;
 GLfloat			counter;
 GLboolean		bDoSomething;
 M3DMatrix44f	mvpMatrix;
-GLint			width, height;
+GLint			width = 800, height = 600;
 
 int getWindowWidth() { return width;	};
 int getWindowHeight() { return height;	};
@@ -43,8 +44,6 @@ void ChangeSize(int w, int h)
 void setupModels()
 {
 	//model1->setBatchSphere(1.0f, 7);
-	model1->setBatchCube(0.5f, 0.5f, 0.5f);
-	model2->setBatchCube(0.5f, 0.5f, 0.5f);
 }
 void setupWorld()
 {
@@ -94,10 +93,14 @@ void setupWorld()
 
 		//model2 scale
 		model2->getLocalTransformRef().setScale(2.0f);
-
-		//model2 physics
-		model2->setVelocity(Vector3f(1.0f, 0.0f, 0.0f));
 	}
+}
+void setupPhysics()
+{
+	model2->setVelocity(Vector3f(1.0f, 0.0f, 0.0f));
+
+	PlanetaryGravity* sunGravity = model1->GenerateGravity();
+	getGlobalParticleSystem()->RegisterParticleForce(sunGravity, model2);
 }
 void myInit()
 {
@@ -114,6 +117,8 @@ void myInit()
 	setupModels();
 
 	setupWorld();
+
+	setupPhysics();
 }
 void ResetView()
 {
@@ -288,8 +293,10 @@ void create()
 }
 void Update()
 {
+	Time elapsedSeconds = engineTimer.ElapsedSeconds();
 	//physics
-	gpParticleSystem->Update(engineTimer.ElapsedSeconds());
+	gpParticleSystem->UpdatePhysics(elapsedSeconds);
+	gpParticleSystem->UpdateForces(elapsedSeconds);
 
 	//graphics
 	glutPostRedisplay();
@@ -301,8 +308,10 @@ void cleanup()
 	delete mainView;
 	mainView = NULL;
 
+	model1->unmanage();
 	delete model1;
 	model1 = NULL;
+	model2->unmanage();
 	delete model2;
 	model2 = NULL;
 
@@ -312,15 +321,12 @@ void cleanup()
 int main(int argc, char* argv[])
 {
 	atexit(cleanup);
-	create();
 
 	gltSetWorkingDirectory(argv[0]);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE |GLUT_RGBA| GLUT_DEPTH | GLUT_STENCIL | GLUT_ALPHA);
 
-	width = 800;
-	height = 600;
 	glutInitWindowSize(getWindowWidth(), getWindowHeight());
 
 	glutCreateWindow("Boxor");
@@ -337,6 +343,7 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 
+	create();
 	myInit();
 
 	glutMainLoop();

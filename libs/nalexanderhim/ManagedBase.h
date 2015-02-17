@@ -10,11 +10,12 @@ I certify that this assignment is entirely my own work.
 #include <cstddef>
 #include "ManageTypes.h"
 
-//Base class for any managed classes
+//Base class for any managed classes, need to manually add to manager
 //TODO: CONSIDER: Make generic T class, where T is the manager type
 class ManagedBase
 {
 	friend ManagerBase;
+	friend ManagedAuto;
 private:
 	ManageID mManagedID;
 
@@ -22,9 +23,6 @@ private:
 	//CONSIDER: replace these with single public function which takes a boolean to add/remove this object, but also takes a private "manage key" value which is private to this class, the manage function won't do anything without the correct "key"
 	void addToManager();//adds this to the manager
 	void removeFromManager();//removes this object from the manager
-
-	static inline void handleAdd(void* ptr);//does shenanigans to add to manager
-	static inline void handleRemove(void* ptr);//handles removing
 
 protected:
 	ManageID getManagedID() const { return mManagedID;	};
@@ -35,6 +33,27 @@ public:
 	
 	//HACK: temporarily make this public until I can fix the management
 	inline void manage() { addToManager();	};//adds this to the manager
+	inline void unmanage() { removeFromManager();	};//removes this from the manager
+};
+
+//Base class for automatic management
+class ManagedAuto
+	: public ManagedBase
+{
+	//friend ManagerBase;
+private:
+	static inline void handleAdd(void* ptr);//does shenanigans to add to manager
+	static inline void handleRemove(void* ptr);//handles removing
+
+	//HACK: change permissions
+	inline void manage() { addToManager(); };//adds this to the manager
+	inline void unmanage() { removeFromManager(); };//removes this from the manager
+
+public:
+	ManagedAuto()
+	{
+	};
+	virtual ~ManagedAuto() {};//make sure subclass destructor is called
 
 	void* operator new(std::size_t size);
 	void operator delete(void *ptr);

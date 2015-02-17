@@ -270,6 +270,10 @@ Vector3f Vector3f::Betweenpoint(const Vector3f &first, const Vector3f &second, f
 {
 	return Vector3f((first.x + second.x) * value, (first.y + second.y) * value, (first.z + second.z) * value);
 }
+Vector3f Vector3f::Normalpoint(const Vector3f &first, const Vector3f &second)
+{
+	return Vector3f((first.x + second.x), (first.y + second.y), (first.z + second.z)).normalized();
+}
 Vector3f Vector3f::Reciprical(const Vector3f &vector)
 {
 	return Vector3f( 1.0f / vector.x, 1.0f / vector.y, 1.0f / vector.z);

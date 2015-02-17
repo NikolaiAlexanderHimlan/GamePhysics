@@ -10,6 +10,7 @@ I certify that this assignment is entirely my own work.
 
 #include "Defines.h"
 #include "PhysicsDefines.h"
+#include "PhysicsGlobals.h"
 #include "ccmccooeyWrapper.h"
 #include "ManagedBase.h"
 
@@ -24,7 +25,7 @@ private:
 	//Maintainers
 	inline void RecalculateMassFactor()
 	{
-		if (InfiniteMass())
+		if (!InfiniteMass())
 			mcMassFactor = 1.0f / mMass;
 		else mcMassFactor = 0.0f;
 	}
@@ -34,6 +35,16 @@ private:
 		Vector3f oldMomentum = mVelocity * oldMass;
 		//Calculate new velocity
 		mVelocity = oldMomentum * mcMassFactor;
+	}
+
+	//Actions
+	inline bool SetForce(const Vector3f& forceVector)
+	{
+		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
+
+		mAcceleration = forceVector * mcMassFactor;
+
+		return true;//applied force successfully
 	}
 
 protected:
@@ -107,7 +118,7 @@ protected:
 	}
 
 	//Actions
-	inline void ClearForce() { ApplyForce(Vector3f(0.0f));	};
+	inline void ClearForce() { SetForce(Vector3f(0.0f));	};
 
 public:
 	Particle(float initialMass)
@@ -116,10 +127,12 @@ public:
 	}
 	virtual ~Particle(){};
 
+	//Maintainers
 	virtual inline void UpdatePhysics(Time elapsedSeconds)
 	{
 		UpdatePosition(elapsedSeconds);
 
+		//TODO: decide if velocity should be updated in Physics(elapsed time) or Force(duration)
 		UpdateVelocity(elapsedSeconds);
 
 		//Update Physics
@@ -132,8 +145,8 @@ public:
 	Vector3f getMomentum() const;
 
 	//Setters
-	void Simulation_setPosition(const Vector3f& newSimulationPos);
 	void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
+	inline void Simulation_setPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
 	void setMomentum(const Vector3f& newMomentum);
 	
 	//Properties
@@ -141,6 +154,13 @@ public:
 	inline float Speed() const { return mVelocity.length();	};
 
 	//Actions
-	bool ApplyForce(const Vector3f& forceVector);
+	inline bool AddForce(const Vector3f& forceVector)
+	{
+		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
+
+		mAcceleration += forceVector * mcMassFactor;
+
+		return true;//applied force successfully
+	}
 };
 #endif

@@ -5,14 +5,7 @@ Assignment: pa 2
 Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
+#include "ParticleGravity.h"
 #include "Particle.h"
 
-#include "PhysicsGlobals.h"
-#include "ParticleSystem.h"
-
-ManagerBase* Particle::getManager() const
-{
-	return getGlobalParticleSystem();
-	//return gpParticleSystem;
-}
-
+void ParticleGravity::UpdateForce(Particle* applyForceTo, Time forceDuration) { applyForceTo->AddForce(mGravity);	}
