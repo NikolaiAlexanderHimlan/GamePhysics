@@ -1,0 +1,11 @@
+prefer damping over drag
+start with damping at 1, then play with it once it is working
+
+wants us to write our own Matrix
+
+"don't bother with stiff springs"
+
+need unit test for object at rest (shouldn't move, bounce, etc...), micro collisions (week5 slide 35)
+
+
+

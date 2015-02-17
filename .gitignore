@@ -2,16 +2,12 @@
 ## Repo-Specific
 #################
 
-# Unused Directories
-# [Nn]otes/
-# [Rr]eferences/ # NOTE: find a better/more accurate name
-# [Cc]redits/
-
 # Always Include
 !*.ini
 
 # Always Ignore
-# *.url # moved to references instead of ignore
+# *.url
+.dropbox.attr
 
 #################
 ## Eclipse

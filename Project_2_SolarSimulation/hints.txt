@@ -1,0 +1,7 @@
+*separate physics from graphics: only thing they have in common is position.  physics uses real units, rigidbody should have a separate postion from graphical transform.  When rigidbody transform is set, the graphical transform value should be scaled down (using a const value) so it can be visible on screen.
+
+*make sure units match
+
+*need particle system class, which contains all the rigid bodies.  Vector of particles, planets contain particles (which have the physics).  Particle force generator, force generator applies force to all particles.
+
+
