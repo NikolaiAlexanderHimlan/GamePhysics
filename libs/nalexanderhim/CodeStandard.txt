@@ -29,6 +29,7 @@ functions are primarily categorized in the following ways (in order declared):
 functions start with a capital letter unless starting with one of the following words which indicates its purupose: 
 	get = indicates a getter (or false getter property)
 	set = indicates a setter (or false setter action)
+	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class
 	reset = variation on set (setter)
-	clear = make empty/null
+	clear = set empty/null
 

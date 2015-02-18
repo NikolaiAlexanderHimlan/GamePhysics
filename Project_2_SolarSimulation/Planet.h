@@ -16,6 +16,11 @@ class Planet :
 	public PhysicsObject
 {
 private:
+	const double PLANETARY_TIMESCALE = 
+		60 //seconds per minute
+		* 60 //minutes per hour
+		* 24 //hours per day
+		;//seconds in a day
 	const int PLANET_SEGMENTS = 8;
 	std::string mPlanetName;
 	PlanetaryGravity* mpPlanetGravity = nullptr;
@@ -32,8 +37,10 @@ public:
 		, mPlanetName(planetName)
 		, mInitialDist(distFromSun), mInitialSpeed(initialSpeed)
 	{
+		float radius = diameter * 0.5f * (float)SIMULATION_SCALE_FACTOR;
 		//TODO: CONSIDER: have the radius of the batch be 1.0, then use scale to adjust the size
-		setBatchCube(diameter, diameter, diameter);//HACK: Placeholder until sphere is working correctly
+		setBatchCube(radius, radius, radius);//HACK: Placeholder until sphere is working correctly
+		//setBatchSphere(radius, PLANET_SEGMENTS);
 		resetOrbit();
 	}
 	Planet(const Planet& otherPlanet)
@@ -49,12 +56,14 @@ public:
 		ClearPlanetGravity();
 	};
 
+	inline virtual void UpdatePhysics(Time elapsedSeconds) { __super::UpdatePhysics(elapsedSeconds*PLANETARY_TIMESCALE);	};//one second real time = one day for a planet
+
 	//Getters
 	inline const std::string& getName() const { return mPlanetName;	};
 
 	//Properties
 	float getDiameter() const;
-	float getRadius() const;
+	inline float getRadius() const { return getMaxDistVert();	};
 	float getDisanceFromSun() const;
 
 	//Modifiers
@@ -69,7 +78,8 @@ public:
 		//throw std::logic_error("The method or operation is not implemented.");
 		Simulation_setPosition(Vector3f(mInitialDist, 0.0f, 0.0f));
 		setVelocity(Vector3f(0.0f, 0.0f, mInitialSpeed));//create a velocity perpendicular to the starting position
-		setForce(0.0f);
+		clearForce();
+		RefreshObjectPosition();
 	}
 
 	//Operators

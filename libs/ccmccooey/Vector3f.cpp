@@ -254,14 +254,6 @@ float Vector3f::DistanceSquared(const Vector3f &first, const Vector3f &second)
 {
 	return (powf(second.x - first.x, 2.0f)) + (powf(second.y - first.y, 2.0f)) + (powf(second.z - first.z, 2.0f));
 }
-Vector3f Vector3f::Betweenpoint(const Vector3f &first, const Vector3f &second, float value)
-{
-	return Vector3f((first.x + second.x) * value, (first.y + second.y) * value, (first.z + second.z) * value);
-}
-Vector3f Vector3f::Normalpoint(const Vector3f &first, const Vector3f &second)
-{
-	return Vector3f((first.x + second.x), (first.y + second.y), (first.z + second.z)).normalized();
-}
 Vector3f Vector3f::Reciprical(const Vector3f &vector)
 {
 	return Vector3f( 1.0f / vector.x, 1.0f / vector.y, 1.0f / vector.z);

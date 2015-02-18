@@ -24,10 +24,10 @@ private:
 public:
 	//Getters
 	inline const Transform& getLocalTransform() const { return mLocalTransform;	};
-	virtual inline Transform& getLocalTransformRef() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
+	virtual inline Transform& refLocalTransform() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
 
 	//Setters
-	inline void setLocalTransform(const Transform& newTransform) { getLocalTransformRef() = newTransform; };//done using getLocalTransformRef for convenience to subclasses
+	inline void setLocalTransform(const Transform& newTransform) { refLocalTransform() = newTransform; };//done using getLocalTransformRef for convenience to subclasses
 
 	//Properties
 	const Transform getWorldTransform() const//calculates the world transform based on the local transform and parent world transform
@@ -62,50 +62,57 @@ public:
 	{
 		if (mpParentTransform == nullptr)
 		{
-			getLocalTransformRef().position = newWorldPosition;
+			refLocalTransform().position = newWorldPosition;
 			return;
 		}
 		//Calculate new local position value
-		getLocalTransformRef().position = (getLocalTransform().position / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().position;//HACK: simplified
+		refLocalTransform().position = (getLocalTransform().position / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().position;//HACK: simplified
 	}
 	void setWorldRotation(const Vector3f& newWorldRotation)
 	{
 		if (mpParentTransform == nullptr)
 		{
-			getLocalTransformRef().rotation = newWorldRotation;
+			refLocalTransform().rotation = newWorldRotation;
 			return;
 		}
 		//Calculate new local rotation value
-		getLocalTransformRef().rotation = (getLocalTransform().rotation / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().rotation;//HACK: simplified 
+		refLocalTransform().rotation = (getLocalTransform().rotation / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().rotation;//HACK: simplified 
 	}
 	void setWorldScale(const Vector3f& newWorldScale)
 	{
 		if (mpParentTransform == nullptr)
 		{
-			getLocalTransformRef().scale = newWorldScale;
+			refLocalTransform().scale = newWorldScale;
 			return;
 		}
 		//Calculate new local scale value
-		getLocalTransformRef().scale /= mpParentTransform->getWorldTransform().scale;
+		refLocalTransform().scale /= mpParentTransform->getWorldTransform().scale;
 	}
 
 	//Actions
-	inline void setTarget(const TransformObject* lookAt)//look at this transform and keep looking at it until the lock is released
+	//Lock to Transform, it should be noted that calling these should not actually affect the WorldPosition, though any subsequent movement by the parent should affect the world position
+	inline void lookAt(const TransformObject* lookHere)
 	{
-		mpTargetTransform = lookAt;
-		setWorldRotation(getWorldTransform().getLookAtRotation(lookAt->getWorldTransform().position));
+		if (lookHere == nullptr) return;
+		setWorldRotation(getWorldTransform().getLookAtRotation(lookHere->getWorldTransform().position));
+	}
+	inline void setTarget(const TransformObject* targetThis)//look at this transform and keep looking at it until the lock is released
+	{
+		mpTargetTransform = targetThis;
+		lookAt(targetThis);
 	};
 	inline void clearTarget(void) { setTarget(nullptr);	};
 	inline void setParent(const TransformObject* attachTo)//attach to this transform, local transform is now relative to this
 	{
+		Transform oldWorld = getWorldTransform();
 		mpParentTransform = attachTo;
-		setWorldTransform(getLocalTransform());//local now stores the value relative to the parent
+		setWorldTransform(oldWorld);//local now stores the value relative to the parent
 	};
 	inline void clearParent(void)
 	{
-		Transform oldLocal = getWorldTransform();//save the current world transform
+		Transform oldWorld = getWorldTransform();//save the current world transform
 		setParent(nullptr);
-		setLocalTransform(oldLocal);//restore the world transform into the local transform
+		setWorldTransform(oldWorld);//restore the world transform into the local transform
 	};
 };
 #endif

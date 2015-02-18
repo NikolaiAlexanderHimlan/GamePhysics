@@ -100,13 +100,16 @@
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{e4b707fa-4268-4240-8e18-7a83f83533d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{f9b6dfb2-139d-471d-9ce2-ae95d7d96ef5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
     <ClCompile Include="Object3D.cpp">
-      <Filter>Source Files\Space3D</Filter>
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="IntCoord.cpp">
       <Filter>Source Files\Space2D</Filter>
@@ -115,7 +118,7 @@
       <Filter>Source Files\Space3D</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Space3D</Filter>
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="Color.cpp">
       <Filter>Source Files\DataTypes</Filter>

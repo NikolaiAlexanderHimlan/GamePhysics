@@ -1,3 +1,5 @@
+#include <string>
+
 #include <GLTools.h>
 #include <GLShaderManager.h>
 #include <GL/glut.h>
@@ -40,18 +42,22 @@ int getWindowHeight() { return height;	};
 //{ return glutGet((GLenum)GLUT_WINDOW_WIDTH); };
 //{ return glutGet((GLenum)GLUT_WINDOW_HEIGHT); };
 
-bool gDebugGraphics = false;
-bool gDebugPhysics = false;
+bool gDebugGraphics = true;
+bool gDebugPhysics = true;
 doubleFactor gcSimulationScale;
+GLUI_Control* camPosLocl;
+GLUI_Control* camPosWrld;
+GLUI_Control* targtPos;
 
 CameraView* mainView;
+float viewDefaultDistance = 15.0f;//starting distance from any planet
 
 // Planet* model1;
 // Planet* model2;
 
-const Planet* targetPlanet;//for view/debugging
+Planet* targetPlanet;//for view/debugging
 //use PlanetDataKey::PlanetNames for indexes
-CountedArray<Planet*> planetList = CountedArray<Planet*>(PlanetDataKey::NUM_PLANETS);
+CountedArray<Planet*> planetList = CountedArray<Planet*>(PlanetDataKey::NUM_PLANETS+1);
 
 void ChangeSize(int w, int h)
 {
@@ -68,8 +74,20 @@ void ChangeSize(int w, int h)
 void setTargetPlanet(PlanetDataKey::PlanetName newTarget)
 {
 	targetPlanet = planetList[newTarget];
-	mainView->setTarget(targetPlanet);
+		/*
+	mainView->setWorldPosition(
+		Vector3f::Distancepoint(
+		targetPlanet->getWorldTransform().position, 
+		mainView->getWorldTransform().position, 
+		viewDefaultDistance + targetPlanet->getRadius())
+		);
+		//*/
 	mainView->setParent(targetPlanet);
+	mainView->setTarget(targetPlanet);
+
+	mainView->refLocalTransform().position = Vector3f(0.0f, 1.0f * viewDefaultDistance, 0.5f * viewDefaultDistance);
+	mainView->refLocalTransform().rotation = Vector3f(-65.0f, 0.0f, 0.0f);//HACK: placeholder until setTarget works
+
 }
 
 //assign model batches to models here
@@ -84,9 +102,9 @@ void setupWorld()
 		M3DVector3f viewPosition;
 		M3DVector3f rotateView;
 		viewPosition[0] = 0;//left/right
-		viewPosition[1] = 0;//up/down
-		viewPosition[2] = 0;//towards/away
-		rotateView[0] = 0;
+		viewPosition[1] = 1;//up/down
+		viewPosition[2] = 0.5;//towards/away
+		rotateView[0] = -65;
 		rotateView[1] = 0;
 		rotateView[2] = 0;
 		mainView->setWorldPosition(viewPosition);
@@ -124,10 +142,18 @@ void setupUI()
 	{
 		gluiWindow = GLUI_Master.create_glui("GLUI", 0, 
 			glutGet((GLenum)GLUT_WINDOW_X) + glutGet((GLenum)GLUT_WINDOW_WIDTH), 
-			glutGet((GLenum)GLUT_WINDOW_Y) + glutGet((GLenum)GLUT_WINDOW_HEIGHT));
+			glutGet((GLenum)GLUT_WINDOW_Y) + -20);
 
-		new GLUI_Checkbox(gluiWindow, "Show Physics Debug", (int*)&gDebugPhysics);
-		new GLUI_Checkbox(gluiWindow, "Show Graphics Debug", (int*)&gDebugGraphics);
+		//Debug controls
+		GLUI_Panel* holdPanel = new GLUI_Panel(gluiWindow, "Debug Ctrl");
+		new GLUI_Checkbox(holdPanel, "Show Physics Debug", (int*)&gDebugPhysics);
+		new GLUI_Checkbox(holdPanel, "Show Graphics Debug", (int*)&gDebugGraphics);
+
+		//Debug output
+		holdPanel = new GLUI_Panel(gluiWindow, "Debug Out");
+		camPosLocl = new GLUI_StaticText(holdPanel, "Camera_L");
+		camPosWrld = new GLUI_StaticText(holdPanel, "Camera_W");
+		targtPos = new GLUI_TextBox(holdPanel, "Target_");
 		
 		gluiWindow->set_main_gfx_window(glutWindowID);
 	}
@@ -151,6 +177,10 @@ void myInit()
 	setupPhysics();
 
 	setupUI();
+
+	setTargetPlanet(PlanetDataKey::NUM_PLANETS);
+	mainView->clearParent();
+	mainView->clearTarget();
 }
 void ResetView()
 {
@@ -158,10 +188,6 @@ void ResetView()
 	setupPhysics();
 }
 
-//HACK: using console output for debugging, inefficient and needs to be replaced
-#include <stdlib.h>
-#include <iostream>
-#include <string>
 void RenderScene(void)
 {
 	//Swap Colors
@@ -177,26 +203,29 @@ void RenderScene(void)
 		var->Draw(mainView, shaderManager, mvpMatrix);
 	}
 
-	if (gDebugGraphics)
+	if (gDebugPhysics || gDebugGraphics)
 	{
-	//Debug output
-	std::string text = "Camera: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false);
-		Debug_OpenGL::outputText(Vector2f(10, 10), nah::Color::Red, 
-		//GLUT_STROKE_ROMAN
-		GLUT_BITMAP_8_BY_13
-		, text.c_str());
-
-		//*HACK: font doesn't load, placeholder
-		std::cout << "Camera: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false) << std::endl;
-		std::cout << "Target: \n" + targetPlanet->getLocalTransform().toStringMultiLine() << std::endl;
-	//*/
-	}
-	if (gDebugPhysics)
-	{
-		std::cout << "Vel: " << targetPlanet->getVelocity().toString()
-			<< " | SimPos: " << targetPlanet->Simulation_getPosition().toString()
-			<< " | GrphPos: " << targetPlanet->getWorldTransform().position.toString()
-			<< std::endl;
+		if (gDebugGraphics)
+		{
+			//Debug output
+			camPosLocl->set_text(("Camera_L: \n" + mainView->getLocalTransform().toStringMultiLine(true, true, false)).c_str());
+			camPosWrld->set_text(("Camera_W: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false)).c_str());
+			//targtPos->set_text(("Target: \n" + targetPlanet->getWorldTransform().toStringMultiLine()).c_str());
+		}
+		if (gDebugPhysics)
+		{
+			targtPos->set_text((targetPlanet->getName() +
+				" \n| Vel:\n " + targetPlanet->getVelocity().toString() +
+				" \n| SimPos:\n " + targetPlanet->Simulation_getPosition().toString() +
+				" \n| GrphPos:\n " + targetPlanet->getWorldTransform().position.toString()
+				).c_str());
+		}
+		static bool isRefreshed = false;
+		if (!isRefreshed)
+		{
+			gluiWindow->refresh();
+			isRefreshed = true;
+		}
 	}
 
 	glutSwapBuffers();
@@ -211,31 +240,31 @@ void Keys(unsigned char key, int x, int y)
 	float viewSpeed = 1;
 	if ((key == 'W') || (key == 'w'))//view move forward
 	{
-		mainView->getLocalTransformRef().moveForward(viewSpeed);
+		mainView->refLocalTransform().moveForward(viewSpeed);
 	}
 	if ((key == 'A') || (key == 'a'))//view move left
 	{
-		mainView->getLocalTransformRef().moveRight(-viewSpeed);
+		mainView->refLocalTransform().moveRight(-viewSpeed);
 	}
 	if ((key == 'S') || (key == 's'))//view move backward
 	{
-		mainView->getLocalTransformRef().moveForward(-viewSpeed);
+		mainView->refLocalTransform().moveForward(-viewSpeed);
 	}
 	if ((key == 'D') || (key == 'd'))//view move right
 	{
-		mainView->getLocalTransformRef().moveRight(viewSpeed);
+		mainView->refLocalTransform().moveRight(viewSpeed);
 	}
 	if ((key == 'R') || (key == 'r'))//view rise
 	{
 		//mainView->localTransform.moveUp(viewSpeed);//local rise
 		//want to move up/down in world
-		mainView->getLocalTransformRef().position.y += viewSpeed;
+		mainView->refLocalTransform().position.y += viewSpeed;
 	}
 	if ((key == 'F') || (key == 'f'))//view fall
 	{
 		//mainView->localTransform.moveUp(-viewSpeed);//local fall
 		//want to move up/down in world
-		mainView->getLocalTransformRef().position.y -= viewSpeed;
+		mainView->refLocalTransform().position.y -= viewSpeed;
 	}
 
 	//Rotate view
@@ -243,13 +272,39 @@ void Keys(unsigned char key, int x, int y)
 	if ((key == 'Q') || (key == 'q'))
 	{
 		//roll left
-		mainView->getLocalTransformRef().rotateRollRight(-viewSpinSpeed);
+		mainView->refLocalTransform().rotateRollRight(-viewSpinSpeed);
 	}
 
 	if ((key == 'E') || (key == 'e'))
 	{
 		//roll right
-		mainView->getLocalTransformRef().rotateRollRight(viewSpinSpeed);
+		mainView->refLocalTransform().rotateRollRight(viewSpinSpeed);
+	}
+	//Move target planet
+	float model2Speed = 1;
+	if ((key == 'L') || (key == 'l'))
+	{
+		targetPlanet->refLocalTransform().position.x += model2Speed;//model position X up
+	}
+	if ((key == 'J') || (key == 'j'))
+	{
+		targetPlanet->refLocalTransform().position.x -= model2Speed;//model position X down
+	}
+	if((key == 'I')||(key == 'i'))
+	{
+		targetPlanet->refLocalTransform().position.y += model2Speed;//model position Y up
+	}
+	if((key == 'K')||(key == 'k'))
+	{
+		targetPlanet->refLocalTransform().position.y -= model2Speed;//model position Y down
+	}
+	if((key == 'O')||(key == 'o'))
+	{
+		targetPlanet->refLocalTransform().position.z += model2Speed;//model position Z up
+	}
+	if((key == 'U')||(key == 'u'))
+	{
+		targetPlanet->refLocalTransform().position.z -= model2Speed;//model position Z down
 	}
 
 	//Set view/debug target
@@ -271,24 +326,34 @@ void SpecialKeys(int key, int x, int y)
 {
 	if (key == GLUT_KEY_HOME)//reset camera
 		ResetView();
+	if (key == GLUT_KEY_END)//pause
+	{
+		//HACK: cancel physics
+		for each (Planet* p in planetList)
+		{
+			p->clearPhysics();
+		}
+
+		//also putting a planet at 0,0,0 in the hopes that I can see it
+	}
 
 	//Rotate view
 	float viewTurnSpeed = 5.0f;
 	if (key == GLUT_KEY_LEFT)
 	{
-		mainView->getLocalTransformRef().rotateTurnRight(-viewTurnSpeed);
+		mainView->refLocalTransform().rotateTurnRight(-viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_RIGHT)
 	{
-		mainView->getLocalTransformRef().rotateTurnRight(viewTurnSpeed);
+		mainView->refLocalTransform().rotateTurnRight(viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_UP)
 	{
-		mainView->getLocalTransformRef().rotateTurnUp(viewTurnSpeed);
+		mainView->refLocalTransform().rotateTurnUp(viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_DOWN)
 	{
-		mainView->getLocalTransformRef().rotateTurnUp(-viewTurnSpeed);
+		mainView->refLocalTransform().rotateTurnUp(-viewTurnSpeed);
 	}
 }
 
@@ -317,9 +382,18 @@ void create()
 		planetList[i]->manage();
 	}
 
+	//extra debugging planet
+	planetList[PlanetDataKey::NUM_PLANETS] = new Planet(
+		(float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(PlanetDataKey::EARTH), PlanetDataKey::VAL_MASS))
+		, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(PlanetDataKey::EARTH), PlanetDataKey::VAL_SIZE))
+		, 1.0f//(float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(PlanetDataKey::EARTH), PlanetDataKey::VAL_DIST))
+		, 1.0f//no velocity
+		, "Le Bugger"
+		);
+	planetList[PlanetDataKey::NUM_PLANETS]->manage();
+
 	gpDataReader->clearIniData();
 
-	targetPlanet = planetList[0];
 }
 void Update()
 {

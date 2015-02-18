@@ -88,7 +88,7 @@ protected:
 		mVelocity *= (float)pow(mDamping, elapsedSeconds);
 
 		//Clear Forces? (need to reapply force every frame)
-		ClearForce();
+		clearForce();
 	}
 
 	//Getters
@@ -116,7 +116,7 @@ protected:
 
 		return true;//applied force successfully
 	}
-	inline void ClearForce() { setForce(Vector3f(0.0f));	};
+	inline void clearForce() { setForce(Vector3f(0.0f));	};
 
 public:
 	Particle(float initialMass)
@@ -150,6 +150,7 @@ public:
 	//Properties
 	inline bool InfiniteMass() const { return mMass <= 0.0f;	};
 	inline float getSpeed() const { return mVelocity.length();	};
+	inline Vector3f getForce() const { return mAcceleration * getMass();	};
 
 	//Actions
 	inline bool AddForce(const Vector3f& forceVector)
@@ -160,5 +161,6 @@ public:
 
 		return true;//applied force successfully
 	}
+	inline void clearPhysics() { clearForce(); setVelocity(0.0f);	};//HACK: publicly accessible
 };
 #endif

@@ -19,24 +19,28 @@ class PhysicsObject :
 private:
 	bool doRefreshPhysPosition = false;//should convert the object position and update the physics position
 
+protected:
 	//Actions
 	inline void RefreshObjectPosition()//update the object position based on the physics position
 	{
-		getLocalTransformRef().position = mPosition * (float)SIMULATION_SCALE_FACTOR;
-	}
+		setWorldPosition(mPosition * (float)SIMULATION_SCALE_FACTOR);
+		doRefreshPhysPosition = false;//would be redundant at this point
+	};
 	inline void RefreshPhysicsPosition()//update the physics position based on the object position
 	{
-		mPosition = getLocalTransform().position * (float)SIMULATION_SCALE;
-	}
+		mPosition = getWorldTransform().position * (float)SIMULATION_SCALE;
+		doRefreshPhysPosition = false;//would be redundant at this point
+	};
+
 public:
 	PhysicsObject(float initialMass)
 		: Particle(initialMass), Object3D()
 	{
-		doRefreshPhysPosition = true;//refresh at least once
+		doRefreshPhysPosition = true;//refresh at least once to sync them initially
 	}
 	virtual ~PhysicsObject(){};
 
-	void UpdatePhysics(Time elapsedSeconds)
+	virtual void UpdatePhysics(Time elapsedSeconds)
 	{
 		//check if object position has been updated
 		if (doRefreshPhysPosition)
@@ -51,10 +55,10 @@ public:
 	}
 
 	//Getters
-	Transform& getLocalTransformRef()
+	Transform& refLocalTransform()
 	{
 		doRefreshPhysPosition = true;//record that the physics position will need to be updated
-		return getLocalTransformRef();
+		return __super::refLocalTransform();
 	}
 };
 #endif

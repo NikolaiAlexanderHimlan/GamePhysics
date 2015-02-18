@@ -9,6 +9,7 @@ I certify that this assignment is entirely my own work.
 #define _PARTICLESYSTEM_H
 #include "Defines.h"
 #include "ManagerBase.h"
+#include "ccmccooeyWrapper.h"
 
 class Particle;
 class ParticleSystem;
@@ -84,5 +85,9 @@ public:
 	//HACKS: ParticleForceGenerator not managed type
 	//HACK: should be private once ForceGenerators are automatically managed
 	void manageParticleForceGenerator(ParticleForceGenerator* manageForce) { mParticleForceList.push_back(manageForce); };
+
+	//Calculations
+	Vector3f getTotalVelocity() const;
+	Vector3f getTotalForce() const;
 };
 #endif

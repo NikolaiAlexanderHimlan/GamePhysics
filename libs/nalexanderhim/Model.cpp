@@ -22,8 +22,11 @@ Model::~Model()
 	delete mModelBatch;
 }
 
-void Model::setBatch(GLBatch* batch)
+void Model::setBatch(GLBatch* batch, float maxDistVert, float minDistVert)
 {
+	mMaxDistVert = maxDistVert;
+	mMinDistVert = minDistVert;
+
 	if (mModelBatch != nullptr) delete mModelBatch;
 
 	mModelBatch = batch;
@@ -65,21 +68,63 @@ void Model::setBatchTriangle(float distUp, float distLeft, float distRight)
 	modelBatch->CopyColorData4f(vColors);
 	modelBatch->End();
 
+	float bigDist, midDist, minDist;
+	if (distLeft > distRight) {
+		if (distLeft > distUp) {
+			bigDist = distLeft;
+			if (distRight > distUp) {
+				midDist = distRight;
+				minDist = distUp;
+			} else {
+				midDist = distUp;
+				minDist = distRight;
+			}
+		} else {
+			bigDist = distUp;
+			midDist = distLeft; //already know left is bigger than right
+			minDist = distRight;
+		}
+	} else {
+		if (distRight > distUp) {
+			bigDist = distRight;
+			if (distLeft > distUp) {
+				midDist = distLeft;
+				minDist = distUp;
+			} else {
+				midDist = distUp;
+				minDist = distLeft;
+			}
+		} else {
+			bigDist = distUp;
+			midDist = distRight; //already know right is bigger than left
+			minDist = distLeft;
+		}
+	}
+
 	//model load batch
-	setBatch(modelBatch);
+	setBatch(modelBatch, 
+		sqrtf(powf(bigDist, 2.0f)
+			+ powf(midDist, 2.0f)), 
+		sqrtf(powf(minDist, 2.0f)
+			+ powf(midDist, 2.0f)));
 }
 
 void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 {
+	float bigDist1, bigDist2;
+	float minDist1, minDist2;
+	float curDist;
+
 	GLBatch* modelBatch = new GLBatch();
 
 	//*generate cube model batch
-	GLfloat vVerts[24 * 3];//number of indices times 3 points in a vertex
-	GLfloat vColors[24 * 4];//number of indices times number of values per color
-	int numIndices = 24;
+	const int numVerts = 8;
+	const int numIndices = 8 * 3;
+	GLfloat vVerts[numIndices * 3];//number of indices times 3 points in a vertex
+	GLfloat vColors[numIndices * 4];//number of indices times number of values per color
 	{
 		//index list of how the vectors connect together (every 3 indexes is a triangle)
-		int vectIndx[24] = { 
+		int vectIndx[numIndices] = { 
 			1, 2, 3, 4,
 			5, 8, 7, 6,
 			1, 5, 6, 2,
@@ -87,7 +132,7 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 			3, 7, 8, 4,
 			5, 1, 4, 8 };
 
-		Vector3f vectVerts[8];
+		Vector3f vectVerts[numVerts];
 		{
 			float x = xDimension, y = yDimension, z = zDimension;
 			vectVerts[0] = Vector3f(x, -y, -z);
@@ -107,7 +152,7 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 			vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].z;
 		}
 
-		nah::Color colorVerts[8];
+		nah::Color colorVerts[numVerts];
 		{
 			colorVerts[0] = nah::Color::Red;
 			colorVerts[1] = nah::Color::Aquamarine;
@@ -126,6 +171,16 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbBlue();
 			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbAlpha();
 		}
+		//calc distances
+		bigDist1 = bigDist2 = minDist1 = minDist2 = vectVerts[0].lengthSquared();
+		for (int i = 1; i < numVerts; i++)//already did first index
+		{
+			curDist = vectVerts[i].lengthSquared();
+			if (curDist > bigDist1) bigDist1 = curDist; else 
+			if (curDist > bigDist2) bigDist2 = curDist; else 
+			if (curDist < minDist1) minDist1 = curDist; else 
+			if (curDist < minDist2) minDist2 = curDist;
+		}
 	}
 	//*/
 
@@ -135,7 +190,10 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 	modelBatch->End();
 
 	//model load batch
-	setBatch(modelBatch);
+	setBatch(modelBatch,
+		//dist values are already squared
+		sqrtf(bigDist1 + bigDist2),
+		sqrtf(minDist1 + minDist2));
 }
 
 void Model::setBatchSphere(float radius, int numSegments /*= 8 /*TODO: optional color parameters*/)
@@ -286,5 +344,5 @@ void Model::setBatchSphere(float radius, int numSegments /*= 8 /*TODO: optional 
 	delete[] vColors;
 
 	//model load batch
-	setBatch(modelBatch);
+	setBatch(modelBatch, radius, radius);
 }

@@ -100,7 +100,7 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dLoadIdentity44(outResult);
 	
 	//Translation
-	m3dTranslationMatrix44(translate, position.x, position.y, position.z);
+	m3dTranslationMatrix44(translate, position.x, position.y, -position.z);
 
 	//Rotation
 	//m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
@@ -138,17 +138,17 @@ void Transform::moveForward(float amount)
 
 	//Vector3f::EulerForward(getPitchRad(), getYawRad(), getRollRad());
 
-	position += Vector3f(amount * getForwardVector('x').x, amount * getForwardVector('y').y, amount * getForwardVector('z').z);
+	position -= getForwardVector() * amount;
 }
 void Transform::moveRight(float amount)
 {
 	//position.x += amount;
-	position += Vector3f(amount * getRightVector('x').x, amount * getRightVector('y').y, amount * getRightVector('z').z);
+	position += getRightVector() * amount;
 }
 void Transform::moveUp(float amount)
 {
 	//position.y += amount;
-	position += Vector3f(amount * getUpVector('x').x, amount * getUpVector('y').y, amount * getUpVector('z').z);
+	position += getUpVector() * amount;
 }
 
 void Transform::rotatePitch(float degrees)
@@ -204,5 +204,7 @@ std::string Transform::toStringMultiLine(bool pos /*= true*/, bool rot /*= true*
 
 Vector3f Transform::getLookAtRotation(const Vector3f lookHere) const
 {
-	throw std::logic_error("The method or operation is not implemented.");
+	Vector3f lookRotation;
+	lookRotation = rotation;
+	return lookRotation;
 }

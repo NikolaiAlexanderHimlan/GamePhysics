@@ -17,6 +17,7 @@
 #include <ostream>
 
 #define Vector2f(x,y) Vector3f(x,y,0.0f)
+//#define Vector2f(allValues) Vector3f(allValues)
 
 class Vector3f
 {
@@ -67,7 +68,9 @@ public:
 	void toArray(float floatArray[3]);
 
 	//math functions
+	//more expensive, actual length of the vector
 	float length() const;
+	//Cheaper than length, useful for comparing the lengths of vectors
 	float lengthSquared() const;
 	void normalize(); //make the vector length 1
 	//returns a vector of length 1 in the direction of this vector
@@ -84,19 +87,25 @@ public:
 	static float DotProduct(const Vector3f &first, const Vector3f &second);
 	static float CrossProductF(const Vector3f &first, const Vector3f &second);
 	static Vector3f CrossProduct(const Vector3f &first, const Vector3f &second);
+
 	static float Distance(const Vector3f &first, const Vector3f &second);
 	static float DistanceSquared(const Vector3f &first, const Vector3f &second);
-	static inline Vector3f Midpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.5f); };
-	static inline Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.25f); };
-	static inline Vector3f ThreeQuaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.75f); };
-	static Vector3f Betweenpoint(const Vector3f &first, const Vector3f &second, float value); //value between 0 and 1
-	static Vector3f Normalpoint(const Vector3f &first, const Vector3f &second);//[NAH] //gets a unit vector pointing from first to second
+
+	static inline Vector3f Difference(const Vector3f &first, const Vector3f &second) { return second - first;	};//[NAH] //gets a vector representing the space between 2 other vectors
+	static inline Vector3f NormalTo(const Vector3f &first, const Vector3f &second) { return Difference(first, second).normalized(); }; //gets a unit vector in the direction from first to second
+	static inline Vector3f Normalpoint(const Vector3f &first, const Vector3f &second) { return first + NormalTo(first, second);	};//[NAH] //gets a unit vector pointing from first to second
 	/// <summary>Gets the point a given distance between 2 vectors. </summary>
 	/// <param name="first"></param>
 	/// <param name="second"></param>
 	/// <param name="distance"> actual distance value, will move this amount from first to second. </param>
 	/// <returns>Location of the point.</returns>
-	static Vector3f Distancepoint(const Vector3f &first, const Vector3f &second, float distance) { return Normalpoint(first, second) * distance;	};//[NAH]
+	static inline Vector3f Distancepoint(const Vector3f &first, const Vector3f &second, float distance) { return Normalpoint(first, second) * distance; };//[NAH]
+	
+	static inline Vector3f Betweenpoint(const Vector3f &first, const Vector3f &second, float value) { return first + (Difference(first, second) * value); };//[NAH] //value between 0 and 1
+	static inline Vector3f Midpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.5f); };
+	static inline Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.25f); };
+	static inline Vector3f ThreeQuaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.75f); };
+	
 	static Vector3f Reciprical(const Vector3f &vector);
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f *vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
