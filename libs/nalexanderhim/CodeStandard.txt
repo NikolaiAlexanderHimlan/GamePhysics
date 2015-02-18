@@ -1,0 +1,34 @@
+/*
+Author: Nikolai Alexander-Himlan
+Last Update: 2/18/15
+*/
+
+NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
+
+variables may start with the following letters to indicate information about them (in order): 
+	g = global variable
+	m = member variable
+	s = static variable
+	c = const variable (the intention is for it to be const, even if it is not actually const)
+	p = pointer
+
+functions are primarily categorized in the following ways (in order declared): 
+//for actual values
+	Getters = get existing variables, generally just act as an accessor.
+	Setters = set an exising variable, generally just act as an accessor, but sometimes set additional data.
+//for implicit values
+	Properties = information about the object which is not explicitly stored.
+	Modifiers = implicit setters, or setters for implicit properties.
+//for more complex things
+	Calculations = any big calculations which combine a bunch of different things.
+	Actions = the object does something.
+//system
+	Operators = overloaded operators.
+	Type Conversions = type operators and conversion functions
+
+functions start with a capital letter unless starting with one of the following words which indicates its purupose: 
+	get = indicates a getter (or false getter property)
+	set = indicates a setter (or false setter action)
+	reset = variation on set (setter)
+	clear = make empty/null
+

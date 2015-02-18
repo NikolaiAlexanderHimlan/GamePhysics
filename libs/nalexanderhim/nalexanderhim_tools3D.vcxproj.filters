@@ -237,4 +237,8 @@
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CodeStandard.txt" />
+    <Text Include="TODO.txt" />
+  </ItemGroup>
 </Project>

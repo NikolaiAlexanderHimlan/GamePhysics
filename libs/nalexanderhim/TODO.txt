@@ -1,0 +1,1 @@
+* class/struct which takes a function pointer as a parameter and calls that function in its destructor.  This would allow delayed function calls (like after a return statement).
