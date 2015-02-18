@@ -1,7 +1,10 @@
+#include "doubleFactor.h"
+
 extern bool gDebugPhysics;
 
-#define SIMULATION_SCALE 1.0
-const double SIMULATION_SCALE_FACTOR = 1.0 / SIMULATION_SCALE;
+extern doubleFactor gcSimulationScale;
+#define SIMULATION_SCALE gcSimulationScale.getValue()
+#define SIMULATION_SCALE_FACTOR gcSimulationScale.getFactor()
 
 class ParticleSystem;
 extern ParticleSystem* getGlobalParticleSystem();

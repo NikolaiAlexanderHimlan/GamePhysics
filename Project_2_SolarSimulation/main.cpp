@@ -12,13 +12,20 @@
 #include <DebugTools.h>
 #include <ParticleSystem.h>
 #include <Timer.h>
+#include <DataSystem.h>
+#include <StringTools.h>
 
+#include "PlanetaryDataKey.h"
 #include "Planet.h"
 #include "PlanetaryGravity.h"
+
+using namespace nah;
 
 Timer engineTimer;
 GLUI* gluiWindow;
 int glutWindowID;
+
+const std::string DATA_DIR = "Data/";
 
 GLShaderManager	shaderManager;
 GLfloat			offset;
@@ -31,6 +38,7 @@ int getWindowWidth() { return width;	};
 int getWindowHeight() { return height;	};
 bool gDebugGraphics = false;
 bool gDebugPhysics = false;
+doubleFactor gcSimulationScale;
 
 CameraView* mainView;
 
@@ -312,6 +320,7 @@ void SpecialKeys(int key, int x, int y)
 
 void create()
 {
+	DataSystem::instantiateGlobal();
 	ParticleSystem::InstantiateGlobal();
 	
 	mainView = new CameraView();
@@ -319,6 +328,12 @@ void create()
 	model1->manage();
 	model2 = new Planet(1.0f);
 	model2->manage();
+	//load planet data
+	gpDataReader->readIniFile(DATA_DIR + PlanetDataKey::DATAFILE_NAME);
+
+	gcSimulationScale.setFactor(nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::SEC_SIM, PlanetDataKey::VAL_SCALEFACT)));
+
+	gpDataReader->clearIniData();
 }
 void Update()
 {
@@ -346,6 +361,7 @@ void cleanup()
 	model2 = NULL;
 
 	ParticleSystem::ClearGlobal();
+	DataSystem::clearGlobal();
 }
 
 int main(int argc, char* argv[])

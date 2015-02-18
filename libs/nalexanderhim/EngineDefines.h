@@ -1,4 +1,5 @@
 //Desired Framerate values
-#define FRAMERATE 60.0
-const double FRAMETIME = 1.0 / FRAMERATE;
+#include "DoubleFactor.h"
+const doubleFactor FRAMERATE = 60.0;
+#define FRAMETIME FRAMERATE.getFactor()
 
