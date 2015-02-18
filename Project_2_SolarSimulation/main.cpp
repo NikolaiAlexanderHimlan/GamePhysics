@@ -2,6 +2,7 @@
 #include <GLShaderManager.h>
 #include <GL/glut.h>
 #include <GLFrustum.h>
+#include <GL/glui.h>
 
 #include <GraphicsGlobals.h>
 #include <PhysicsGlobals.h>
@@ -16,6 +17,8 @@
 #include "PlanetaryGravity.h"
 
 Timer engineTimer;
+GLUI* gluiWindow;
+int glutWindowID;
 
 GLShaderManager	shaderManager;
 GLfloat			offset;
@@ -26,6 +29,8 @@ GLint			width = 800, height = 600;
 
 int getWindowWidth() { return width;	};
 int getWindowHeight() { return height;	};
+bool gDebugGraphics = false;
+bool gDebugPhysics = false;
 
 CameraView* mainView;
 
@@ -39,7 +44,9 @@ void ChangeSize(int w, int h)
 
 	glViewport(0,0,width, height);
 
-	mainView->viewFrustum->SetPerspective(35.0f, (float)(width/height), 1.0f, 1000.0f);
+	float aspectRatio = (float)(getWindowWidth() / getWindowHeight());
+	float fovCalc = 35.0f; // 46.6f / aspectRatio;
+	mainView->viewFrustum->SetPerspective(fovCalc, aspectRatio, 1.0f, 1000.0f);
 }
 
 void setupModels()
@@ -102,6 +109,19 @@ void setupPhysics()
 
 	PlanetaryGravity* sunGravity = model1->GenerateGravity();
 	getGlobalParticleSystem()->RegisterParticleForce(sunGravity, model2);
+void setupUI()
+{
+	//setup and initialize GLUI
+	{
+		gluiWindow = GLUI_Master.create_glui("GLUI", 0, 
+			glutGet((GLenum)GLUT_WINDOW_X) + glutGet((GLenum)GLUT_WINDOW_WIDTH), 
+			glutGet((GLenum)GLUT_WINDOW_Y) + glutGet((GLenum)GLUT_WINDOW_HEIGHT));
+
+		new GLUI_Checkbox(gluiWindow, "Show Physics Debug", (int*)&gDebugPhysics);
+		new GLUI_Checkbox(gluiWindow, "Show Graphics Debug", (int*)&gDebugGraphics);
+		
+		gluiWindow->set_main_gfx_window(glutWindowID);
+	}
 }
 void myInit()
 {
@@ -120,6 +140,8 @@ void myInit()
 	setupWorld();
 
 	setupPhysics();
+
+	setupUI();
 }
 void ResetView()
 {
@@ -128,8 +150,8 @@ void ResetView()
 }
 
 //HACK: using console output for debugging, inefficient and needs to be replaced
-//#include <stdlib.h>
-//#include <iostream>
+#include <stdlib.h>
+#include <iostream>
 #include <string>
 void RenderScene(void)
 {
@@ -143,18 +165,23 @@ void RenderScene(void)
 	model1->Draw(mainView, shaderManager, mvpMatrix);
 	model2->Draw(mainView, shaderManager, mvpMatrix);
 
+	if (gDebugGraphics)
+	{
 	//Debug output
 	std::string text = "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false);
 	Debug_OpenGL::outputText(Vector3f(1, 1), nah::Color(0.5f, 0.5f, 0.5f), 
 		//GLUT_STROKE_ROMAN
 		GLUT_BITMAP_8_BY_13
 		, text.c_str());
-	/*HACK: font doesn't load, placeholder
 	std::system("cls");
 	std::cout << "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false) << std::endl;
 	std::cout << "Model1: \n" + model1->localTransform.toStringMultiLine() << std::endl;
 	std::cout << "Model2: \n" + model2->localTransform.toStringMultiLine() << std::endl;
 	//*/
+	}
+	if (gDebugPhysics)
+	{
+	}
 
 	glutSwapBuffers();
 }
@@ -301,6 +328,7 @@ void Update()
 	gpParticleSystem->UpdateForces(elapsedSeconds);
 
 	//graphics
+	glutSetWindow(glutWindowID);
 	glutPostRedisplay();
 
 	engineTimer.Reset();
@@ -331,12 +359,13 @@ int main(int argc, char* argv[])
 
 	glutInitWindowSize(getWindowWidth(), getWindowHeight());
 
-	glutCreateWindow("Boxor");
+	glutWindowID = glutCreateWindow("Boxor");
 	glutReshapeFunc(ChangeSize);
 	glutDisplayFunc(RenderScene);
 	glutSpecialFunc(SpecialKeys);
 	glutKeyboardFunc(Keys);
-	glutIdleFunc(Update);
+	//glutIdleFunc(Update);
+	GLUI_Master.set_glutIdleFunc(Update);
 
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
@@ -350,5 +379,10 @@ int main(int argc, char* argv[])
 
 	glutMainLoop();
 	cleanup();
+	//Cleanup GLUI
+	{
+		gluiWindow->close();
+		delete gluiWindow;
+	}
 	return 0;
 }
