@@ -49,15 +49,16 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;GLTOOLS;GRAPHICS_OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\libs\GLTools\include\;..\libs\GLTools\include\GL\;..\libs\nalexanderhim\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\libs\GLTools\include\;..\libs\GLTools\include\GL\;..\libs\nalexanderhim\;..\libs\GLUI\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\libs\nalexanderhim\$(Configuration)\nalexanderhim_tools3D.lib;..\libs\GLTools\libs\gltools.lib;..\libs\GLTools\libs\freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nalexanderhim_tools3D.lib;freeglut_static.lib;glui32.lib;gltools.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>
       </IgnoreAllDefaultLibraries>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>..\libs\nalexanderhim\$(Configuration);..\libs\GLTools\libs;..\libs\GLUI\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
