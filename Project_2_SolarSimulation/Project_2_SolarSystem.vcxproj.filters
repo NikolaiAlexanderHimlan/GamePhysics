@@ -8,6 +8,8 @@
   <ItemGroup>
     <ClInclude Include="Planet.h" />
     <ClInclude Include="PlanetaryGravity.h" />
+    <ClInclude Include="PlanetaryDataKey.h" />
+  </ItemGroup>
   <ItemGroup>
     <Filter Include="Data">
       <UniqueIdentifier>{6d28130d-e427-412c-a0ed-31c99cf0e959}</UniqueIdentifier>

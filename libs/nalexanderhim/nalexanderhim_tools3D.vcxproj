@@ -109,6 +109,7 @@
     <ClInclude Include="FloatFactor.h" />
     <ClInclude Include="GeneralMath.h" />
     <ClInclude Include="IntegerFactor.h" />
+    <ClInclude Include="M3DTypes.h" />
     <ClInclude Include="ParticleForceGenerator.h" />
     <ClInclude Include="ParticleGravity.h" />
     <ClInclude Include="PhysicsGlobals.h" />
@@ -132,6 +133,7 @@
     <ClInclude Include="StringTools.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TransformObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

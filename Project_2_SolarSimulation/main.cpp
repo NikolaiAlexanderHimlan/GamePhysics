@@ -71,8 +71,8 @@ void setupWorld()
 		rotateView[0] = 0;
 		rotateView[1] = 0;
 		rotateView[2] = 0;
-		mainView->localTransform.setPosition(viewPosition);
-		mainView->localTransform.setRotation(rotateView);
+		mainView->setWorldPosition(viewPosition);
+		mainView->setWorldRotation(rotateView);
 	}
 
 	{//Model1 setup
@@ -176,15 +176,13 @@ void RenderScene(void)
 	if (gDebugGraphics)
 	{
 	//Debug output
-	std::string text = "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false);
-	Debug_OpenGL::outputText(Vector3f(1, 1), nah::Color(0.5f, 0.5f, 0.5f), 
+	std::string text = "Camera: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false);
+		Debug_OpenGL::outputText(Vector2f(10, 10), nah::Color::Red, 
 		//GLUT_STROKE_ROMAN
 		GLUT_BITMAP_8_BY_13
 		, text.c_str());
-	std::system("cls");
-	std::cout << "Camera: \n" + mainView->localTransform.toStringMultiLine(true, true, false) << std::endl;
-	std::cout << "Model1: \n" + model1->localTransform.toStringMultiLine() << std::endl;
-	std::cout << "Model2: \n" + model2->localTransform.toStringMultiLine() << std::endl;
+		//*HACK: font doesn't load, placeholder
+		std::cout << "Camera: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false) << std::endl;
 	//*/
 	}
 	if (gDebugPhysics)
@@ -203,31 +201,31 @@ void Keys(unsigned char key, int x, int y)
 	float viewSpeed = 1;
 	if((key == 'W')||(key == 'w'))//view move forward
 	{
-		mainView->localTransform.moveForward(viewSpeed);
+		mainView->getLocalTransformRef().moveForward(viewSpeed);
 	}
 	if((key == 'A')||(key == 'a'))//view move left
 	{
-		mainView->localTransform.moveRight(-viewSpeed);
+		mainView->getLocalTransformRef().moveRight(-viewSpeed);
 	}
 	if((key == 'S')||(key == 's'))//view move backward
 	{
-		mainView->localTransform.moveForward(-viewSpeed);
+		mainView->getLocalTransformRef().moveForward(-viewSpeed);
 	}
 	if((key == 'D')||(key == 'd'))//view move right
 	{
-		mainView->localTransform.moveRight(viewSpeed);
+		mainView->getLocalTransformRef().moveRight(viewSpeed);
 	}
 	if((key == 'R')||(key == 'r'))//view rise
 	{
 		//mainView->localTransform.moveUp(viewSpeed);//local rise
 		//want to move up/down in world
-		mainView->localTransform.position.y += viewSpeed;
+		mainView->getLocalTransformRef().position.y += viewSpeed;
 	}
 	if((key == 'F')||(key == 'f'))//view fall
 	{
 		//mainView->localTransform.moveUp(-viewSpeed);//local fall
 		//want to move up/down in world
-		mainView->localTransform.position.y -= viewSpeed;
+		mainView->getLocalTransformRef().position.y -= viewSpeed;
 	}
 
 	//Rotate view
@@ -235,13 +233,13 @@ void Keys(unsigned char key, int x, int y)
 	if ((key == 'Q')||(key == 'q'))
 	{
 		//roll left
-		mainView->localTransform.rotateRollRight(-viewSpinSpeed);
+		mainView->getLocalTransformRef().rotateRollRight(-viewSpinSpeed);
 	}
 
 	if ((key == 'E')||(key == 'e'))
 	{
 		//roll right
-		mainView->localTransform.rotateRollRight(viewSpinSpeed);
+		mainView->getLocalTransformRef().rotateRollRight(viewSpinSpeed);
 	}
 
 	//Move model2
@@ -302,19 +300,19 @@ void SpecialKeys(int key, int x, int y)
 	float viewTurnSpeed = 5.0f;
 	if (key == GLUT_KEY_LEFT)
 	{
-		mainView->localTransform.rotateTurnRight(-viewTurnSpeed);
+		mainView->getLocalTransformRef().rotateTurnRight(-viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_RIGHT)
 	{
-		mainView->localTransform.rotateTurnRight(viewTurnSpeed);
+		mainView->getLocalTransformRef().rotateTurnRight(viewTurnSpeed);
 	}
 	if(key==GLUT_KEY_UP)
 	{
-		mainView->localTransform.rotateTurnUp(viewTurnSpeed);
+		mainView->getLocalTransformRef().rotateTurnUp(viewTurnSpeed);
 	}
 	if(key==GLUT_KEY_DOWN)
 	{
-		mainView->localTransform.rotateTurnUp(-viewTurnSpeed);
+		mainView->getLocalTransformRef().rotateTurnUp(-viewTurnSpeed);
 	}
 }
 

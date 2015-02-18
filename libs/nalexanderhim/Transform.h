@@ -8,7 +8,7 @@ I certify that this assignment is entirely my own work.
 #ifndef _TRANSFORM_H
 #define _TRANSFORM_H
 
-#include <math3d.h>
+#include "M3DTypes.h"
 
 #include "ccmccooeyWrapper.h"
 #include "RotationMath.h"
@@ -24,6 +24,7 @@ public:
 	Transform(const Vector3f& init_position = Vector3f::zero, const Vector3f& init_rotation = Vector3f::zero, const Vector3f& init_scale = Vector3f::one);
 	~Transform();
 
+	//Getters
 	//Rotation
 	inline float getPitch(bool degrees) const
 	{
@@ -57,6 +58,7 @@ public:
 	inline float getYawRad() const { return nah::DegreesToRadians(getYawDeg());	};
 	inline float getRollRad() const { return nah::DegreesToRadians(getRollDeg());	};
 
+	//Properties
 	//more efficient, only calculates the requested axes of the vector
 	Vector3f getForwardVector(char axis) const;
 	Vector3f getUpVector(char axis) const;
@@ -67,10 +69,19 @@ public:
 	inline Vector3f getRightVector() const { return getRightVector('a');	};
 
 	void getRenderMatrix(M3DMatrix44f& outResult) const;
+	//Setters
 
 	inline void setPitch(float degrees) { rotation.x = degrees;	};
 	inline void setYaw(float degrees) { rotation.y = degrees;	};
 	inline void setRoll(float degrees) { rotation.z = degrees;	};
+	inline void setPitchRad(float radians);
+	inline void setYawRad(float radians);
+	inline void setRollRad(float radians);
+
+	//Calculations
+	Vector3f getLookAtRotation(const Vector3f lookHere) const;//calculates the necessary rotation in order to look at a given location from this location
+
+	//Actions
 
 	void rotatePitch(float degrees);
 	void rotateYaw(float degrees);
@@ -80,7 +91,6 @@ public:
 	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
 
 	void lookAt(const Transform* worldTransform);
-	void setTarget(const Transform* worldTransform);
 
 	std::string toString(bool pos = true, bool rot = true, bool scl = true) const
 	{

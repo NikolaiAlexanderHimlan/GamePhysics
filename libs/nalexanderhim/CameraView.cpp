@@ -10,10 +10,11 @@ I certify that this assignment is entirely my own work.
 #include <GLTools.h>
 //#include <GL/glut.h>
 #include <GLFrustum.h>
+#include <math3d.h>
 
 CameraView::CameraView(const Transform& initialTransform /*= Transform()*/)
 {
-	localTransform = initialTransform;
+	setLocalTransform(initialTransform);
 	viewFrustum = new GLFrustum();
 }
 CameraView::~CameraView()
@@ -23,9 +24,8 @@ CameraView::~CameraView()
 
 void CameraView::getViewMatrix(M3DMatrix44f& outResult) const
 {
-	localTransform.getRenderMatrix(outResult);
+	getWorldTransform().getRenderMatrix(outResult);
 	M3DMatrix44f tempMatrix;
 	m3dInvertMatrix44(tempMatrix, outResult);
 	m3dCopyMatrix44(outResult, tempMatrix);
-	return;//skip
 }

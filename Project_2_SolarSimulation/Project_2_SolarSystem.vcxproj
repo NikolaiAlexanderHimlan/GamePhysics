@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Planet.h" />
+    <ClInclude Include="PlanetaryDataKey.h" />
     <ClInclude Include="PlanetaryGravity.h" />
   </ItemGroup>
   <ItemGroup>

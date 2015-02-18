@@ -22,11 +22,11 @@ private:
 	//Actions
 	inline void RefreshObjectPosition()//update the object position based on the physics position
 	{
-		mLocalTransform.position = mPosition * (float)SIMULATION_SCALE_FACTOR;
+		getLocalTransformRef().position = mPosition * (float)SIMULATION_SCALE_FACTOR;
 	}
 	inline void RefreshPhysicsPosition()//update the physics position based on the object position
 	{
-		mPosition = mLocalTransform.position * (float)SIMULATION_SCALE;
+		mPosition = getLocalTransform().position * (float)SIMULATION_SCALE;
 	}
 public:
 	PhysicsObject(float initialMass)
@@ -54,7 +54,7 @@ public:
 	Transform& getLocalTransformRef()
 	{
 		doRefreshPhysPosition = true;//record that the physics position will need to be updated
-		return mLocalTransform;
+		return getLocalTransformRef();
 	}
 };
 #endif

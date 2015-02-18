@@ -97,6 +97,9 @@
     <Filter Include="Header Files\Utilities\Math\FactorContainers">
       <UniqueIdentifier>{56459b9c-ce9a-4669-8056-a28612b277cd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{e4b707fa-4268-4240-8e18-7a83f83533d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -147,10 +150,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
-      <Filter>Header Files\Space3D</Filter>
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="ModelData.h">
-      <Filter>Header Files\Space3D</Filter>
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="CameraView.h">
       <Filter>Header Files\View</Filter>
@@ -168,13 +171,13 @@
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
-      <Filter>Header Files\Space3D</Filter>
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="ccmccooeyWrapper.h">
       <Filter>Header Files\Include</Filter>
     </ClInclude>
     <ClInclude Include="Object3D.h">
-      <Filter>Header Files\Space3D</Filter>
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="CountedArray.h">
       <Filter>Header Files\Utilities\Containers</Filter>
@@ -250,6 +253,12 @@
     </ClInclude>
     <ClInclude Include="FactorBase.h">
       <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformObject.h">
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="M3DTypes.h">
+      <Filter>Header Files\Utilities\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

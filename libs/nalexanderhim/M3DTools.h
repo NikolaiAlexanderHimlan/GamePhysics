@@ -9,6 +9,7 @@ I certify that this assignment is entirely my own work.
 #define _M3DTOOLS_H
 
 //GLTools
+#include "M3DTypes.h"
 #include <math3d.h>
 
 #include <Vector3f.h>

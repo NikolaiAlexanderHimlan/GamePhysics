@@ -13,16 +13,20 @@ I certify that this assignment is entirely my own work.
 class GLFrustum;
 
 #include "Transform.h"
+#include "TransformObject.h"
 
 class CameraView
+	: public TransformObject
 {
 public:
-	Transform localTransform;
 	GLFrustum* viewFrustum;
 
 	CameraView(const Transform& initialTransform = Transform());
 	~CameraView();
 	
+	//Getters
+
+	//Calculations
 	void getViewMatrix(M3DMatrix44f& outResult) const;
 	GLFrustum* getViewFrustum() const { return viewFrustum;	}
 };
