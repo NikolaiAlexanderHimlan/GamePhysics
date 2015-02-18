@@ -11,6 +11,8 @@ I certify that this assignment is entirely my own work.
 
 PlanetaryGravity* Planet::GenerateGravity()
 {
+	if (mpPlanetGravity != nullptr) return mpPlanetGravity;
+
 	mpPlanetGravity = new PlanetaryGravity(this);
 
 	getGlobalParticleSystem()->manageParticleForceGenerator(mpPlanetGravity);

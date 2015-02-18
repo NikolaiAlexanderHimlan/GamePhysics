@@ -37,16 +37,6 @@ private:
 		mVelocity = oldMomentum * mcMassFactor;
 	}
 
-	//Actions
-	inline bool SetForce(const Vector3f& forceVector)
-	{
-		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
-
-		mAcceleration = forceVector * mcMassFactor;
-
-		return true;//applied force successfully
-	}
-
 protected:
 	virtual ManagerBase* getManager() const;
 	/**
@@ -119,6 +109,14 @@ protected:
 
 	//Actions
 	inline void ClearForce() { SetForce(Vector3f(0.0f));	};
+	inline bool setForce(const Vector3f& forceVector)
+	{
+		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
+
+		mAcceleration = forceVector * mcMassFactor;
+
+		return true;//applied force successfully
+	}
 
 public:
 	Particle(float initialMass)

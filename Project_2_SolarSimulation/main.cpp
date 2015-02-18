@@ -4,6 +4,7 @@
 #include <GLFrustum.h>
 
 #include <GraphicsGlobals.h>
+#include <PhysicsGlobals.h>
 #include <CameraView.h>
 #include <Object3D.h>
 #include <Color.h>
@@ -43,7 +44,6 @@ void ChangeSize(int w, int h)
 
 void setupModels()
 {
-	//model1->setBatchSphere(1.0f, 7);
 }
 void setupWorld()
 {
@@ -98,6 +98,7 @@ void setupWorld()
 void setupPhysics()
 {
 	model2->setVelocity(Vector3f(1.0f, 0.0f, 0.0f));
+	getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
 
 	PlanetaryGravity* sunGravity = model1->GenerateGravity();
 	getGlobalParticleSystem()->RegisterParticleForce(sunGravity, model2);
@@ -123,6 +124,7 @@ void myInit()
 void ResetView()
 {
 	setupWorld();
+	setupPhysics();
 }
 
 //HACK: using console output for debugging, inefficient and needs to be replaced

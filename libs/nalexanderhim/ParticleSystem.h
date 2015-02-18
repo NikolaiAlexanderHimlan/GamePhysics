@@ -61,7 +61,7 @@ public:
 	bool checkManagedParticleForce(ParticleForceGenerator* checkThis, ManageID verifyID = INVALID_ID) const;
 
 	//Actions
-	//WARNING: Trusting that the user does not create a duplicate registration
+	//WARNING: Trusting that the user does not create a duplicate registrations, DUPLICATE REGISTRATIONS WILL STACK!
 	//TODO: take ManageIDs and create registration out of the IDs, this forces the particle and force generator to already be managed and might make comparison fast enough that a check could be done to see if the registration already exists
 	void RegisterParticleForce(ParticleForceGenerator* forceSource, Particle* forceTarget)
 	{ mParticleForceRegistry.push_back(ParticleForceRegistration(forceSource, forceTarget));	};
@@ -74,6 +74,11 @@ public:
 		{
 			deleteParticleForce(i);
 		}
+	}
+	void clearParticleForceRegistrations()
+	{
+		//all Particles and ParticleForceGenerators are saved elsewhere, just clear the list
+		mParticleForceRegistry.clear();
 	}
 
 	//HACKS: ParticleForceGenerator not managed type

@@ -11,6 +11,8 @@ I certify that this assignment is entirely my own work.
 #include "Particle.h"
 #include "Object3D.h"
 
+#include "PhysicsGlobals.h"
+
 class PhysicsObject :
 	public Particle, public Object3D
 {
@@ -24,7 +26,7 @@ private:
 	}
 	inline void RefreshPhysicsPosition()//update the physics position based on the object position
 	{
-		mPosition = mLocalTransform.position * SIMULATION_SCALE;
+		mPosition = mLocalTransform.position * (float)SIMULATION_SCALE;
 	}
 public:
 	PhysicsObject(float initialMass)

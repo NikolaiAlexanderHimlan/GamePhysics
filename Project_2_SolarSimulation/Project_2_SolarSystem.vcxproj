@@ -83,6 +83,9 @@
     <ClInclude Include="Planet.h" />
     <ClInclude Include="PlanetaryGravity.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\PlanetaryData.ini" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
