@@ -94,6 +94,9 @@
     <Filter Include="Header Files\Utilities\Containers">
       <UniqueIdentifier>{acc01df3-f20a-4318-8b99-9a10e8b38620}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Utilities\Math\FactorContainers">
+      <UniqueIdentifier>{56459b9c-ce9a-4669-8056-a28612b277cd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -235,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="ParticleGravity.h">
       <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatFactor.h">
+      <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleFactor.h">
+      <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="IntegerFactor.h">
+      <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="FactorBase.h">
+      <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

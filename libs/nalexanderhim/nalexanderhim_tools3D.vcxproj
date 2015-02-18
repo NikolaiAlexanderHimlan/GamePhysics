@@ -104,7 +104,11 @@
     <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugTools.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="DoubleFactor.h" />
+    <ClInclude Include="FactorBase.h" />
+    <ClInclude Include="FloatFactor.h" />
     <ClInclude Include="GeneralMath.h" />
+    <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="ParticleForceGenerator.h" />
     <ClInclude Include="ParticleGravity.h" />
     <ClInclude Include="PhysicsGlobals.h" />
