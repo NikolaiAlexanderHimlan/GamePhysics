@@ -52,7 +52,7 @@ public:
 	Vector3f& operator /= ( float div );
 	
 	const Vector3f Vector3f::operator+(const Vector3f &other) const;
-	const Vector3f Vector3f::operator-(const Vector3f &other) const;	
+	const Vector3f Vector3f::operator-(const Vector3f &other) const;
 	const Vector3f Vector3f::operator*(const Vector3f &other) const;
 	const Vector3f Vector3f::operator/(const Vector3f &other) const;
 	const Vector3f Vector3f::operator*(float mult) const;
@@ -71,7 +71,7 @@ public:
 	float lengthSquared() const;
 	void normalize(); //make the vector length 1
 	//returns a vector of length 1 in the direction of this vector
-	inline Vector3f normalized() const
+	inline Vector3f normalized() const//[NAH]
 	{
 		Vector3f toNormalize = *this;
 		toNormalize.normalize();
@@ -86,9 +86,9 @@ public:
 	static Vector3f CrossProduct(const Vector3f &first, const Vector3f &second);
 	static float Distance(const Vector3f &first, const Vector3f &second);
 	static float DistanceSquared(const Vector3f &first, const Vector3f &second);
-	static Vector3f Midpoint(const Vector3f &first, const Vector3f &second);
-	static Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second);
-	static Vector3f ThreeQuaterpoint(const Vector3f &first, const Vector3f &second);
+	static inline Vector3f Midpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.5f); };
+	static inline Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.25f); };
+	static inline Vector3f ThreeQuaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.75f); };
 	static Vector3f Betweenpoint(const Vector3f &first, const Vector3f &second, float value); //value between 0 and 1
 	static Vector3f Normalpoint(const Vector3f &first, const Vector3f &second);//[NAH] //gets a unit vector pointing from first to second
 	/// <summary>Gets the point a given distance between 2 vectors. </summary>

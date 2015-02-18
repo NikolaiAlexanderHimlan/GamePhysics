@@ -37,6 +37,9 @@ GLint			width = 800, height = 600;
 
 int getWindowWidth() { return width;	};
 int getWindowHeight() { return height;	};
+//{ return glutGet((GLenum)GLUT_WINDOW_WIDTH); };
+//{ return glutGet((GLenum)GLUT_WINDOW_HEIGHT); };
+
 bool gDebugGraphics = false;
 bool gDebugPhysics = false;
 doubleFactor gcSimulationScale;
@@ -55,7 +58,7 @@ void ChangeSize(int w, int h)
 	width = w;
 	height = h;
 
-	glViewport(0,0,width, height);
+	glViewport(0, 0, width, height);
 
 	float aspectRatio = (float)(getWindowWidth() / getWindowHeight());
 	float fovCalc = 35.0f; // 46.6f / aspectRatio;
@@ -162,7 +165,7 @@ void ResetView()
 void RenderScene(void)
 {
 	//Swap Colors
-	GLfloat vColor[]=  { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat vColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -182,6 +185,7 @@ void RenderScene(void)
 		//GLUT_STROKE_ROMAN
 		GLUT_BITMAP_8_BY_13
 		, text.c_str());
+
 		//*HACK: font doesn't load, placeholder
 		std::cout << "Camera: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false) << std::endl;
 		std::cout << "Target: \n" + targetPlanet->getLocalTransform().toStringMultiLine() << std::endl;
@@ -200,34 +204,34 @@ void RenderScene(void)
 
 void Keys(unsigned char key, int x, int y)
 {
-	if(key == 27)//Esc
+	if (key == 27)//Esc
 		exit(0);
 
 	//Move view
 	float viewSpeed = 1;
-	if((key == 'W')||(key == 'w'))//view move forward
+	if ((key == 'W') || (key == 'w'))//view move forward
 	{
 		mainView->getLocalTransformRef().moveForward(viewSpeed);
 	}
-	if((key == 'A')||(key == 'a'))//view move left
+	if ((key == 'A') || (key == 'a'))//view move left
 	{
 		mainView->getLocalTransformRef().moveRight(-viewSpeed);
 	}
-	if((key == 'S')||(key == 's'))//view move backward
+	if ((key == 'S') || (key == 's'))//view move backward
 	{
 		mainView->getLocalTransformRef().moveForward(-viewSpeed);
 	}
-	if((key == 'D')||(key == 'd'))//view move right
+	if ((key == 'D') || (key == 'd'))//view move right
 	{
 		mainView->getLocalTransformRef().moveRight(viewSpeed);
 	}
-	if((key == 'R')||(key == 'r'))//view rise
+	if ((key == 'R') || (key == 'r'))//view rise
 	{
 		//mainView->localTransform.moveUp(viewSpeed);//local rise
 		//want to move up/down in world
 		mainView->getLocalTransformRef().position.y += viewSpeed;
 	}
-	if((key == 'F')||(key == 'f'))//view fall
+	if ((key == 'F') || (key == 'f'))//view fall
 	{
 		//mainView->localTransform.moveUp(-viewSpeed);//local fall
 		//want to move up/down in world
@@ -236,13 +240,13 @@ void Keys(unsigned char key, int x, int y)
 
 	//Rotate view
 	float viewSpinSpeed = 10.0f;
-	if ((key == 'Q')||(key == 'q'))
+	if ((key == 'Q') || (key == 'q'))
 	{
 		//roll left
 		mainView->getLocalTransformRef().rotateRollRight(-viewSpinSpeed);
 	}
 
-	if ((key == 'E')||(key == 'e'))
+	if ((key == 'E') || (key == 'e'))
 	{
 		//roll right
 		mainView->getLocalTransformRef().rotateRollRight(viewSpinSpeed);
@@ -263,10 +267,9 @@ void Keys(unsigned char key, int x, int y)
 		}
 	}
 }
-
 void SpecialKeys(int key, int x, int y)
 {
-	if(key == GLUT_KEY_HOME)//reset camera
+	if (key == GLUT_KEY_HOME)//reset camera
 		ResetView();
 
 	//Rotate view
@@ -279,11 +282,11 @@ void SpecialKeys(int key, int x, int y)
 	{
 		mainView->getLocalTransformRef().rotateTurnRight(viewTurnSpeed);
 	}
-	if(key==GLUT_KEY_UP)
+	if (key == GLUT_KEY_UP)
 	{
 		mainView->getLocalTransformRef().rotateTurnUp(viewTurnSpeed);
 	}
-	if(key==GLUT_KEY_DOWN)
+	if (key == GLUT_KEY_DOWN)
 	{
 		mainView->getLocalTransformRef().rotateTurnUp(-viewTurnSpeed);
 	}
@@ -293,7 +296,7 @@ void create()
 {
 	DataSystem::instantiateGlobal();
 	ParticleSystem::InstantiateGlobal();
-	
+
 	mainView = new CameraView();
 
 	//load planet data
@@ -334,7 +337,7 @@ void Update()
 void cleanup()
 {
 	delete mainView;
-	mainView = NULL;
+	mainView = nullptr;
 
 	for each (Planet* var in planetList)
 	{
@@ -354,7 +357,7 @@ int main(int argc, char* argv[])
 	gltSetWorkingDirectory(argv[0]);
 
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE |GLUT_RGBA| GLUT_DEPTH | GLUT_STENCIL | GLUT_ALPHA);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_STENCIL | GLUT_ALPHA);
 
 	glutInitWindowSize(getWindowWidth(), getWindowHeight());
 

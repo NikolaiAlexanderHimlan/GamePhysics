@@ -33,7 +33,7 @@ public:
 		, mInitialDist(distFromSun), mInitialSpeed(initialSpeed)
 	{
 		//TODO: CONSIDER: have the radius of the batch be 1.0, then use scale to adjust the size
-		setBatchCube(diameter, diameter, diameter);//Placeholder until sphere is working correctly
+		setBatchCube(diameter, diameter, diameter);//HACK: Placeholder until sphere is working correctly
 		resetOrbit();
 	}
 	Planet(const Planet& otherPlanet)

@@ -58,6 +58,7 @@ namespace nah
 
 		const float WRAP_RANGE = maxWrap - minWrap;//difference between the min and max ranges
 		const float ACCEPTABLE_RANGE = 0.0f;//maximum acceptable value for the range before the function does nothing
+		//const int MAX_WRAP_ATTEMPTS = 10000;//TODO: wrap limit
 
 		bool brokeWrap = false;//something went wrong, do simple wrap
 

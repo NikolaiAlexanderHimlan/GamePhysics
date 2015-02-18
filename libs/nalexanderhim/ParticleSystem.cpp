@@ -6,14 +6,11 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "ParticleSystem.h"
-
-#include <cstddef>
-
 #include "Particle.h"
 #include "ParticleForceGenerator.h"
 #include "PhysicsGlobals.h"
 
-ParticleSystem* gpParticleSystem = NULL;
+ParticleSystem* gpParticleSystem = nullptr;
 
 extern ParticleSystem* getGlobalParticleSystem()
 {

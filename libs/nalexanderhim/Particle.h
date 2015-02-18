@@ -10,7 +10,6 @@ I certify that this assignment is entirely my own work.
 
 #include "Defines.h"
 #include "PhysicsDefines.h"
-#include "PhysicsGlobals.h"
 #include "ccmccooeyWrapper.h"
 #include "ManagedBase.h"
 
@@ -64,7 +63,8 @@ protected:
 	*/
 	udouble mDamping = 0.999;
 
-	void UpdatePosition(Time elapsedSeconds)
+	//Maintainers
+	inline void UpdatePosition(Time elapsedSeconds)
 	{
 		//Update Position
 		mPosition += //previous position
@@ -74,7 +74,7 @@ protected:
 #endif
 			(mVelocity*(float)elapsedSeconds);//movement due to velocity
 	}
-	void UpdateVelocity(Time elapsedSeconds)
+	inline void UpdateVelocity(Time elapsedSeconds)
 	{
 		if (InfiniteMass()) return;//velocity does not change for an object of infinite mass
 
@@ -108,7 +108,6 @@ protected:
 	}
 
 	//Actions
-	inline void ClearForce() { SetForce(Vector3f(0.0f));	};
 	inline bool setForce(const Vector3f& forceVector)
 	{
 		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
@@ -117,6 +116,7 @@ protected:
 
 		return true;//applied force successfully
 	}
+	inline void ClearForce() { setForce(Vector3f(0.0f));	};
 
 public:
 	Particle(float initialMass)
@@ -137,19 +137,19 @@ public:
 	}
 
 	//Getters
-	Vector3f Simulation_getPosition() const { return mPosition;	};
+	inline Vector3f Simulation_getPosition() const { return mPosition;	};
 	inline float getMass() const { return mMass;	};//TODO: Handle infinite mass
-	Vector3f getVelocity() const { return mVelocity;	};
+	inline Vector3f getVelocity() const { return mVelocity;	};
 	Vector3f getMomentum() const;
 
 	//Setters
-	void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	inline void Simulation_setPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
+	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	void setMomentum(const Vector3f& newMomentum);
 	
 	//Properties
 	inline bool InfiniteMass() const { return mMass <= 0.0f;	};
-	inline float Speed() const { return mVelocity.length();	};
+	inline float getSpeed() const { return mVelocity.length();	};
 
 	//Actions
 	inline bool AddForce(const Vector3f& forceVector)

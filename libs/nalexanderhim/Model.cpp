@@ -24,7 +24,7 @@ Model::~Model()
 
 void Model::setBatch(GLBatch* batch)
 {
-	if (mModelBatch != NULL) delete mModelBatch;
+	if (mModelBatch != nullptr) delete mModelBatch;
 
 	mModelBatch = batch;
 

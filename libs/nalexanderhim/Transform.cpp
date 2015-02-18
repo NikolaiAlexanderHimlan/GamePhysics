@@ -10,6 +10,8 @@ I certify that this assignment is entirely my own work.
 #define _USE_MATH_DEFINES // for C++
 #include <math.h>
 
+#include <math3d.h>
+
 #include "M3DTools.h"
 #include "GeneralMath.h"
 #include "RotationMath.h"
@@ -175,4 +177,32 @@ void Transform::rotateRoll(float degrees)
 
 	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
 	setRoll(newAngle);
+}
+
+std::string Transform::toString(bool pos /*= true*/, bool rot /*= true*/, bool scl /*= true*/) const
+{
+	std::string textline = "";
+	if (pos)
+		textline += position.toString() + " | ";
+	if (rot)
+		textline += rotation.toString() + " | ";
+	if (scl)
+		textline += scale.toString();
+	return textline;
+}
+std::string Transform::toStringMultiLine(bool pos /*= true*/, bool rot /*= true*/, bool scl /*= true*/) const
+{
+	std::string textline = "";
+	if (pos)
+		textline += position.toString() + "\n";
+	if (rot)
+		textline += rotation.toString() + "\n";
+	if (scl)
+		textline += scale.toString() + "\n";
+	return textline;
+}
+
+Vector3f Transform::getLookAtRotation(const Vector3f lookHere) const
+{
+	throw std::logic_error("The method or operation is not implemented.");
 }

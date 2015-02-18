@@ -30,8 +30,7 @@ const char* const DELIMITER = " ";
 
 using namespace nah;
 
-extern DataSystem* nah::gpDataReader = NULL;
-
+extern DataSystem* nah::gpDataReader = nullptr;
 
 bool nah::DataSystem::printFileConents(const std::string& filename)
 {

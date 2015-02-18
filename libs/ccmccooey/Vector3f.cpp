@@ -254,18 +254,6 @@ float Vector3f::DistanceSquared(const Vector3f &first, const Vector3f &second)
 {
 	return (powf(second.x - first.x, 2.0f)) + (powf(second.y - first.y, 2.0f)) + (powf(second.z - first.z, 2.0f));
 }
-Vector3f Vector3f::Midpoint(const Vector3f &first, const Vector3f &second)
-{
-	return Vector3f((first.x + second.x) * 0.5f, (first.y + second.y) * 0.5f, (first.z + second.z) * 0.5f);
-}
-Vector3f Vector3f::Quaterpoint(const Vector3f &first, const Vector3f &second)
-{
-	return Vector3f((first.x + second.x) * 0.25f, (first.y + second.y) * 0.25f, (first.z + second.z) * 0.25f);
-}
-Vector3f Vector3f::ThreeQuaterpoint(const Vector3f &first, const Vector3f &second)
-{
-	return Vector3f((first.x + second.x) * 0.75f, (first.y + second.y) * 0.75f, (first.z + second.z) * 0.75f);
-}
 Vector3f Vector3f::Betweenpoint(const Vector3f &first, const Vector3f &second, float value)
 {
 	return Vector3f((first.x + second.x) * value, (first.y + second.y) * value, (first.z + second.z) * value);
@@ -300,3 +288,4 @@ Vector3f Vector3f::EulerForward(float pitch, float yaw, float roll)
 	forward.y = sinf(pitch);
 	return forward;
 }
+

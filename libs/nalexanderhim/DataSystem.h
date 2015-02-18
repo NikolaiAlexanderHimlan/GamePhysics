@@ -19,6 +19,7 @@ namespace nah
 	extern DataSystem* gpDataReader;
 
 	//TODO: rename DataReader
+	//TODO: CONSIDER: static class
 	class DataSystem
 		//: public Trackable
 	{
@@ -42,8 +43,8 @@ namespace nah
 		static inline bool clearGlobal(void)
 		{
 			delete gpDataReader;
-			gpDataReader = NULL;
-			return gpDataReader == NULL;
+			gpDataReader = nullptr;
+			return gpDataReader == nullptr;
 		}
 
 		bool readFileContents(const std::string& filename);

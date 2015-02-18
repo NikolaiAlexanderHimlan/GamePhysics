@@ -17,7 +17,9 @@ class Transform
 {
 public:
 	Vector3f position;
-	Vector3f rotation;
+	//TODO: replace rotation with a quaternion
+	Vector3f rotation;//degrees
+	//CONSIDER: replace with Scale object which is essentially a Vector3fFactor to make division cheaper
 	Vector3f scale;
 
 public:
@@ -25,7 +27,7 @@ public:
 	~Transform();
 
 	//Getters
-	//Rotation
+	//Named Rotations
 	inline float getPitch(bool degrees) const
 	{
 		if (degrees)
@@ -47,12 +49,10 @@ public:
 		else
 			return getRollRad();
 	};
-
 	//Degrees
 	inline float getPitchDeg() const { return rotation.x;	};
 	inline float getYawDeg() const { return rotation.y;	};
 	inline float getRollDeg() const { return rotation.z;	};
-
 	//Radians
 	inline float getPitchRad() const { return nah::DegreesToRadians(getPitchDeg());	};
 	inline float getYawRad() const { return nah::DegreesToRadians(getYawDeg());	};
@@ -68,8 +68,10 @@ public:
 	inline Vector3f getUpVector() const { return getUpVector('a');	};
 	inline Vector3f getRightVector() const { return getRightVector('a');	};
 
-	void getRenderMatrix(M3DMatrix44f& outResult) const;
 	//Setters
+	void setPosition(const M3DVector3f& newPosition);
+	void setRotation(const M3DVector3f& newRotation);
+	void setScale(float newScale);
 
 	inline void setPitch(float degrees) { rotation.x = degrees;	};
 	inline void setYaw(float degrees) { rotation.y = degrees;	};
@@ -80,8 +82,12 @@ public:
 
 	//Calculations
 	Vector3f getLookAtRotation(const Vector3f lookHere) const;//calculates the necessary rotation in order to look at a given location from this location
+	void getRenderMatrix(M3DMatrix44f& outResult) const;
 
 	//Actions
+	void moveForward(float amount);
+	void moveRight(float amount);
+	void moveUp(float amount);
 
 	void rotatePitch(float degrees);
 	void rotateYaw(float degrees);
@@ -90,40 +96,11 @@ public:
 	inline void rotateTurnRight(float degrees) { return rotateYaw(degrees);	};
 	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
 
-	void lookAt(const Transform* worldTransform);
-
-	std::string toString(bool pos = true, bool rot = true, bool scl = true) const
-	{
-		std::string textline = "";
-		if (pos)
-			textline += position.toString() + " | ";
-		if (rot)
-			textline += rotation.toString() + " | ";
-		if (scl)
-			textline += scale.toString();
-		return textline;
-	}
-	std::string toStringMultiLine(bool pos = true, bool rot = true, bool scl = true) const
-	{
-		std::string textline = "";
-		if (pos)
-			textline += position.toString() + "\n";
-		if (rot)
-			textline += rotation.toString() + "\n";
-		if (scl)
-			textline += scale.toString() + "\n";
-		return textline;
-	}
-
-	void setPosition(const M3DVector3f& newPosition);
-	void setRotation(const M3DVector3f& newRotation);
-	void setScale(float newScale);
-
-	void moveForward(float amount);
-	void moveRight(float amount);
-	void moveUp(float amount);
 	inline void lookAt(const Transform& worldTransform) { rotation = getLookAtRotation(worldTransform.position);	};//look at the transform once
 
+	//Type Conversions
+	std::string toString(bool pos = true, bool rot = true, bool scl = true) const;
+	std::string toStringMultiLine(bool pos = true, bool rot = true, bool scl = true) const;
 };
 
 #endif

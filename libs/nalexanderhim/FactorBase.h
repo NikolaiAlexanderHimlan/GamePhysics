@@ -18,6 +18,7 @@ I certify that this assignment is entirely my own work.
 // #define FACTOR_ONE
 
 //TODO: CONSIDER: maybe this should be a Template T class instead, but that doesn't forcefully limit it to numbers
+//TODO: CONSIDER: is this factor or inverse?
 
 class FACTOR_CLASS
 {

@@ -38,5 +38,4 @@ public:
 	//TODO: make renderView a const pointer
 	virtual bool Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const;
 };
-
 #endif

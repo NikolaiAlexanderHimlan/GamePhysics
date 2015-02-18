@@ -25,10 +25,10 @@ public:
 	~CameraView();
 	
 	//Getters
+	inline GLFrustum* getViewFrustum() const { return viewFrustum;	}
 
 	//Calculations
 	void getViewMatrix(M3DMatrix44f& outResult) const;
-	GLFrustum* getViewFrustum() const { return viewFrustum;	}
 };
 
 #endif

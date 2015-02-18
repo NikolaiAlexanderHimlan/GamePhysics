@@ -38,7 +38,6 @@ public:
 	Time ElapsedSeconds() const
 	{
 		//return TO_SECONDS_FACTOR * Elapsed().count();
-
 		return std::chrono::duration_cast<timeSec>(high_resolution_clock::now() - _start).count();
 	}
 

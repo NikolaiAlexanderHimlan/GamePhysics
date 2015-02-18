@@ -37,7 +37,6 @@ protected:
 	//Getters
 	inline ManagedBase* getManaged(ManageID getID) const { return mManagedList[getID];	};
 
-
 public:
 	virtual ~ManagerBase() { deleteAllManaged();	};
 

@@ -35,7 +35,7 @@ protected:
 public:
 	static bool InstantiateGlobal()
 	{
-		if (gpParticleSystem != NULL) return false;
+		if (gpParticleSystem != nullptr) return false;
 
 		gpParticleSystem = new ParticleSystem();
 
@@ -44,7 +44,7 @@ public:
 	static void ClearGlobal()
 	{
 		delete gpParticleSystem;
-		gpParticleSystem = NULL;
+		gpParticleSystem = nullptr;
 	}
 	void UpdatePhysics(Time elapsedSeconds);
 	void UpdateForces(Time elapsedSeconds);
