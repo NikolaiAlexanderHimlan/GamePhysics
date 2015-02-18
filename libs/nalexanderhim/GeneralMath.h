@@ -18,6 +18,7 @@ using namespace std;
 
 namespace nah
 {
+#define exp10(exponent) pow(10.0, exponent);
 	//namespace math {
 
 	static inline float absInv(float invertThis) { return -abs(invertThis);	};

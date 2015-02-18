@@ -6,12 +6,9 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "StringTools.h"
+#include "GeneralMath.h"
 
 using namespace std;
-
-//#include "Rectangle.h"//TODO: move functionality to separate cpp file so StringTools isn't dependent
-#include "IntCoord.h"//TODO: move functionality to separate cpp file so StringTools isn't dependent
-//#include "GridCoord.h"//TODO: move functionality to separate cpp file so StringTools isn't dependent
 
 using namespace nah;
 
@@ -43,5 +40,26 @@ std::string StringTools::substring(const string& source, int startIndex, int end
 	return tempString;
 }
 
-//TODO: move functionality to separate cpp file so StringTools isn't dependent
 //parse datatypes
+double nah::StringTools::parseSciNotation(const string& source)
+{
+	const char SCI = 'e';
+	double number;
+	int exponent = 1;//in case 'e' is not found
+	bool found_e = false;
+	std::string numberString, exponentString;
+
+	//TODO: handle if e does not exist in string
+	splitString(&numberString, &exponentString, trimWhitespace(source), SCI, true);
+
+	number = std::atof(numberString.c_str());//don't need to check if numberString is valid, because that would be the user's fault
+	if (!exponentString.empty())//no exponent, keep 1
+		exponent = std::atoi(exponentString.c_str());
+
+	return number * exp10(exponent);
+}
+
+//TODO: move functionality to separate cpp file(s) so StringTools isn't dependent
+//#include "Rectangle.h"//TODO: move functionality to separate cpp file so StringTools isn't dependent
+#include "IntCoord.h"//TODO: move functionality to separate cpp file so StringTools isn't dependent
+//#include "GridCoord.h"//TODO: move functionality to separate cpp file so StringTools isn't dependent

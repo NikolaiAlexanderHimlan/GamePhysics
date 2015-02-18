@@ -244,6 +244,38 @@ namespace nah
 		}
 #pragma endregion
 
+		/// <summary> Splits a string into 2 parts and assigns them to the outputs. </summary>
+		/// <param name="outLeft"> Output of the left side of the split. </param>
+		/// <param name="outRight"> Output of the right side of the split. </param>
+		/// <param name="dropSplit"> bool is valid.
+		/// <para> 0(false) = split character is put out on the right output. </para>
+		/// <para> 1(true) = split character is not included in either output. </para>
+		/// <para> -1 = split character is put on the left output. </para>
+		/// </param>
+		static inline void splitString(string* outLeft, string* outRight, const string& source, int splitIndex, int dropSplit = true)
+		{
+			//TODO: more efficient method than substring?
+			*outLeft = substring(source, 0, (int)splitIndex, true, dropSplit <= -1);//include the split character in outLeft if dropSplit is -1
+			*outRight = substring(source, (int)splitIndex, (int)source.length(), (dropSplit <= -1) ? false : !dropSplit, true);//don't include the split character if dropSplit is -1 or 1
+		}
+		/// <summary> Splits a string into 2 parts and assigns them to the outputs. </summary>
+		/// <param name="outLeft"> Output of the left side of the split. </param>
+		/// <param name="outRight"> Output of the right side of the split. </param>
+		/// <param name="dropSplit"> bool is valid.
+		/// <para> 0(false) = split character is put out on the right output. </para>
+		/// <para> 1(true) = split character is not included in either output. </para>
+		/// <para> -1 = split character is put on the left output. </para>
+		/// </param>
+		static inline void splitString(string* outLeft, string* outRight, const string& source, char splitAt, int dropSplit = true)
+		{
+			int splitIndex = (int)source.find_first_of(splitAt);
+			if (splitIndex > 0)//valid split
+				splitString(outLeft, outRight, source, splitIndex, dropSplit);
+			else if (splitIndex < 0) //split char doesn't exist, put source into left
+				*outLeft = source;
+			else //split index is the first character, put source into right
+				*outRight = source;
+		};
 		//************************************
 		// Method:    trim
 		// FullName:  nah::StringTools::trim
@@ -281,7 +313,7 @@ namespace nah
 		/// <param name="trimStart"> Should the start of the string have whitespace removed? </param>
 		/// <param name="trimEnd"> Should the end of the string have whitespace removed? </param>
 		/// <returns></returns>
-		static inline string trimWhitespace(string source, bool trimStart = true, bool trimEnd = true)
+		static string trimWhitespace( const string& source, bool trimStart = true, bool trimEnd = true)
 		{
 			if(!trimStart && !trimEnd)//stop here if there isn't any trimming to do
 				return source;
@@ -292,15 +324,15 @@ namespace nah
 					startIndex= source.find_first_not_of(' ');
 			if(trimEnd) if(source.back() == ' ') //make sure there is whitespace on the end first
 					endIndex= source.find_last_not_of(' ');
-			source= substring( source, startIndex,endIndex, true,true );
+			std::string trimmed = substring( source, startIndex, endIndex, true, true );
 
 			/*alternate way, would have a problem if there isn't a space at the start/end
 			if(trimStart || trimEnd)
-				source = substring(source,
+				trimmed = substring(source,
 					trimStart ?(int)source.find_first_not_of(' '):-1, 
 					trimEnd ?(int)source.find_last_not_of(' '):-1, true,true);
 			*/
-			return source;
+			return trimmed;
 		}
 		//************************************
 		// Method:    compressWhitespace
@@ -346,8 +378,12 @@ namespace nah
 		}
 #pragma endregion
 
-//TODO: move to relevant classes, better for them to depend on a system class (std::string) than for my StringTools to depend on my custom datatypes
 #pragma region Datatype parsing
+		static double parseSciNotation(const string& source);
+
+		//Custom Types
+		//TODO: move to relevant classes, better for them to depend on a system class (std::string) than for my StringTools to depend on my custom datatypes
+		//TODO: turn each of these into a string operator function/constructor (make sure it has to be an explicit conversion)
 		static Rectangle parseRectangle( string source, char separator = ',' );//TODO: multi-char separator (ex. ", ")
 		static IntCoord parseIntCoord( string source, char separator = ',' );//TODO: multi-char separator (ex. ", ")
 		static GridCoord parseGridCoord( string source, char separator = ',' );//TODO: multi-char separator (ex. ", ")
