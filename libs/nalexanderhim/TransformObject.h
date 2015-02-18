@@ -16,11 +16,14 @@ class TransformObject
 	//TODO: make class pure virtual
 	//TODO: pull transform (position) change check down from PhysicsObject
 private:
+	const TransformObject* mpTargetTransform = nullptr;//look at
+	const TransformObject* mpParentTransform = nullptr;//move with
+
 	Transform mLocalTransform;//The local transform
 
 public:
 	//Getters
-	inline Transform getLocalTransform() const { return mLocalTransform;	};
+	inline const Transform& getLocalTransform() const { return mLocalTransform;	};
 	virtual inline Transform& getLocalTransformRef() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
 
 	//Setters
@@ -85,5 +88,24 @@ public:
 		//Calculate new local scale value
 		getLocalTransformRef().scale /= mpParentTransform->getWorldTransform().scale;
 	}
+
+	//Actions
+	inline void setTarget(const TransformObject* lookAt)//look at this transform and keep looking at it until the lock is released
+	{
+		mpTargetTransform = lookAt;
+		setWorldRotation(getWorldTransform().getLookAtRotation(lookAt->getWorldTransform().position));
+	};
+	inline void clearTarget(void) { setTarget(nullptr);	};
+	inline void setParent(const TransformObject* attachTo)//attach to this transform, local transform is now relative to this
+	{
+		mpParentTransform = attachTo;
+		setWorldTransform(getLocalTransform());//local now stores the value relative to the parent
+	};
+	inline void clearParent(void)
+	{
+		Transform oldLocal = getWorldTransform();//save the current world transform
+		setParent(nullptr);
+		setLocalTransform(oldLocal);//restore the world transform into the local transform
+	};
 };
 #endif

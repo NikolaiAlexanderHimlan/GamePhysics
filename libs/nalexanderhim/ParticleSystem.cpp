@@ -11,6 +11,7 @@ I certify that this assignment is entirely my own work.
 
 #include "Particle.h"
 #include "ParticleForceGenerator.h"
+#include "PhysicsGlobals.h"
 
 ParticleSystem* gpParticleSystem = NULL;
 

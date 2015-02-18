@@ -122,6 +122,7 @@ public:
 	void moveForward(float amount);
 	void moveRight(float amount);
 	void moveUp(float amount);
+	inline void lookAt(const Transform& worldTransform) { rotation = getLookAtRotation(worldTransform.position);	};//look at the transform once
 
 };
 

@@ -12,6 +12,7 @@
 #include <DebugTools.h>
 #include <ParticleSystem.h>
 #include <Timer.h>
+#include <CountedArray.h>
 #include <DataSystem.h>
 #include <StringTools.h>
 
@@ -42,8 +43,12 @@ doubleFactor gcSimulationScale;
 
 CameraView* mainView;
 
-Planet* model1;
-Planet* model2;
+// Planet* model1;
+// Planet* model2;
+
+const Planet* targetPlanet;//for view/debugging
+//use PlanetDataKey::PlanetNames for indexes
+CountedArray<Planet*> planetList = CountedArray<Planet*>(PlanetDataKey::NUM_PLANETS);
 
 void ChangeSize(int w, int h)
 {
@@ -57,12 +62,22 @@ void ChangeSize(int w, int h)
 	mainView->viewFrustum->SetPerspective(fovCalc, aspectRatio, 1.0f, 1000.0f);
 }
 
+void setTargetPlanet(PlanetDataKey::PlanetName newTarget)
+{
+	targetPlanet = planetList[newTarget];
+	mainView->setTarget(targetPlanet);
+	mainView->setParent(targetPlanet);
+}
+
+//assign model batches to models here
 void setupModels()
 {
 }
 void setupWorld()
 {
 	{//view setup
+		mainView->clearParent();
+		mainView->clearTarget();
 		M3DVector3f viewPosition;
 		M3DVector3f rotateView;
 		viewPosition[0] = 0;//left/right
@@ -75,48 +90,31 @@ void setupWorld()
 		mainView->setWorldRotation(rotateView);
 	}
 
-	{//Model1 setup
-		//model1 position
-		M3DVector3f model1Position;
-		model1Position[0] = 0;//X, left/right
-		model1Position[1] = 0;//Y, up/down
-		model1Position[2] = -5.0f;//Z, in/out
-		model1->getLocalTransformRef().setPosition(model1Position);
-
-		//model1 rotation
-		M3DVector3f rotateModel1;
-		rotateModel1[0] = 0;
-		rotateModel1[1] = 0;
-		rotateModel1[2] = 0;
-		model1->getLocalTransformRef().setRotation(rotateModel1);
-	}
-
-	{//Model2 setup
-		//model2 position
-		M3DVector3f model2Position;
-		model2Position[0] = 0;//X, left/right
-		model2Position[1] = 0.5f;//Y, up/down
-		model2Position[2] = -6.0f;//Z, in/out
-		model2->getLocalTransformRef().setPosition(model2Position);
-
-		//model2 rotation
-		M3DVector3f rotateModel2;
-		rotateModel2[0] = 0;
-		rotateModel2[1] = 0;
-		rotateModel2[2] = 0;
-		model2->getLocalTransformRef().setRotation(rotateModel2);
-
-		//model2 scale
-		model2->getLocalTransformRef().setScale(2.0f);
+	for each (Planet* var in planetList)
+	{
+		var->clearParent();
+		var->clearTarget();
+		var->resetOrbit();
 	}
 }
 void setupPhysics()
 {
-	model2->setVelocity(Vector3f(1.0f, 0.0f, 0.0f));
 	getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
 
-	PlanetaryGravity* sunGravity = model1->GenerateGravity();
-	getGlobalParticleSystem()->RegisterParticleForce(sunGravity, model2);
+	//set initial velocities
+
+	//create and set force registrations
+	PlanetaryGravity* tempGravity;
+	for (size_t grav = 0; grav < planetList.count(); grav++)
+	{
+		tempGravity = planetList[grav]->GenerateGravity();
+		for (size_t p = 0; p < planetList.count(); p++)
+		{
+			//if (grav != p) getGlobalParticleSystem()->RegisterParticleForce(tempGravity, planetList[p]);
+			//if (grav == 0) getGlobalParticleSystem()->RegisterParticleForce(tempGravity, planetList[p]);//assign sun gravity
+		}
+	}
+}
 void setupUI()
 {
 	//setup and initialize GLUI
@@ -170,8 +168,11 @@ void RenderScene(void)
 
 	//TODO: Depth Buffer
 	//Draw all models
-	model1->Draw(mainView, shaderManager, mvpMatrix);
-	model2->Draw(mainView, shaderManager, mvpMatrix);
+	//Draw planets
+	for each (Planet* var in planetList)
+	{
+		var->Draw(mainView, shaderManager, mvpMatrix);
+	}
 
 	if (gDebugGraphics)
 	{
@@ -183,10 +184,15 @@ void RenderScene(void)
 		, text.c_str());
 		//*HACK: font doesn't load, placeholder
 		std::cout << "Camera: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false) << std::endl;
+		std::cout << "Target: \n" + targetPlanet->getLocalTransform().toStringMultiLine() << std::endl;
 	//*/
 	}
 	if (gDebugPhysics)
 	{
+		std::cout << "Vel: " << targetPlanet->getVelocity().toString()
+			<< " | SimPos: " << targetPlanet->Simulation_getPosition().toString()
+			<< " | GrphPos: " << targetPlanet->getWorldTransform().position.toString()
+			<< std::endl;
 	}
 
 	glutSwapBuffers();
@@ -242,52 +248,19 @@ void Keys(unsigned char key, int x, int y)
 		mainView->getLocalTransformRef().rotateRollRight(viewSpinSpeed);
 	}
 
-	//Move model2
-	float model2Speed = 1;
-	if((key == 'L')||(key == 'l'))
+	//Set view/debug target
+	for (int i = 0; i < PlanetDataKey::NUM_PLANETS; i++)
 	{
-		//model position X up
-		model2->getLocalTransformRef().position.x += model2Speed;
-	}
-	if((key == 'J')||(key == 'j'))//model position X down
-	{
-		model2->getLocalTransformRef().position.x -= model2Speed;
-	}
-	if((key == 'I')||(key == 'i'))//model position Y up
-	{
-		model2->getLocalTransformRef().position.y += model2Speed;
-	}
-	if((key == 'K')||(key == 'k'))//model position Y down
-	{
-		model2->getLocalTransformRef().position.y -= model2Speed;
-	}
-	if((key == 'O')||(key == 'o'))//model position Z up
-	{
-		model2->getLocalTransformRef().position.z += model2Speed;
-	}
-	if((key == 'U')||(key == 'u'))
-	{
-		//model position Z down
-		model2->getLocalTransformRef().position.z -= model2Speed;
-	}
+		//HACK: allow unlocking camera
+		mainView->clearTarget();
+		mainView->clearParent();
 
-	//Rotate models
-	float modelSpinSpeed = 10.0f;
-	if ((key == 'V')||(key == 'v'))
-	{
-		model1->getLocalTransformRef().rotateTurnRight(-modelSpinSpeed);
-	}
-	if ((key == 'C')||(key=='c'))
-	{
-		model1->getLocalTransformRef().rotateTurnRight(modelSpinSpeed);
-	}
-	if ((key == 'Z') || (key == 'z'))
-	{
-		model2->getLocalTransformRef().rotateTurnRight(-modelSpinSpeed);
-	}
-	if ((key == 'X') || (key == 'x'))
-	{
-		model2->getLocalTransformRef().rotateTurnRight(modelSpinSpeed);
+		//check if one of the number keys was pressed, set that planet as the target
+		if (key == std::to_string(i)[0])
+		{
+			setTargetPlanet((PlanetDataKey::PlanetName)i);
+			break;
+		}
 	}
 }
 
@@ -322,16 +295,28 @@ void create()
 	ParticleSystem::InstantiateGlobal();
 	
 	mainView = new CameraView();
-	model1 = new Planet(1.0f);
-	model1->manage();
-	model2 = new Planet(1.0f);
-	model2->manage();
+
 	//load planet data
 	gpDataReader->readIniFile(DATA_DIR + PlanetDataKey::DATAFILE_NAME);
 
 	gcSimulationScale.setFactor(nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::SEC_SIM, PlanetDataKey::VAL_SCALEFACT)));
 
+	for (int i = 0; i < PlanetDataKey::NUM_PLANETS; i++)
+	{
+		PlanetDataKey::PlanetName iP = (PlanetDataKey::PlanetName)i;
+		planetList[i] = new Planet(
+			(float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_MASS))
+			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_SIZE))
+			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_DIST))
+			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_VEL))
+			, PlanetDataKey::getPlanetNameString(iP)
+			);
+		planetList[i]->manage();
+	}
+
 	gpDataReader->clearIniData();
+
+	targetPlanet = planetList[0];
 }
 void Update()
 {
@@ -351,12 +336,12 @@ void cleanup()
 	delete mainView;
 	mainView = NULL;
 
-	model1->unmanage();
-	delete model1;
-	model1 = NULL;
-	model2->unmanage();
-	delete model2;
-	model2 = NULL;
+	for each (Planet* var in planetList)
+	{
+		var->unmanage();
+		delete var;
+		var = nullptr;
+	}
 
 	ParticleSystem::ClearGlobal();
 	DataSystem::clearGlobal();
