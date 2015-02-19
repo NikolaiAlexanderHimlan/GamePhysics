@@ -11,6 +11,7 @@ I certify that this assignment is entirely my own work.
 #include "M3DTypes.h"
 
 #include "ccmccooeyWrapper.h"
+#include "Rotation.h"
 #include "RotationMath.h"
 
 class Transform
@@ -19,6 +20,7 @@ public:
 	Vector3f position;
 	//TODO: replace rotation with a quaternion
 	Vector3f rotation;//degrees
+	//Rotation rotation;//degrees
 	//CONSIDER: replace with Scale object which is essentially a Vector3fFactor to make division cheaper
 	Vector3f scale;
 
@@ -80,8 +82,16 @@ public:
 	inline void setYawRad(float radians);
 	inline void setRollRad(float radians);
 
+	//Modifiers
+	float addPitchDeg(float degrees);
+	float addYawDeg(float degrees);
+	float addRoll(float degrees);
+	float addPitchRad(float radians);
+	float addYawRad(float radians);
+	float addRollRad(float radians);
+
 	//Calculations
-	Vector3f getLookAtRotation(const Vector3f lookHere) const;//calculates the necessary rotation in order to look at a given location from this location
+	inline Vector3f getLookAtRotation(const Vector3f lookHere) const { return Vector3f::getLookAtAngle(position, lookHere);	}; //calculates the necessary rotation in order to look at a given location from this location
 	void getRenderMatrix(M3DMatrix44f& outResult) const;
 
 	//Actions
@@ -96,7 +106,7 @@ public:
 	inline void rotateTurnRight(float degrees) { return rotateYaw(degrees);	};
 	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
 
-	inline void lookAt(const Transform& worldTransform) { rotation = getLookAtRotation(worldTransform.position);	};//look at the transform once
+	inline void lookAt(const Transform& worldTransform) { rotation = getLookAtRotation(worldTransform.position).asRad();	};//look at the transform once
 
 	//Type Conversions
 	std::string toString(bool pos = true, bool rot = true, bool scl = true) const;

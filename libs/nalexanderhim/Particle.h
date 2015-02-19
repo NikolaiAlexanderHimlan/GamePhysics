@@ -81,11 +81,15 @@ protected:
 		//NOTE: expensive pow calculation, details (Ian Millington, pg. 57)
 		//Update Velocity
 
+		//TODO: decide if velocity should be updated in Physics(elapsed time) or Force(duration)
+		//TODO: CONSIDER: should the acceleration be applied when adding force, which would allow forces to be applied over a separate time
+		//NOTE: damping would stay here (unless moved to a damping force generator) and clear forces and mAcceleration wouldn't be necessary (unless I wanted to save up the total force over a frame or use acceleration in the velocity calculation)
 		//Acceleration
 		mVelocity += (mAcceleration*(float)elapsedSeconds);
 
 		//Damping
-		mVelocity *= (float)pow(mDamping, elapsedSeconds);
+		//mVelocity *= (float)pow(mDamping, elapsedSeconds);
+		//HACK: damping disabled in space
 
 		//Clear Forces? (need to reapply force every frame)
 		clearForce();
@@ -130,27 +134,28 @@ public:
 	{
 		UpdatePosition(elapsedSeconds);
 
-		//TODO: decide if velocity should be updated in Physics(elapsed time) or Force(duration)
 		UpdateVelocity(elapsedSeconds);
 
 		//Update Physics
 	}
 
 	//Getters
-	inline Vector3f Simulation_getPosition() const { return mPosition;	};
-	inline float getMass() const { return mMass;	};//TODO: Handle infinite mass
-	inline Vector3f getVelocity() const { return mVelocity;	};
-	Vector3f getMomentum() const;
+	inline const Vector3f& Simulation_getPosition() const { return mPosition;	};
+	inline const float& getMass() const { return mMass;	};//TODO: Handle infinite mass
+	inline const Vector3f& getVelocity() const { return mVelocity;	};
 
 	//Setters
 	inline void Simulation_setPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
-	void setMomentum(const Vector3f& newMomentum);
 	
 	//Properties
 	inline bool InfiniteMass() const { return mMass <= 0.0f;	};
 	inline float getSpeed() const { return mVelocity.length();	};
+	Vector3f getMomentum() const;
 	inline Vector3f getForce() const { return mAcceleration * getMass();	};
+
+	//Manipulators
+	void setMomentum(const Vector3f& newMomentum);
 
 	//Actions
 	inline bool AddForce(const Vector3f& forceVector)

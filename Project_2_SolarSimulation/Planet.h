@@ -16,13 +16,11 @@ class Planet :
 	public PhysicsObject
 {
 private:
-	const double PLANETARY_TIMESCALE = 
-		60 //seconds per minute
-		* 60 //minutes per hour
-		* 24 //hours per day
-		;//seconds in a day
-	const int PLANET_SEGMENTS = 8;
+	static const int PLANET_SEGMENTS;
+	static const double PLANETARY_TIMESCALE;//seconds in a day
 	std::string mPlanetName;
+	float mRotationSpeed = 0.0f;
+
 	PlanetaryGravity* mpPlanetGravity = nullptr;
 
 	//initial values
@@ -56,7 +54,6 @@ public:
 		ClearPlanetGravity();
 	};
 
-	inline virtual void UpdatePhysics(Time elapsedSeconds) { __super::UpdatePhysics(elapsedSeconds*PLANETARY_TIMESCALE);	};//one second real time = one day for a planet
 
 	//Getters
 	inline const std::string& getName() const { return mPlanetName;	};

@@ -17,7 +17,9 @@ Vector3f PlanetaryGravity::GravityPosition() const
 
 void PlanetaryGravity::CalculateGravity(const Particle* gravityOn)
 {
-	float gravDistanceSqrd = Vector3f::DistanceSquared(mpGravitySource->Simulation_getPosition(), gravityOn->Simulation_getPosition());
-	float gravMagnitude = (float)(G_CONST*(mpGravitySource->getMass() * gravityOn->getMass() / gravDistanceSqrd));
+	double gravDistanceSqrd = Vector3f::DistanceSquared(mpGravitySource->Simulation_getPosition(), gravityOn->Simulation_getPosition());
+	double massive = (double)mpGravitySource->getMass() * (double)gravityOn->getMass();
+	double massDist = massive / gravDistanceSqrd;
+	double gravMagnitude = (G_CONST*massDist);
 	mGravity = Vector3f::Distancepoint(gravityOn->Simulation_getPosition(), mpGravitySource->Simulation_getPosition(), gravMagnitude);
 }

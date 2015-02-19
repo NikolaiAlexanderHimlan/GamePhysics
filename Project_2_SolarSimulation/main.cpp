@@ -37,9 +37,11 @@ GLboolean		bDoSomething;
 M3DMatrix44f	mvpMatrix;
 GLint			width = 800, height = 600;
 
-int getWindowWidth() { return width;	};
-int getWindowHeight() { return height;	};
+inline int getWindowWidth()
+{ return width;	};
 //{ return glutGet((GLenum)GLUT_WINDOW_WIDTH); };
+inline int getWindowHeight()
+{ return height;	};
 //{ return glutGet((GLenum)GLUT_WINDOW_HEIGHT); };
 
 bool gDebugGraphics = true;
@@ -57,7 +59,7 @@ float viewDefaultDistance = 15.0f;//starting distance from any planet
 
 Planet* targetPlanet;//for view/debugging
 //use PlanetDataKey::PlanetNames for indexes
-CountedArray<Planet*> planetList = CountedArray<Planet*>(PlanetDataKey::NUM_PLANETS+1);
+CountedArray<Planet*> planetList = CountedArray<Planet*>(PlanetDataKey::NUM_PLANETS);
 
 void ChangeSize(int w, int h)
 {
@@ -74,20 +76,11 @@ void ChangeSize(int w, int h)
 void setTargetPlanet(PlanetDataKey::PlanetName newTarget)
 {
 	targetPlanet = planetList[newTarget];
-		/*
-	mainView->setWorldPosition(
-		Vector3f::Distancepoint(
-		targetPlanet->getWorldTransform().position, 
-		mainView->getWorldTransform().position, 
-		viewDefaultDistance + targetPlanet->getRadius())
-		);
-		//*/
+
 	mainView->setParent(targetPlanet);
-	mainView->setTarget(targetPlanet);
-
 	mainView->refLocalTransform().position = Vector3f(0.0f, 1.0f * viewDefaultDistance, 0.5f * viewDefaultDistance);
-	mainView->refLocalTransform().rotation = Vector3f(-65.0f, 0.0f, 0.0f);//HACK: placeholder until setTarget works
-
+	//mainView->refLocalTransform().rotation = Vector3f(-65.0f, 0.0f, 0.0f);//HACK: placeholder until setTarget works
+	mainView->setTarget(targetPlanet);
 }
 
 //assign model batches to models here
@@ -111,11 +104,11 @@ void setupWorld()
 		mainView->setWorldRotation(rotateView);
 	}
 
-	for each (Planet* var in planetList)
+	for each (Planet* p in planetList)
 	{
-		var->clearParent();
-		var->clearTarget();
-		var->resetOrbit();
+		p->clearParent();
+		p->clearTarget();
+		p->resetOrbit();
 	}
 }
 void setupPhysics()
@@ -131,8 +124,9 @@ void setupPhysics()
 		tempGravity = planetList[grav]->GenerateGravity();
 		for (size_t p = 0; p < planetList.count(); p++)
 		{
-			//if (grav != p) getGlobalParticleSystem()->RegisterParticleForce(tempGravity, planetList[p]);
-			//if (grav == 0) getGlobalParticleSystem()->RegisterParticleForce(tempGravity, planetList[p]);//assign sun gravity
+			if (grav == 0)//assign only sun gravity
+			if (grav != p)
+				getGlobalParticleSystem()->RegisterParticleForce(tempGravity, planetList[p]);
 		}
 	}
 }
@@ -151,8 +145,9 @@ void setupUI()
 
 		//Debug output
 		holdPanel = new GLUI_Panel(gluiWindow, "Debug Out");
-		camPosLocl = new GLUI_StaticText(holdPanel, "Camera_L");
-		camPosWrld = new GLUI_StaticText(holdPanel, "Camera_W");
+		std::string tempText = "__________________________________________;";
+		camPosLocl = new GLUI_StaticText(holdPanel, ("Camera_L: " + tempText).c_str());
+		camPosWrld = new GLUI_StaticText(holdPanel, ("Camera_W: " + tempText).c_str());
 		targtPos = new GLUI_TextBox(holdPanel, "Target_");
 		
 		gluiWindow->set_main_gfx_window(glutWindowID);
@@ -178,9 +173,9 @@ void myInit()
 
 	setupUI();
 
-	setTargetPlanet(PlanetDataKey::NUM_PLANETS);
-	mainView->clearParent();
-	mainView->clearTarget();
+	setTargetPlanet((PlanetDataKey::PlanetName)0);
+	//mainView->clearParent();
+	//mainView->clearTarget();
 }
 void ResetView()
 {
@@ -194,13 +189,14 @@ void RenderScene(void)
 	GLfloat vColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
 
 	//TODO: Depth Buffer
 	//Draw all models
 	//Draw planets
-	for each (Planet* var in planetList)
+	for each (Planet* p in planetList)
 	{
-		var->Draw(mainView, shaderManager, mvpMatrix);
+		p->Draw(mainView, shaderManager, mvpMatrix);
 	}
 
 	if (gDebugPhysics || gDebugGraphics)
@@ -280,6 +276,7 @@ void Keys(unsigned char key, int x, int y)
 		//roll right
 		mainView->refLocalTransform().rotateRollRight(viewSpinSpeed);
 	}
+
 	//Move target planet
 	float model2Speed = 1;
 	if ((key == 'L') || (key == 'l'))
@@ -307,13 +304,17 @@ void Keys(unsigned char key, int x, int y)
 		targetPlanet->refLocalTransform().position.z -= model2Speed;//model position Z down
 	}
 
+	//View controls
+	if ((key == 'G') || (key == 'g'))
+	{
+		//unlock the camera from the target
+		mainView->clearTarget();
+		mainView->clearParent();
+	}
+
 	//Set view/debug target
 	for (int i = 0; i < PlanetDataKey::NUM_PLANETS; i++)
 	{
-		//HACK: allow unlocking camera
-		mainView->clearTarget();
-		mainView->clearParent();
-
 		//check if one of the number keys was pressed, set that planet as the target
 		if (key == std::to_string(i)[0])
 		{
@@ -374,7 +375,7 @@ void create()
 		PlanetDataKey::PlanetName iP = (PlanetDataKey::PlanetName)i;
 		planetList[i] = new Planet(
 			(float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_MASS))
-			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_SIZE))
+			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(PlanetDataKey::SUN), PlanetDataKey::VAL_SIZE))
 			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_DIST))
 			, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(iP), PlanetDataKey::VAL_VEL))
 			, PlanetDataKey::getPlanetNameString(iP)
@@ -382,7 +383,7 @@ void create()
 		planetList[i]->manage();
 	}
 
-	//extra debugging planet
+	/*extra debugging planet
 	planetList[PlanetDataKey::NUM_PLANETS] = new Planet(
 		(float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(PlanetDataKey::EARTH), PlanetDataKey::VAL_MASS))
 		, (float)nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(PlanetDataKey::getPlanetNameString(PlanetDataKey::EARTH), PlanetDataKey::VAL_SIZE))
@@ -391,9 +392,9 @@ void create()
 		, "Le Bugger"
 		);
 	planetList[PlanetDataKey::NUM_PLANETS]->manage();
+	//*/
 
 	gpDataReader->clearIniData();
-
 }
 void Update()
 {

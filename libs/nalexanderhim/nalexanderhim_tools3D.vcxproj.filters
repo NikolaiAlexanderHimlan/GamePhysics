@@ -150,6 +150,9 @@
     <ClCompile Include="ParticleGravity.cpp">
       <Filter>Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Vector3f_nah.cpp">
+      <Filter>Source Files\Space3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="M3DTypes.h">
       <Filter>Header Files\Utilities\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotation.h">
+      <Filter>Header Files\Space3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

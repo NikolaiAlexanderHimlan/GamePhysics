@@ -17,6 +17,8 @@
 #include <string.h>
 
 //static vectors
+const float Vector3f::DEFAULT_VAL = 0.0f;
+const Vector3f Vector3f::defaultVect = Vector3f(DV, DV, DV);
 const Vector3f Vector3f::zero = Vector3f(0.0f, 0.0f, 0.0f);
 const Vector3f Vector3f::one = Vector3f(1.0f, 1.0f, 1.0f);
 const Vector3f Vector3f::unitX = Vector3f(1.0f, 0.0f, 0.0f);
@@ -86,14 +88,6 @@ Vector3f& Vector3f::operator=( const Vector3f& rhs )
 	x = rhs.x;
 	y = rhs.y;
 	z = rhs.z;
-	return *this;
-}
-
-Vector3f& Vector3f::operator=( const float& rhs )
-{
-	x = rhs;
-	y = rhs;
-	z = rhs;
 	return *this;
 }
 

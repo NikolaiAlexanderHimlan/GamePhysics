@@ -9,6 +9,14 @@ I certify that this assignment is entirely my own work.
 #include "PlanetaryGravity.h"
 #include <ParticleSystem.h>
 
+const int Planet::PLANET_SEGMENTS = 8;
+const double Planet::PLANETARY_TIMESCALE =
+	60 //seconds per minute
+	* 60 //minutes per hour
+	* 24 //hours per day
+	//* 30 //days per month
+	;
+
 PlanetaryGravity* Planet::GenerateGravity()
 {
 	if (mpPlanetGravity != nullptr) return mpPlanetGravity;

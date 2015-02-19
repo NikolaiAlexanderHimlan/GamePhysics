@@ -154,6 +154,7 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 
 		nah::Color colorVerts[numVerts];
 		{
+			/*
 			colorVerts[0] = nah::Color::Red;
 			colorVerts[1] = nah::Color::Aquamarine;
 			colorVerts[2] = nah::Color::Blue;
@@ -162,6 +163,11 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 			colorVerts[5] = nah::Color::DarkRed;
 			colorVerts[6] = nah::Color::Green;
 			colorVerts[7] = nah::Color::Orange;
+			//*/
+			for (int i = 0; i < numVerts; i++)
+			{
+				colorVerts[i] = nah::Color::RandomColor();
+			}
 		}
 		counterCounter = 0;
 		for (int i = 0; i < numIndices; i++)

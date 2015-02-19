@@ -19,8 +19,11 @@
 #define Vector2f(x,y) Vector3f(x,y,0.0f)
 //#define Vector2f(allValues) Vector3f(allValues)
 
+class Rotation;
+
 class Vector3f
 {
+#define DV DEFAULT_VAL
 public:
 	float x;
 	float y;
@@ -44,7 +47,6 @@ public:
 
 	//operators overloads
 	Vector3f& operator = ( const Vector3f& rhs );
-	Vector3f& operator = ( const float& rhs );//[NAH]
 	Vector3f& operator += ( const Vector3f& rhs );
 	Vector3f& operator -= ( const Vector3f& rhs );
 	Vector3f& operator *= ( const Vector3f& rhs );
@@ -92,15 +94,15 @@ public:
 	static float DistanceSquared(const Vector3f &first, const Vector3f &second);
 
 	static inline Vector3f Difference(const Vector3f &first, const Vector3f &second) { return second - first;	};//[NAH] //gets a vector representing the space between 2 other vectors
-	static inline Vector3f NormalTo(const Vector3f &first, const Vector3f &second) { return Difference(first, second).normalized(); }; //gets a unit vector in the direction from first to second
-	static inline Vector3f Normalpoint(const Vector3f &first, const Vector3f &second) { return first + NormalTo(first, second);	};//[NAH] //gets a unit vector pointing from first to second
+	static inline Vector3f DirectionTo(const Vector3f &from, const Vector3f &to) { return Difference(from, to).normalized(); };//[NAH] //gets a unit vector representing the direction from first to second
+	static inline Vector3f DirectionFrom(const Vector3f &from, const Vector3f &to) { return from + DirectionTo(from, to);	};//[NAH] //gets a unit vector pointing from first to second
 	/// <summary>Gets the point a given distance between 2 vectors. </summary>
 	/// <param name="first"></param>
 	/// <param name="second"></param>
 	/// <param name="distance"> actual distance value, will move this amount from first to second. </param>
 	/// <returns>Location of the point.</returns>
-	static inline Vector3f Distancepoint(const Vector3f &first, const Vector3f &second, float distance) { return Normalpoint(first, second) * distance; };//[NAH]
-	
+	static inline Vector3f Distancepoint(const Vector3f &first, const Vector3f &second, float distance) { return first + DirectionTo(first, second) * distance; };//[NAH]
+	/// <param name="value"> value between 0 and 1 </param>
 	static inline Vector3f Betweenpoint(const Vector3f &first, const Vector3f &second, float value) { return first + (Difference(first, second) * value); };//[NAH] //value between 0 and 1
 	static inline Vector3f Midpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.5f); };
 	static inline Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.25f); };
@@ -108,10 +110,15 @@ public:
 	
 	static Vector3f Reciprical(const Vector3f &vector);
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
+	static Vector3f getLookAtAngle(const Vector3f& eye, const Vector3f& lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f *vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
 
+	Vector3f asRad() const;
+
 public:
+	static const float DEFAULT_VAL;
 	//constant vectors
+	const static Vector3f defaultVect;
 	const static Vector3f zero;
 	const static Vector3f one;
 	const static Vector3f unitX;

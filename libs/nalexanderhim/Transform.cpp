@@ -6,6 +6,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "Transform.h"
+#include "DebugTools.h"
 
 #define _USE_MATH_DEFINES // for C++
 #include <math.h>
@@ -43,9 +44,12 @@ Vector3f Transform::getForwardVector(char axis) const
 		forwardZ = sin(getYawRad()) * cos(getPitchRad());
 	//^above math is WRONG!!!*/
 
+	//* My sourced method
 	forwardX = sin(getYawRad());
 	forwardY = -sin(getPitchRad());
 	forwardZ = cos(getYawRad());
+	//*/
+
 
 	return -Vector3f(forwardX, forwardY, forwardZ).normalized();
 }
@@ -53,8 +57,9 @@ Vector3f Transform::getUpVector(char axis) const
 {
 	float upX = 0.0f, upY = 0.0f, upZ = 0.0f;
 
+	//WARNING: WILL NOT WORK WITH ROLL!
 	Vector3f forVect = getForwardVector();
-	upX = forVect.x;
+	upX = 0.0f;//no x-axis without roll// forVect.x;
 	upY = -forVect.z;
 	upZ = forVect.y;
 
@@ -81,9 +86,10 @@ Vector3f Transform::getRightVector(char axis) const
 	rightZ = cos(getYawRad() - M_PI_2);
 	//doesn't work quite right*/
 
+	//WARNING: WILL NOT WORK WITH ROLL!
 	Vector3f forVect = getForwardVector();
 	rightX = forVect.z;
-	rightY = forVect.y;
+	rightY = 0.0f;//no y-axis without roll// forVect.y;
 	rightZ = -forVect.x;
 	
 	return -Vector3f(rightX, rightY, rightZ).normalized();
@@ -100,7 +106,7 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dLoadIdentity44(outResult);
 	
 	//Translation
-	m3dTranslationMatrix44(translate, position.x, position.y, -position.z);
+	m3dTranslationMatrix44(translate, position.x, position.y, position.z);
 
 	//Rotation
 	//m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
@@ -138,7 +144,7 @@ void Transform::moveForward(float amount)
 
 	//Vector3f::EulerForward(getPitchRad(), getYawRad(), getRollRad());
 
-	position -= getForwardVector() * amount;
+	position += getForwardVector() * amount;
 }
 void Transform::moveRight(float amount)
 {
@@ -200,11 +206,4 @@ std::string Transform::toStringMultiLine(bool pos /*= true*/, bool rot /*= true*
 	if (scl)
 		textline += scale.toString() + "\n";
 	return textline;
-}
-
-Vector3f Transform::getLookAtRotation(const Vector3f lookHere) const
-{
-	Vector3f lookRotation;
-	lookRotation = rotation;
-	return lookRotation;
 }
