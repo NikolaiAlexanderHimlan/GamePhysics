@@ -54,6 +54,10 @@ public:
 		ClearPlanetGravity();
 	};
 
+	inline virtual void UpdatePhysics(Time elapsedSeconds) {
+		//refLocalTransform().rotation.y += mRotationSpeed;
+		__super::UpdatePhysics(elapsedSeconds*PLANETARY_TIMESCALE);
+	};//one second real time = one day for a planet
 
 	//Getters
 	inline const std::string& getName() const { return mPlanetName;	};

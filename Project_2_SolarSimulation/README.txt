@@ -16,7 +16,10 @@ Controls:
 There is a GLUI window to the right when loading up the program which shows the position of the camera and the current target planet.  While there is no debug information in the simulation, and thus no need to toggle debug info on and off, the functionality to do so is available by unchecking the "Debug Ctrl" checkboxes.
 
 GitHub commit: 
-[will provide after submission]
+https://github.com/NikolaiAlexanderHimlan/GamePhysics/tree/a1c667558ba6373a73bd1f1ed4003db953baaba0
 
-Blog link:
+GitHub hash: 
+a1c667558ba6373a73bd1f1ed4003db953baaba0
+
+Blog link: 
 [none - we can discuss this]

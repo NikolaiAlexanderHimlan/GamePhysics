@@ -52,7 +52,7 @@ GLUI_Control* camPosWrld;
 GLUI_Control* targtPos;
 
 CameraView* mainView;
-float viewDefaultDistance = 15.0f;//starting distance from any planet
+float viewDefaultDistance = 55.0f;//starting distance from any planet
 
 // Planet* model1;
 // Planet* model2;
@@ -149,7 +149,7 @@ void setupUI()
 		camPosLocl = new GLUI_StaticText(holdPanel, ("Camera_L: " + tempText).c_str());
 		camPosWrld = new GLUI_StaticText(holdPanel, ("Camera_W: " + tempText).c_str());
 		targtPos = new GLUI_TextBox(holdPanel, "Target_");
-		
+
 		gluiWindow->set_main_gfx_window(glutWindowID);
 	}
 }
