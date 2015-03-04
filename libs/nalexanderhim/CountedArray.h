@@ -98,7 +98,6 @@ public:
 		mArray = new T[mCount];
 		return this;
 	}
-
 	inline T& operator[] (size_t index){ return mArray[index];	}
 
 	//Properties

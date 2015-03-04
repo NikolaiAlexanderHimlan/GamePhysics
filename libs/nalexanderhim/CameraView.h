@@ -9,10 +9,8 @@ I certify that this assignment is entirely my own work.
 #define _CAMERAVIEW_H
 
 //GLTools
-#include <math3d.h>
 class GLFrustum;
 
-#include "Transform.h"
 #include "TransformObject.h"
 
 class CameraView
