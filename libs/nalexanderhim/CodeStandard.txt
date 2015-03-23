@@ -1,6 +1,6 @@
 /*
 Author: Nikolai Alexander-Himlan
-Last Update: 2/19/15
+Last Update: 3/23/15
 */
 
 NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
@@ -31,11 +31,13 @@ functions are primarily categorized in the following ways (in order declared):
 //static
 	Static = static functions. (durr)
 
-functions start with a capital letter unless starting with one of the following words which indicates its purupose: 
+functions start with a capital letter unless starting with one of the following words as a prefix, which indicates its purupose: 
 	get = indicates a getter (or false getter property)
 	set = indicates a setter (or false setter action)
 	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class.  Located under Getters. (for now)
 	reset = variation on set (setter)
+	add = put something into a container
+	remove = take something out of a container
 	clear = set empty/null
 	has/is = bool getter/property
 

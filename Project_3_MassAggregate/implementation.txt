@@ -1,3 +1,5 @@
 *need own 3x3 and 4x4 matrix
+*have damping for both position and orientation update
 
+*Split initialization and object construction into separate files (probably expecting different classes)
 

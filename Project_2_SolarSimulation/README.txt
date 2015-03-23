@@ -12,6 +12,7 @@ Controls:
 	- Arrow keys will rotate the pitch and yaw of the camera.
 	- Pressing an number key will move the camera to the specified planet and lock the camera to that planet.
 	- Press 'G' to unlock the camera from a planet's movement.
+	- 'Home' will reset the simulation.
 
 There is a GLUI window to the right when loading up the program which shows the position of the camera and the current target planet.  While there is no debug information in the simulation, and thus no need to toggle debug info on and off, the functionality to do so is available by unchecking the "Debug Ctrl" checkboxes.
 
