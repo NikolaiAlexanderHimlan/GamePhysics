@@ -41,10 +41,10 @@ void ParticleSystem::UpdateForces(Time elapsedSeconds)
 			//TODO: delete this force registration
 
 			//i--;//repeat this index
-			continue;//don't call UpdateForce
 		}
-
+		else {//both values are valid
 		holdForceGenerator->UpdateForce(holdParticle, elapsedSeconds);
+		}
 	}
 }
 

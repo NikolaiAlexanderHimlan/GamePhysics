@@ -12,6 +12,7 @@ I certify that this assignment is entirely my own work.
 
 #include "ccmccooeyWrapper.h"
 #include "Rotation.h"
+//TODO: NOTE: Professor does not like including RotationMath here in the header
 #include "RotationMath.h"
 
 class Transform
