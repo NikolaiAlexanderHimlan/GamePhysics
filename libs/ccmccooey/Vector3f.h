@@ -47,6 +47,7 @@ public:
 
 	//operators overloads
 	Vector3f& operator = ( const Vector3f& rhs );
+	//Should do this manually// Vector3f& operator = ( const float& rhs ) { x = rhs;	y = rhs;	z = rhs;	return *this;	};//[NAH]
 	Vector3f& operator += ( const Vector3f& rhs );
 	Vector3f& operator -= ( const Vector3f& rhs );
 	Vector3f& operator *= ( const Vector3f& rhs );
