@@ -1,3 +1,6 @@
+#ifndef RotationMath_h__
+#define RotationMath_h__
+
 /*
 Author: Nikolai Alexander-Himlan
 Class: EPG-310 <Section 02>
@@ -5,7 +8,8 @@ Assignment: midterm
 Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
-#pragma once
+
+#include "PrecisionMath.h"
 
 namespace nah
 {
@@ -75,23 +79,34 @@ namespace nah
 #pragma region Conversion
 	//make these constants so the program doesn't keep having to do the same division
 	//TODO: make private/move from header to source file
-	extern const float TO_RADIAN;
-	extern const float TO_DEGREE;
+	extern const double TO_RADIAN;
+	extern const double TO_DEGREE;
 
 #define DegToRad DegreesToRadians
 	static inline float DegreesToRadians(float degrees)
 	{
 		//trace("radical",degrees * Math.PI / 180);
-		float radians = degrees * TO_RADIAN;
+		float radians = (float)(degrees * TO_RADIAN);
 		return (radians);
 	}
 #define RadToDeg RadiansToDegrees
 	static inline float RadiansToDegrees(float radians)
 	{
 		//trace("severity",radians * 180/Math.PI);
-		float degrees = radians * TO_DEGREE;
+		float degrees = (float)(radians * TO_DEGREE);
 		return (degrees);
 	}
 #pragma endregion
+
+#pragma region Precision adjusted trig
+	static inline float SinF_Precise(const float& radians) { return LimitPrecision(sin(radians));	};
+	static inline float CosF_Precise(const float& radians) { return LimitPrecision(cos(radians));	};
+	static inline float TanF_Precise(const float& radians);
+
+	static inline double SinD_Precise(const double& radians);
+	static inline double CosD_Precise(const double& radians);
+	static inline double TanD_Precise(const double& radians);
+#pragma endregion
 	//}
 }
+#endif // RotationMath_h__

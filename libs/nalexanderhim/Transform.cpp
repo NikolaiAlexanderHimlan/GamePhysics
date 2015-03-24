@@ -33,6 +33,18 @@ Vector3f Transform::getForwardVector(char axis) const
 {
 	float forwardX = 0.0f, forwardY = 0.0f, forwardZ = 0.0f;
 
+	/*Precision testing
+	float sinP = sin(getPitchRad());
+	float sinY = sin(getYawRad());
+	float sinR = sin(getRollRad());
+	float cosP = nah::CosF_Precise(getPitchRad());
+	float cosY = cos(getYawRad());
+	float cosR = cos(getRollRad());
+	float tanP = tan(getPitchRad());
+	float tanY = tan(getYawRad());
+	float tanR = tan(getRollRad());
+	//*/
+
 	//calculate each axis, unless an axis was specified, in which case only calculate that axis.
 	//HACK: calculating only specific axes prevents correct normalization
 	/*
@@ -45,13 +57,13 @@ Vector3f Transform::getForwardVector(char axis) const
 	//^above math is WRONG!!!*/
 
 	//* My sourced method
-	forwardX = sin(getYawRad());
-	forwardY = -sin(getPitchRad());
-	forwardZ = cos(getYawRad());
+	forwardX = -nah::SinF_Precise(getYawRad());
+	forwardY = nah::SinF_Precise(getPitchRad());
+	forwardZ = nah::CosF_Precise(getPitchRad()) * nah::CosF_Precise(getYawRad());
 	//*/
 
 
-	return -Vector3f(forwardX, forwardY, forwardZ).normalized();
+	return Vector3f(forwardX, forwardY, forwardZ).normalized();
 }
 Vector3f Transform::getUpVector(char axis) const
 {
@@ -92,7 +104,7 @@ Vector3f Transform::getRightVector(char axis) const
 	rightY = 0.0f;//no y-axis without roll// forVect.y;
 	rightZ = -forVect.x;
 	
-	return -Vector3f(rightX, rightY, rightZ).normalized();
+	return Vector3f(rightX, rightY, rightZ).normalized();
 }
 
 void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
@@ -106,7 +118,7 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dLoadIdentity44(outResult);
 	
 	//Translation
-	m3dTranslationMatrix44(translate, position.x, position.y, position.z);
+	m3dTranslationMatrix44(translate, position.x, position.y, -position.z);
 
 	//Rotation
 	//m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
