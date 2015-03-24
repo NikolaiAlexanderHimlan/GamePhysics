@@ -12,28 +12,22 @@ I certify that this assignment is entirely my own work.
 #include "PhysicsDefines.h"
 #include "ccmccooeyWrapper.h"
 #include "ManagedBase.h"
+#include "FloatFactor.h"
 
 //Physics Handler
 class Particle
 	: public ManagedBase
 {
 private:
-	float mMass;//Since 0 mass doesn't work, have values <=0 indicate infinite mass (no physics calculations)
-	float mcMassFactor;//DO NOT MODIFY UNLESS mMass CHANGES!
+	floatFactor mMass;//values <= 0 indicate infinite mass, since the math will not work with a mass of 0 anyway (no physics calculations)
 
 	//Maintainers
-	inline void RecalculateMassFactor()
-	{
-		if (!InfiniteMass())
-			mcMassFactor = 1.0f / mMass;
-		else mcMassFactor = 0.0f;
-	}
 	inline void RecalculateMomentum(float oldMass)
 	{
 		//Get old momentum
 		Vector3f oldMomentum = mVelocity * oldMass;
 		//Calculate new velocity
-		mVelocity = oldMomentum * mcMassFactor;
+		mVelocity = oldMomentum * mMass.getFactor();
 	}
 
 protected:
@@ -96,19 +90,14 @@ protected:
 	}
 
 	//Getters
-	inline float getMassFactor() const { return mcMassFactor;	};
 
 	//Setters
 	inline void setMass(float newMass)
 	{
-		float oldMass = mMass;
-		//float oldMassFactor = mcMassFactor;
+		floatFactor oldMass = mMass;
 		mMass = newMass;
 
-		RecalculateMassFactor();
-
 		RecalculateMomentum(oldMass);
-		//recalculateMomentum(oldMassFactor);
 	}
 
 	//Actions
@@ -116,7 +105,7 @@ protected:
 	{
 		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
-		mAcceleration = forceVector * mcMassFactor;
+		mAcceleration = forceVector * mMass.getFactor();
 
 		return true;//applied force successfully
 	}
@@ -163,7 +152,7 @@ public:
 	{
 		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
-		mAcceleration += forceVector * mcMassFactor;
+		mAcceleration += forceVector * mMass.getFactor();
 
 		return true;//applied force successfully
 	}

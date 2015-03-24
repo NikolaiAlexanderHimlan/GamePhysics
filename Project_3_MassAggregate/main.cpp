@@ -18,6 +18,7 @@
 #include <DataSystem.h>
 #include <StringTools.h>
 #include <PhysicsObject.h>
+#include <ParticleGravity.h>
 
 using namespace nah;
 
@@ -49,14 +50,17 @@ doubleFactor gcSimulationScale;
 GLUI_Control* camPosLocl;
 GLUI_Control* camPosWrld;
 GLUI_Control* targtPos;
+GLUI_Control* collisionVal;
 
 CameraView* mainView;
 float viewDefaultDistance = 55.0f;//starting distance from any planet
 
 //Implementation Data
 
-Object3D* model1;
-Object3D* model2;
+PhysicsObject* model1;
+PhysicsObject* model2;
+float gravityForce = 0.5f;
+ParticleGravity* worldGrav = nullptr;
 
 void ChangeSize(int w, int h)
 {
@@ -86,8 +90,8 @@ void setupWorld()
 		M3DVector3f viewPosition;
 		M3DVector3f rotateView;
 		viewPosition[0] = 0;//left/right
-		viewPosition[1] = 0;//up/down
-		viewPosition[2] = 0;//towards/away
+		viewPosition[1] = -3;//up/down
+		viewPosition[2] = -15;//towards/away
 		rotateView[0] = 0;
 		rotateView[1] = 0;
 		rotateView[2] = 0;
@@ -100,7 +104,7 @@ void setupWorld()
 	M3DVector3f model1Position;
 	model1Position[0] = 0;//X, left/right
 	model1Position[1] = 0;//Y, up/down
-	model1Position[2] = -5.0f;//Z, in/out
+		model1Position[2] = 5.0f;//Z, in/out
 	model1->refLocalTransform().setPosition(model1Position);
 
 	//model1 rotation
@@ -116,7 +120,7 @@ void setupWorld()
 		M3DVector3f model2Position;
 		model2Position[0] = 0;//X, left/right
 		model2Position[1] = 0.5f;//Y, up/down
-		model2Position[2] = -6.0f;//Z, in/out
+		model2Position[2] = 6.0f;//Z, in/out
 		model2->refLocalTransform().setPosition(model2Position);
 
 		//model2 rotation
@@ -135,8 +139,12 @@ void setupPhysics()
 	getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
 
 	//set initial velocities
+	model2->clearPhysics();
 
 	//create and set force registrations
+	if (worldGrav != nullptr) delete worldGrav;
+	worldGrav = new ParticleGravity(Vector3f(0.0f, -gravityForce, 0.0f));
+	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
 }
 void setupUI()
 {
@@ -146,6 +154,8 @@ void setupUI()
 			glutGet((GLenum)GLUT_WINDOW_X) + glutGet((GLenum)GLUT_WINDOW_WIDTH), 
 			glutGet((GLenum)GLUT_WINDOW_Y) + -20);
 
+		std::string bufferText = "__________________;";
+		
 		//Debug controls
 		GLUI_Panel* holdPanel = new GLUI_Panel(gluiWindow, "Debug Ctrl");
 		new GLUI_Checkbox(holdPanel, "Show Physics Debug", (int*)&gDebugPhysics);
@@ -153,9 +163,8 @@ void setupUI()
 
 		//Debug output
 		holdPanel = new GLUI_Panel(gluiWindow, "Debug Out");
-		std::string tempText = "__________________________________________;";
-		camPosLocl = new GLUI_StaticText(holdPanel, ("Camera_L: " + tempText).c_str());
-		camPosWrld = new GLUI_StaticText(holdPanel, ("Camera_W: " + tempText).c_str());
+		camPosLocl = new GLUI_StaticText(holdPanel, ("Camera_L: " + bufferText).c_str());
+		camPosWrld = new GLUI_StaticText(holdPanel, ("Camera_W: " + bufferText).c_str());
 		targtPos = new GLUI_TextBox(holdPanel, "Target_");
 
 		gluiWindow->set_main_gfx_window(glutWindowID);
@@ -187,7 +196,54 @@ void myInit()
 void ResetView()
 {
 	setupWorld();
+}
+void ResetPhysics()
+{
 	setupPhysics();
+};
+void ResetSimulation()
+{
+	ResetView();
+	ResetPhysics();
+};
+
+void UpdateUI()
+{
+	//Debugging
+	Object3D* debugObj;
+	PhysicsObject* debugPhys;
+	//Set debug targets
+	debugObj = model2;
+	debugPhys = model2;
+	//Handle Debug
+	if (gDebugPhysics || gDebugGraphics)
+	{
+		if (gDebugGraphics)
+		{
+			//Debug output
+			camPosLocl->set_text(("Camera_L: \n" + mainView->getLocalTransform().toStringMultiLine(true, true, false)).c_str());
+			camPosWrld->set_text(("Camera_W: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false)).c_str());
+			if (debugObj != nullptr)
+				targtPos->set_text(("Target: \n" + debugObj->getWorldTransform().toStringMultiLine()).c_str());
+		}
+		if (gDebugPhysics)
+		{
+			if (debugPhys != nullptr)
+			{
+				targtPos->set_text((
+					" \n| Vel:\n " + debugPhys->getVelocity().toString() +
+					" \n| SimPos:\n " + debugPhys->Simulation_getPosition().toString() +
+					" \n| GrphPos:\n " + debugPhys->getWorldTransform().position.toString()
+					).c_str());
+			}
+		}
+		static bool isRefreshed = false;
+		if (!isRefreshed)
+		{
+			gluiWindow->refresh();
+			isRefreshed = true;
+		}
+	}
 }
 
 void RenderScene(void)
@@ -202,40 +258,9 @@ void RenderScene(void)
 	//Draw all models
 	model1->Draw(mainView, shaderManager, mvpMatrix);
 	model2->Draw(mainView, shaderManager, mvpMatrix);
+	ground->Draw(mainView, shaderManager, mvpMatrix);
 
-	//Debugging
-	Object3D* debugObj;
-	PhysicsObject* debugPhys;
-	//Set debug targets
-	debugObj = model2;
-	debugPhys = nullptr;
-	//Handle Debug
-	if (gDebugPhysics || gDebugGraphics)
-	{
-		if (gDebugGraphics)
-		{
-			//Debug output
-			camPosLocl->set_text(("Camera_L: \n" + mainView->getLocalTransform().toStringMultiLine(true, true, false)).c_str());
-			camPosWrld->set_text(("Camera_W: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false)).c_str());
-			if (debugObj != nullptr)
-				targtPos->set_text(("Target: \n" + debugObj->getWorldTransform().toStringMultiLine()).c_str());
-		}
-		if (gDebugPhysics)
-			if (debugPhys != nullptr)
-		{
-			targtPos->set_text((
-				" \n| Vel:\n " + debugPhys->getVelocity().toString() +
-				" \n| SimPos:\n " + debugPhys->Simulation_getPosition().toString() +
-				" \n| GrphPos:\n " + debugPhys->getWorldTransform().position.toString()
-				).c_str());
-		}
-		static bool isRefreshed = false;
-		if (!isRefreshed)
-		{
-			gluiWindow->refresh();
-			isRefreshed = true;
-		}
-	}
+	UpdateUI();
 
 	glutSwapBuffers();
 }
@@ -328,7 +353,7 @@ void Keys(unsigned char key, int x, int y)
 void SpecialKeys(int key, int x, int y)
 {
 	if (key == GLUT_KEY_HOME)//reset camera
-		ResetView();
+		ResetSimulation();
 	if (key == GLUT_KEY_END)//pause
 	{
 		//TODO: pause physics simulation
@@ -364,8 +389,9 @@ void create()
 	gcSimulationScale.setFactor(1.0f);
 
 	//Create Objects
-	model1 = new Object3D();
-	model2 = new Object3D();
+	model1 = new PhysicsObject(5.0f);
+	model2 = new PhysicsObject(10.0f);
+	model2->Manage();
 }
 void Update()
 {
@@ -389,8 +415,12 @@ void cleanup()
 	delete model1;
 	model1 = nullptr;
 
+	model2->Unmanage();
 	delete model2;
 	model2 = nullptr;
+
+	delete worldGrav;
+	worldGrav = nullptr;
 
 	ParticleSystem::ClearGlobal();
 	DataSystem::clearGlobal();

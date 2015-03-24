@@ -33,6 +33,7 @@ protected:
 	};
 
 public:
+	explicit
 	PhysicsObject(float initialMass)
 		: Particle(initialMass), Object3D()
 	{

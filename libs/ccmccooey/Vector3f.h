@@ -85,6 +85,20 @@ public:
 	}
 	void setLength(float length); //make the vector length a specific value
 	void power(float power);
+	bool GreaterEqual_Any(const Vector3f& rhs) const
+	{
+		return
+			x >= rhs.x || 
+			y >= rhs.y || 
+			z >= rhs.z;
+	};//[NAH]
+	bool GreaterEqual_All(const Vector3f& rhs) const
+	{
+		return 
+			x >= rhs.x && 
+			y >= rhs.y && 
+			z >= rhs.z;
+	};//[NAH]
 
 	//static math functions
 	static float DotProduct(const Vector3f &first, const Vector3f &second);
@@ -93,6 +107,11 @@ public:
 
 	static float Distance(const Vector3f &first, const Vector3f &second);
 	static float DistanceSquared(const Vector3f &first, const Vector3f &second);
+	
+	static bool Between(const Vector3f& lhs, Vector3f rhs, const Vector3f& checkBetween)
+	{
+		return (rhs - lhs).GreaterEqual_All(checkBetween - lhs);
+	};//[NAH]
 
 	static inline Vector3f Difference(const Vector3f &first, const Vector3f &second) { return second - first;	};//[NAH] //gets a vector representing the space between 2 other vectors
 	static inline Vector3f DirectionTo(const Vector3f &from, const Vector3f &to) { return Difference(from, to).normalized(); };//[NAH] //gets a unit vector representing the direction from first to second
@@ -126,6 +145,10 @@ public:
 	const static Vector3f unitY;
 	const static Vector3f unitZ;
 };
+
+//Static Values
+__declspec(selectany) const float Vector3f::DEFAULT_VAL = 0.0f;//[NAH]
+__declspec(selectany) const Vector3f Vector3f::defaultVect = Vector3f(DV, DV, DV);//[NAH]
 
 #endif
 

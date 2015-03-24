@@ -14,13 +14,16 @@ class Particle;
 class ParticleSystem;
 
 //MUST BE ADDED TO A PARTICLE SYSTEM!
+//NOTE: ^ why is this?
 class ParticleForceGenerator
 {
 	friend ParticleSystem;
 protected:
+	virtual void UpdateForce(Particle* applyForceTo, Time forceDuration) = 0;
+
+public:
 	ParticleForceGenerator(){};
 	~ParticleForceGenerator(){};
-	virtual void UpdateForce(Particle* applyForceTo, Time forceDuration) = 0;
 };
 
 #endif // ParticleForceGenerator_h__

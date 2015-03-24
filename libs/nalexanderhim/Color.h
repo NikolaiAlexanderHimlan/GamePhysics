@@ -11,6 +11,7 @@ I certify that this assignment is entirely my own work.
 //#include <Trackable.h>
 
 #include "RandMath.h"
+#include "CountedArray.h"
 
 #if GRAPHICS_ALLEGRO
 //typedef struct [Allegro ] Abstract
@@ -47,6 +48,8 @@ namespace nah
 		
 		//CONSIDER: move to source file so RandMath is not included in header
 		static inline Color RandomColor(bool randomAlpha = false) { return Color(randomFloat(MIN_COLOR, MAX_COLOR), randomFloat(MIN_COLOR, MAX_COLOR), randomFloat(MIN_COLOR, MAX_COLOR), randomAlpha?randomFloat(ALPHA_CLEAR,ALPHA_OPAQUE):ALPHA_OPAQUE); };
+
+		static inline CountedArray<ColorVal> RandomColorValueArray(int numColors, bool randomAlpha = false);
 
 #pragma region Static Colors
 		static const Color Empty;

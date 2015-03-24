@@ -103,6 +103,30 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{f9b6dfb2-139d-471d-9ce2-ae95d7d96ef5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Physics\Particles">
+      <UniqueIdentifier>{9d5c99a0-e4c4-44b1-ab53-a20779aaac1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Connections">
+      <UniqueIdentifier>{46ae4af4-36ba-4a3f-9db5-a9315bbba826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Connections">
+      <UniqueIdentifier>{3d0fb0cb-b11e-40bf-a522-3a641f3edc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Particles">
+      <UniqueIdentifier>{006f5c56-924d-4699-bc55-7e7018de6609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Common Objects">
+      <UniqueIdentifier>{002ae246-d6c8-4c4c-a287-9348f6890253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Common Objects">
+      <UniqueIdentifier>{c66e64e7-f9f5-44ca-a292-89b1fd144a72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Collision">
+      <UniqueIdentifier>{0897655f-f2cb-4f60-8039-80363a3ab95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Space3D\Volumes">
+      <UniqueIdentifier>{0888309a-7ba3-4b07-8943-507227735f5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -136,10 +160,10 @@
       <Filter>Source Files\Utilities\DataTypeExtenders</Filter>
     </ClCompile>
     <ClCompile Include="Particle.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\Physics\Particles</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\Physics\Particles</Filter>
     </ClCompile>
     <ClCompile Include="ManagerBase.cpp">
       <Filter>Source Files\Management</Filter>
@@ -148,7 +172,7 @@
       <Filter>Source Files\Management</Filter>
     </ClCompile>
     <ClCompile Include="ParticleGravity.cpp">
-      <Filter>Source Files\Physics</Filter>
+      <Filter>Source Files\Physics\Particles</Filter>
     </ClCompile>
     <ClCompile Include="Vector3f_nah.cpp">
       <Filter>Source Files\Space3D</Filter>
@@ -207,10 +231,10 @@
       <Filter>Header Files\Utilities\DataTypeExtenders</Filter>
     </ClInclude>
     <ClInclude Include="Particle.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\Physics\Particles</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\Physics\Particles</Filter>
     </ClInclude>
     <ClInclude Include="ManagedBase.h">
       <Filter>Header Files\Managment</Filter>
@@ -243,10 +267,10 @@
       <Filter>Header Files\Utilities\Time</Filter>
     </ClInclude>
     <ClInclude Include="ParticleForceGenerator.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\Physics\Particles</Filter>
     </ClInclude>
     <ClInclude Include="ParticleGravity.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\Physics\Particles</Filter>
     </ClInclude>
     <ClInclude Include="FloatFactor.h">
       <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
@@ -268,6 +292,18 @@
     </ClInclude>
     <ClInclude Include="Rotation.h">
       <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="MathTypes.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceDefines.h">
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="PrecisionMath.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugDefines.h">
+      <Filter>Header Files\Definitions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

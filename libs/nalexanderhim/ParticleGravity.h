@@ -17,8 +17,9 @@ class ParticleGravity
 protected:
 	Vector3f mGravity;
 
-	ParticleGravity(const Vector3f& gravityForce) : mGravity(gravityForce){};
-
 	virtual void UpdateForce(Particle* applyForceTo, Time forceDuration);
+
+public:
+	ParticleGravity(const Vector3f& gravityForce) : mGravity(gravityForce){};
 };
 #endif // ParticleGravity_h__

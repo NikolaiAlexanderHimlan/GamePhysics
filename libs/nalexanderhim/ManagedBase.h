@@ -32,8 +32,8 @@ public:
 	virtual ~ManagedBase() {};//make sure subclass destructor is called
 	
 	//HACK: temporarily make this public until I can fix the management
-	inline void manage() { addToManager();	};//adds this to the manager
-	inline void unmanage() { removeFromManager();	};//removes this from the manager
+	inline void Manage() { addToManager();	};//adds this to the manager
+	inline void Unmanage() { removeFromManager();	};//removes this from the manager
 };
 
 //Base class for automatic management
@@ -46,8 +46,8 @@ private:
 	static inline void handleRemove(void* ptr);//handles removing
 
 	//HACK: change permissions
-	inline void manage() { addToManager(); };//adds this to the manager
-	inline void unmanage() { removeFromManager(); };//removes this from the manager
+	inline void Manage() { addToManager(); };//adds this to the manager
+	inline void Unmanage() { removeFromManager(); };//removes this from the manager
 
 public:
 	ManagedAuto()
