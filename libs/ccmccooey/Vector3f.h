@@ -20,6 +20,7 @@
 //#define Vector2f(allValues) Vector3f(allValues)
 
 class Rotation;
+enum Axis;
 
 class Vector3f
 {
@@ -134,6 +135,7 @@ public:
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f *vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
 
 	Vector3f asRad() const;
+	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
 
 public:
 	static const float DEFAULT_VAL;

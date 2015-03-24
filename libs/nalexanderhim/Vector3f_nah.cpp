@@ -6,6 +6,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "Vector3f.h"
+#include "SpaceDefines.h"
 #include "Rotation.h"
 
 #include "RotationMath.h"
@@ -31,4 +32,23 @@ Vector3f Vector3f::getLookAtAngle(const Vector3f& eye, const Vector3f& lookAt)
 	lookRotation.z = (0); // rotation around z
 
 	return lookRotation;
+}
+
+const Vector3f& Vector3f::AxisNormal(Axis toNorm)
+{
+	switch (toNorm)
+	{
+	case X:
+		return Vector3f::unitX;
+		break;
+	case Y:
+		return Vector3f::unitY;
+		break;
+	case Z:
+		return Vector3f::unitZ;
+		break;
+	default:
+		AXIS_ERROR("AxisNormal");
+		break;
+	}
 }
