@@ -50,6 +50,11 @@ Vector3f Transform::getForwardVector(char axis) const
 	forwardZ = cos(getYawRad());
 	//*/
 
+	/*Chris method
+	forwardZ = cosf(getYawRad())*cosf(getPitchRad());
+	forwardX = sinf(getYawRad())*cosf(getPitchRad());
+	forwardY = sinf(getPitchRad());
+	//*/
 
 	return -Vector3f(forwardX, forwardY, forwardZ).normalized();
 }
@@ -107,6 +112,7 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	
 	//Translation
 	m3dTranslationMatrix44(translate, position.x, position.y, position.z);
+	//m3dTranslationMatrix44(translate, position.x, position.y, -position.z);
 
 	//Rotation
 	//m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
@@ -144,16 +150,19 @@ void Transform::moveForward(float amount)
 
 	//Vector3f::EulerForward(getPitchRad(), getYawRad(), getRollRad());
 
+	//position += Vector3f(amount * getForwardVector('x').x, amount * getForwardVector('y').y, amount * getForwardVector('z').z);
 	position += getForwardVector() * amount;
 }
 void Transform::moveRight(float amount)
 {
 	//position.x += amount;
+	//position += Vector3f(amount * getRightVector('x').x, amount * getRightVector('y').y, amount * getRightVector('z').z);
 	position += getRightVector() * amount;
 }
 void Transform::moveUp(float amount)
 {
 	//position.y += amount;
+	//position += Vector3f(amount * getUpVector('x').x, amount * getUpVector('y').y, amount * getUpVector('z').z);
 	position += getUpVector() * amount;
 }
 
