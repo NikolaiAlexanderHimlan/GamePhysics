@@ -4,3 +4,4 @@
 * Research: can you store a function pointer in a variable of the functions return type? (probably not)
 * OpenGL/Glut InputSystem (http://stackoverflow.com/a/866716)(http://www.swiftless.com/tutorials/opengl/keyboard.html)
 * Grid structure is a map with GridCoords as the key
+* #redefine macro, which does #undef then #define for the given macro
