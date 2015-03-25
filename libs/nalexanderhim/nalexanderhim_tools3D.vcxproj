@@ -105,7 +105,10 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleCable.cpp" />
     <ClCompile Include="ParticleGravity.cpp" />
+    <ClCompile Include="ParticleLink.cpp" />
+    <ClCompile Include="ParticleRod.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="RotationMath.cpp" />
     <ClCompile Include="StringTools.cpp" />
@@ -130,10 +133,14 @@
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
     <ClInclude Include="MathTypes.h" />
+    <ClInclude Include="ParticleCable.h" />
     <ClInclude Include="ParticleContact.h" />
     <ClInclude Include="ParticleContactGenerator.h" />
     <ClInclude Include="ParticleForceGenerator.h" />
     <ClInclude Include="ParticleGravity.h" />
+    <ClInclude Include="ParticleLink.h" />
+    <ClInclude Include="ParticleRod.h" />
+    <ClInclude Include="ParticleSpring.h" />
     <ClInclude Include="ParticleWall.h" />
     <ClInclude Include="PhysicsGlobals.h" />
     <ClInclude Include="EngineDefines.h" />

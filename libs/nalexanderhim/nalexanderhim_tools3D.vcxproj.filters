@@ -165,6 +165,15 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Source Files\Physics\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleLink.cpp">
+      <Filter>Source Files\Physics\Connections</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleCable.cpp">
+      <Filter>Source Files\Physics\Connections</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleRod.cpp">
+      <Filter>Source Files\Physics\Connections</Filter>
+    </ClCompile>
     <ClCompile Include="ManagerBase.cpp">
       <Filter>Source Files\Management</Filter>
     </ClCompile>
@@ -176,6 +185,9 @@
     </ClCompile>
     <ClCompile Include="Vector3f_nah.cpp">
       <Filter>Source Files\Space3D</Filter>
+    </ClCompile>
+    <ClCompile Include="GroundArea.cpp">
+      <Filter>Source Files\Physics\Common Objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +247,18 @@
     </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Header Files\Physics\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleRod.h">
+      <Filter>Header Files\Physics\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSpring.h">
+      <Filter>Header Files\Physics\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleCable.h">
+      <Filter>Header Files\Physics\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleLink.h">
+      <Filter>Header Files\Physics\Connections</Filter>
     </ClInclude>
     <ClInclude Include="ManagedBase.h">
       <Filter>Header Files\Managment</Filter>
@@ -302,6 +326,9 @@
     <ClInclude Include="SpaceDefines.h">
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
+    <ClInclude Include="GroundArea.h">
+      <Filter>Header Files\Physics\Common Objects</Filter>
+    </ClInclude>
     <ClInclude Include="PrecisionMath.h">
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
@@ -313,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="DebugDefines.h">
       <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleWall.h">
+      <Filter>Header Files\Physics\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleContact.h">
       <Filter>Header Files\Physics\Collision</Filter>
