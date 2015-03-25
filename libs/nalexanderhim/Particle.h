@@ -13,6 +13,7 @@ I certify that this assignment is entirely my own work.
 #include "ccmccooeyWrapper.h"
 #include "ManagedBase.h"
 #include "FloatFactor.h"
+#include "Boundings.h"
 
 //Physics Handler
 class Particle
@@ -32,6 +33,9 @@ private:
 
 protected:
 	virtual ManagerBase* getManager() const;
+
+	Bounding* mBounds = new Bounding();//defines the physics boundary of the particle
+
 	/**
 	* Holds the linear position of the particle in
 	* world space.
@@ -100,6 +104,12 @@ protected:
 		RecalculateMomentum(oldMass);
 	}
 
+	inline void setBounds(Bounding* newBounds)
+	{
+		delete mBounds;
+		mBounds = newBounds;
+	}
+
 	//Actions
 	inline bool setForce(const Vector3f& forceVector)
 	{
@@ -116,7 +126,11 @@ public:
 	{
 		setMass(initialMass);
 	}
-	virtual ~Particle(){};
+	virtual ~Particle()
+	{
+		delete mBounds;
+		mBounds = nullptr;
+	};
 
 	//Maintainers
 	virtual inline void UpdatePhysics(Time elapsedSeconds)
