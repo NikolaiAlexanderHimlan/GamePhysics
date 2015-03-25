@@ -314,6 +314,12 @@
     <ClInclude Include="DebugDefines.h">
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleContact.h">
+      <Filter>Header Files\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleContactGenerator.h">
+      <Filter>Header Files\Physics\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

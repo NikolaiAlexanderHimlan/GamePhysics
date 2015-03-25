@@ -167,6 +167,10 @@ void setupUI()
 		camPosWrld = new GLUI_StaticText(holdPanel, ("Camera_W: " + bufferText).c_str());
 		targtPos = new GLUI_TextBox(holdPanel, "Target_");
 
+		//Collision testing
+		holdPanel = new GLUI_Panel(gluiWindow, "Collision Testing");
+		collisionVal = new GLUI_StaticText(holdPanel, ("Ground Collision: " + bufferText).c_str());
+
 		gluiWindow->set_main_gfx_window(glutWindowID);
 	}
 }

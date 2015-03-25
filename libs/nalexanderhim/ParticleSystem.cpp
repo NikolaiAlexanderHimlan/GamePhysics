@@ -62,3 +62,18 @@ void ParticleSystem::deleteParticleForce(ManageID removeID)
 
 	mParticleForceList.erase(mParticleForceList.begin() + removeID);
 }
+
+ManageID ParticleSystem::getParticleContactGeneratorID(ParticleContactGenerator* findThis)
+{
+	auto iterFound = std::find(mParticleContactGeneratorList.begin(), mParticleContactGeneratorList.end(), findThis);
+	if (iterFound == mParticleContactGeneratorList.end()) return INVALID_ID;
+	return iterFound - mParticleContactGeneratorList.begin();
+}
+
+void ParticleSystem::deleteParticleContactGenerator(ManageID removeID)
+{
+	if (mParticleContactGeneratorList[removeID] != nullptr)
+		delete mParticleContactGeneratorList[removeID];
+
+	mParticleContactGeneratorList.erase(mParticleContactGeneratorList.begin() + removeID);
+}

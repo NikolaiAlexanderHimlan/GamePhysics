@@ -10,10 +10,12 @@ I certify that this assignment is entirely my own work.
 #include "Defines.h"
 #include "ManagerBase.h"
 #include "ccmccooeyWrapper.h"
+#include "CountedArray.h"
 
 class Particle;
 class ParticleSystem;
 class ParticleForceGenerator;
+class ParticleContactGenerator;
 typedef std::pair<ParticleForceGenerator*, Particle*> ParticleForceRegistration;
 
 extern ParticleSystem* gpParticleSystem;
@@ -27,6 +29,7 @@ private:
 	//TODO: CONSIDER: have a vector<pair<ParticleForceGenerator*, vector<Particle*>>>, (or use ParticleForceGenerator* as a key in a multimap), this combines the ParticleForceList and ParticleForceRegistry
 	std::vector<ParticleForceGenerator*> mParticleForceList;
 	std::vector<ParticleForceRegistration> mParticleForceRegistry;
+	std::vector<ParticleContactGenerator*> mParticleContactGeneratorList;
 
 protected:
 	ParticleSystem(){};
@@ -34,6 +37,7 @@ protected:
 	{
 		clearParticleForceList();
 		clearParticleForceRegistrations();
+		clearParticleContactGeneratorList();
 	};
 public:
 	static bool InstantiateGlobal()
@@ -53,6 +57,7 @@ public:
 	void UpdatePhysics(Time elapsedSeconds);
 	//Update ParticleForces + apply force registrations
 	void UpdateForces(Time elapsedSeconds);
+	void UpdateContacts(Time elapsedSeconds);//check for and generate particle contacts
 
 	//Getters
 	inline Particle* getParticle(ManageID getID) const { return (Particle*)getManaged(getID);	};//TODO: safe cast
@@ -113,5 +118,25 @@ public:
 #pragma endregion Particle Force Registrations
 
 
+#pragma region Particle Contact Generators
+	//Getters
+	ManageID getParticleContactGeneratorID(ParticleContactGenerator* findThis);
+
+	//Properties
+	inline uint numContactGenerators() const { return mParticleContactGeneratorList.size();	};
+
+	//Actions
+	void deleteParticleContactGenerator(ManageID removeID);
+	inline void deleteParticleContactGenerator(ParticleContactGenerator* removeThis)
+	{ deleteParticleContactGenerator(getParticleContactGeneratorID(removeThis));	};
+
+	inline void clearParticleContactGeneratorList()
+	{
+		for (uint i = 0; i < numContactGenerators(); i++)
+		{
+			deleteParticleContactGenerator(i);
+		}
+	};
+#pragma endregion Particle Contact Generators
 };
 #endif
