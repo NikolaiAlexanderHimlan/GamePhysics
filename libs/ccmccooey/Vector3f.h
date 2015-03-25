@@ -18,6 +18,7 @@
 
 #define Vector2f(x,y) Vector3f(x,y,0.0f)
 //#define Vector2f(allValues) Vector3f(allValues)
+#define VectParam const Vector3f&
 
 class Rotation;
 enum Axis;
@@ -84,8 +85,23 @@ public:
 		toNormalize.normalize();
 		return toNormalize;
 	}
+	inline Vector3f InvertedNormal() const { return one - *this;	};//[NAH]
 	void setLength(float length); //make the vector length a specific value
 	void power(float power);
+
+	inline bool Equals_NonZero(const Vector3f& rhs) const//compares the values of the vectors, ignoring values of 0
+	{
+		bool isEqual = true;
+
+		if (x != 0 && rhs.x != 0)
+			isEqual &= (x == rhs.x);
+		if (y != 0 && rhs.y != 0)
+			isEqual &= (y == rhs.y);
+		if (z != 0 && rhs.z != 0)
+			isEqual &= (z == rhs.z);
+
+		return isEqual;
+	}
 	bool GreaterEqual_Any(const Vector3f& rhs) const
 	{
 		return
@@ -102,6 +118,13 @@ public:
 	};//[NAH]
 
 	//static math functions
+	static Vector3f Multiply(Vector3f lhs, VectParam rhs)
+	{
+		lhs.x *= rhs.x;
+		lhs.y *= rhs.y;
+		lhs.z *= rhs.z;
+		return lhs;
+	};//[NAH]
 	static float DotProduct(const Vector3f &first, const Vector3f &second);
 	static float CrossProductF(const Vector3f &first, const Vector3f &second);
 	static Vector3f CrossProduct(const Vector3f &first, const Vector3f &second);
@@ -136,6 +159,20 @@ public:
 
 	Vector3f asRad() const;
 	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
+	static inline Vector3f clearAxes_Key(Vector3f vector, Axis axisKey);//[NAH]
+	//clears axes of a vector if the corresponding axis in axisKey is 0
+	static inline Vector3f clearAxes_Key(Vector3f vector, VectParam axisKey)
+	{
+		//TODO: handle float precision
+		if (axisKey.x == 0)
+			vector.x = 0;
+		if (axisKey.y == 0)
+			vector.y = 0;
+		if (axisKey.z == 0)
+			vector.z = 0;
+
+		return vector;
+	};//[NAH]
 
 public:
 	static const float DEFAULT_VAL;
