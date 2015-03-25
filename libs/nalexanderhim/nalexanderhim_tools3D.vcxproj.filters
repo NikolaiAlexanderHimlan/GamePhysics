@@ -296,11 +296,20 @@
     <ClInclude Include="MathTypes.h">
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
+    <ClInclude Include="Primitives.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
     <ClInclude Include="SpaceDefines.h">
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
     <ClInclude Include="PrecisionMath.h">
       <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Boundings.h">
+      <Filter>Header Files\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereVolume.h">
+      <Filter>Header Files\Space3D\Volumes</Filter>
     </ClInclude>
     <ClInclude Include="DebugDefines.h">
       <Filter>Header Files\Definitions</Filter>
