@@ -49,6 +49,73 @@ void Model::setBatch(GLBatch* batch, float maxDistVert, float minDistVert)
 	*/
 }
 
+
+
+void Model::setBatchPlane(float width, float length, Axis facing /*= Y*/, bool inv /*= false /*Face along the negative edge of the axis*/)
+{
+	GLBatch* modelBatch = new GLBatch();
+
+	float widthVal = width * 0.5f;
+	float heightVal = length * 0.5f;
+	if(inv)
+	{
+		//TODO: invert facing correctly
+		widthVal *= -1;
+		heightVal *= -1;
+	}
+
+	float
+		v1X = 0.0f, v1Y = 0.0f, v1Z = 0.0f,
+		v2X = 0.0f, v2Y = 0.0f, v2Z = 0.0f,
+		v3X = 0.0f, v3Y = 0.0f, v3Z = 0.0f,
+		v4X = 0.0f, v4Y = 0.0f, v4Z = 0.0f;
+
+	switch (facing)
+	{
+	case X:
+		throw std::logic_error("Axis is not implemented.");
+		break;
+	case Y:
+		v1X = widthVal;
+		v2X = -widthVal;
+		v3X = -widthVal;
+		v4X = widthVal;
+
+		v1Z = heightVal;
+		v2Z = heightVal;
+		v3Z = -heightVal;
+		v4Z = -heightVal;
+		break;
+	case Z:
+		throw std::logic_error("Axis is not implemented.");
+		break;
+	default:
+		throw std::logic_error("Invalid Axis for Plane!");
+		break;
+	}
+
+	//*generate triangle model batch
+	GLfloat			vVerts[] = {v1X, v1Y, v1Z,
+								v2X, v2Y, v2Z,
+								-v3X, -v3Y, -v3Z,
+								-v4X, -v4Y, -v4Z};
+
+	GLfloat			vColors[] = {1.0f, 0.0f, 0.0f, 1.0f, 
+								0.0f, 1.0f, 0.0f, 1.0f, 
+								0.0f, 0.0f, 1.0f, 1.0f, 
+								0.0f, 1.0f, 0.0f, 1.0f};
+	//*/
+
+	modelBatch->Begin(GL_QUADS, 4*3);
+	modelBatch->CopyVertexData3f(vVerts);
+	modelBatch->CopyColorData4f(vColors);
+	modelBatch->End();
+
+	//model load batch
+	//TODO: calc min/max vert distances
+	setBatch(modelBatch);
+}
+
 void Model::setBatchTriangle(float distUp, float distLeft, float distRight)
 {
 	GLBatch* modelBatch = new GLBatch();
@@ -352,3 +419,4 @@ void Model::setBatchSphere(float radius, int numSegments /*= 8 /*TODO: optional 
 	//model load batch
 	setBatch(modelBatch, radius, radius);
 }
+

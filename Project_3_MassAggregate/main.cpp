@@ -18,6 +18,7 @@
 #include <DataSystem.h>
 #include <StringTools.h>
 #include <PhysicsObject.h>
+#include <GroundArea.h>
 #include <ParticleGravity.h>
 
 using namespace nah;
@@ -59,6 +60,7 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 
 PhysicsObject* model1;
 PhysicsObject* model2;
+GroundArea* ground;
 float gravityForce = 0.5f;
 ParticleGravity* worldGrav = nullptr;
 
@@ -133,6 +135,9 @@ void setupWorld()
 		//model2 scale
 		model2->refLocalTransform().setScale(2.0f);
 	}
+
+	//Ground plane setup
+	ground->refLocalTransform().position.y = -5.0f;
 }
 void setupPhysics()
 {
@@ -240,6 +245,9 @@ void UpdateUI()
 					" \n| GrphPos:\n " + debugPhys->getWorldTransform().position.toString()
 					).c_str());
 			}
+
+			std::string val = "beep";
+			collisionVal->set_text(("Ground Collision: " + val).c_str());//TODO: output collision information
 		}
 		static bool isRefreshed = false;
 		if (!isRefreshed)
@@ -396,6 +404,7 @@ void create()
 	model1 = new PhysicsObject(5.0f);
 	model2 = new PhysicsObject(10.0f);
 	model2->Manage();
+	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
 void Update()
 {
@@ -422,6 +431,9 @@ void cleanup()
 	model2->Unmanage();
 	delete model2;
 	model2 = nullptr;
+
+	delete ground;
+	ground = nullptr;
 
 	delete worldGrav;
 	worldGrav = nullptr;

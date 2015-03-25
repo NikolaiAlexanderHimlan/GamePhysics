@@ -98,6 +98,7 @@
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="DataSystem.cpp" />
     <ClCompile Include="DebugTools.cpp" />
+    <ClCompile Include="GroundArea.cpp" />
     <ClCompile Include="IntCoord.cpp" />
     <ClCompile Include="ManagedBase.cpp" />
     <ClCompile Include="ManagerBase.cpp" />
@@ -125,6 +126,7 @@
     <ClInclude Include="FactorBase.h" />
     <ClInclude Include="FloatFactor.h" />
     <ClInclude Include="GeneralMath.h" />
+    <ClInclude Include="GroundArea.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
     <ClInclude Include="MathTypes.h" />
@@ -132,6 +134,7 @@
     <ClInclude Include="ParticleContactGenerator.h" />
     <ClInclude Include="ParticleForceGenerator.h" />
     <ClInclude Include="ParticleGravity.h" />
+    <ClInclude Include="ParticleWall.h" />
     <ClInclude Include="PhysicsGlobals.h" />
     <ClInclude Include="EngineDefines.h" />
     <ClInclude Include="GraphicsGlobals.h" />
