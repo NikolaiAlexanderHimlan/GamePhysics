@@ -308,7 +308,7 @@
     <ClInclude Include="Boundings.h">
       <Filter>Header Files\Physics\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="SphereVolume.h">
+    <ClInclude Include="VolumeDefinition.h">
       <Filter>Header Files\Space3D\Volumes</Filter>
     </ClInclude>
     <ClInclude Include="DebugDefines.h">

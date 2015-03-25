@@ -152,7 +152,7 @@
     <ClInclude Include="Rotation.h" />
     <ClInclude Include="RotationMath.h" />
     <ClInclude Include="SpaceDefines.h" />
-    <ClInclude Include="SphereVolume.h" />
+    <ClInclude Include="VolumeDefinition.h" />
     <ClInclude Include="StringTools.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />

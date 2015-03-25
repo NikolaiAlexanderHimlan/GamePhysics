@@ -232,7 +232,7 @@ void UpdateUI()
 			{
 				targtPos->set_text((
 					" \n| Vel:\n " + debugPhys->getVelocity().toString() +
-					" \n| SimPos:\n " + debugPhys->Simulation_getPosition().toString() +
+					" \n| SimPos:\n " + debugPhys->getPhysicsPosition().toString() +
 					" \n| GrphPos:\n " + debugPhys->getWorldTransform().position.toString()
 					).c_str());
 			}

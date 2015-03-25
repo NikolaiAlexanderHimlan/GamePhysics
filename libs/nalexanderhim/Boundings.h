@@ -9,6 +9,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "ccmccooeyWrapper.h"
+#include "DebugDefines.h"
 
 /* Bounding Function Default data
 static const BoundType BOUND_TYPE = ;
@@ -22,6 +23,7 @@ virtual inline bool Contains(const Vector3f& boundsLocation, const Vector3f& che
 
 struct Bounding
 {
+	//TODO: CONSIDER: combine with Primitives type
 	enum BoundType {
 		INVALID_BOUND_TYPE = -1,
 

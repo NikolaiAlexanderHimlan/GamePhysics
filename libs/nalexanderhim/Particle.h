@@ -144,12 +144,12 @@ public:
 
 	//Getters
 	//Simulation_ prefix is to differentiate from graphical position
-	inline const Vector3f& Simulation_getPosition() const { return mPosition;	};
+	inline const Vector3f& getPhysicsPosition() const { return mPosition;	};
 	inline const float& getMass() const { return mMass;	};//TODO: Handle infinite mass
 	inline const Vector3f& getVelocity() const { return mVelocity;	};
 
 	//Setters
-	inline void Simulation_setPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
+	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	
 	//Properties

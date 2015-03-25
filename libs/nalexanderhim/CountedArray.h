@@ -8,7 +8,11 @@ I certify that this assignment is entirely my own work.
 #pragma once
 //#include <Trackable.h>
 #include <initializer_list>//TODO: move to source file and forward declare
+
+namespace nah {
+
 template <typename T>
+
 //An array that also contains a count/length value
 struct CountedArray
 	// : public Trackable
@@ -114,4 +118,5 @@ public:
 	iterator end() { return &mArray[size()]; }
 	const_iterator end() const { return &mArray[size()]; }
 };
+}
 
