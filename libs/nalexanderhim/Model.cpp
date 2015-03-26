@@ -19,7 +19,7 @@ I certify that this assignment is entirely my own work.
 
 Model::~Model()
 {
-	delete mModelBatch;
+	delete mpModelBatch;
 }
 
 void Model::setBatch(GLBatch* batch, float maxDistVert, float minDistVert)
@@ -27,12 +27,12 @@ void Model::setBatch(GLBatch* batch, float maxDistVert, float minDistVert)
 	mMaxDistVert = maxDistVert;
 	mMinDistVert = minDistVert;
 
-	if (mModelBatch != nullptr) delete mModelBatch;
+	if (mpModelBatch != nullptr) delete mpModelBatch;
 
-	mModelBatch = batch;
+	mpModelBatch = batch;
 
 	/*Copy Data - Disabled
-	mModelBatch = new BatchData();
+	mpModelBatch = new BatchData();
 	
 	GLfloat			vVerts[] = { -0.5f, 0.0f, 0.0f,
 		0.5f, 0.0f, 0.0f,
@@ -42,10 +42,10 @@ void Model::setBatch(GLBatch* batch, float maxDistVert, float minDistVert)
 		0.0f, 1.0f, 0.0f, 1.0f,
 		0.0f, 0.0f, 1.0f, 1.0f };
 
-	mModelBatch->Begin(GL_TRIANGLES, 3);
-	mModelBatch->CopyVertexData3f(vVerts);
-	mModelBatch->CopyColorData4f(vColors);
-	mModelBatch->End();
+	mpModelBatch->Begin(GL_TRIANGLES, 3);
+	mpModelBatch->CopyVertexData3f(vVerts);
+	mpModelBatch->CopyColorData4f(vColors);
+	mpModelBatch->End();
 	*/
 }
 

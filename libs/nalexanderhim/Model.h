@@ -23,7 +23,7 @@ private:
 	float mMinDistVert;
 
 protected:
-	BatchData* mModelBatch;
+	BatchData* mpModelBatch;
 
 public:
 	Model() {};

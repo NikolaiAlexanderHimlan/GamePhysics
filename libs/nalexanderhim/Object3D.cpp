@@ -29,7 +29,7 @@ bool Object3D::Draw(CameraView* renderToView, GLShaderManager& shaderManager, M3
 	shaderManager.UseStockShader(GLT_SHADER_SHADED, mvpMatrix);
 	//	shaderManager.UseStockShader(GLT_SHADER_TEXTURE_MODULATE, mvpMatrix, vColor, texture);
 
-	mModelBatch->Draw();
+	mpModelBatch->Draw();
 
 	return true;
 }

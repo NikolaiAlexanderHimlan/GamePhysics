@@ -18,18 +18,18 @@ struct CountedArray
 	// : public Trackable
 {
 private:
-	T* mArray;
+	T* maArray;
 	size_t mCount;
 
 	inline void AssignList(std::initializer_list<T> arrayList)
 	{
 		mCount = arrayList.size();
-		//*mArray[mCount] = arrayList;
-		mArray = new T[mCount];
+		//*maArray[mCount] = arrayList;
+		maArray = new T[mCount];
 		int i = 0;
 		for (auto iter = arrayList.begin(); iter != arrayList.end(); iter++)
 		{
-			mArray[i++] = *iter;
+			maArray[i++] = *iter;
 		}
 	};
 
@@ -38,35 +38,35 @@ public:
 	explicit CountedArray(size_t storeCount = 0)
 	{
 		mCount = storeCount;
-		mArray = new T[mCount];
+		maArray = new T[mCount];
 		//this = new[storeCount];
 	}
 	CountedArray(const T& storeValue)
 	{
 		mCount = 1;
-		mArray = new T[mCount];
+		maArray = new T[mCount];
 		//this = new[storeCount];
-		mArray[0] = storeValue;
+		maArray[0] = storeValue;
 	}
 	CountedArray(size_t storeCount, T* storeArray)
 	{
 		mCount = storeCount;
-		mArray = storeArray;
+		maArray = storeArray;
 	}
 	CountedArray(std::initializer_list<T> arrayList)
 	{
 		AssignList(arrayList);
 	}
-	//CountedArray( const CountedArray& otherArray){ *this = otherArray;	}// WARNING: THIS BREAKS THE CODE OR CAUSES MEMORY LEAKS! (based on if mArray is deleted or not)
+	//CountedArray( const CountedArray& otherArray){ *this = otherArray;	}// WARNING: THIS BREAKS THE CODE OR CAUSES MEMORY LEAKS! (based on if maArray is deleted or not)
 	CountedArray(const CountedArray& otherArray)
 	{
 		//copy contents of other array
 		mCount = otherArray.mCount;
-		mArray = new T[mCount];
+		maArray = new T[mCount];
 		for (unsigned int i = 0; i < mCount; i++)
-			mArray[i] = otherArray.mArray[i];
+			maArray[i] = otherArray.maArray[i];
 	}
-	~CountedArray(void){ delete[] mArray;	}
+	~CountedArray(void){ delete[] maArray;	}
 
 	//Getters
 	inline T& getIndex(size_t index) { return [index];	};
@@ -74,20 +74,20 @@ public:
 	//Operators
 	inline CountedArray& operator =(std::initializer_list<T> arrayList)
 	{
-		delete[] mArray;
+		delete[] maArray;
 		AssignList(arrayList);
 	}
 	inline CountedArray& operator =(const CountedArray& otherArray)
 	{
 		//unsure if this is necessary?
-		//if(mArray != nullptr)//WARNING: NOTE: this may result in a memory leak if the first item is set to NULL while the remaining objects are not
-		delete[] mArray;
+		//if(maArray != nullptr)//WARNING: NOTE: this may result in a memory leak if the first item is set to NULL while the remaining objects are not
+		delete[] maArray;
 
 		//copy contents of other array
 		mCount = otherArray.mCount;
-		mArray = new T[mCount];
+		maArray = new T[mCount];
 		for (unsigned int i = 0; i < mCount; i++)
-			mArray[i] = otherArray.mArray[i];
+			maArray[i] = otherArray.maArray[i];
 		return *this;
 	}
 
@@ -95,14 +95,14 @@ public:
 	inline void* operator new[] (size_t storeCount)
 	{
 		//unsure if this is necessary?
-		delete[] mArray;
+		delete[] maArray;
 
 		//create new array
 		mCount = storeCount;
-		mArray = new T[mCount];
+		maArray = new T[mCount];
 		return this;
 	}
-	inline T& operator[] (size_t index){ return mArray[index];	}
+	inline T& operator[] (size_t index){ return maArray[index];	}
 
 	//Properties
 	//number of spaces in the array
@@ -113,10 +113,10 @@ public:
 	//Iterators
 	typedef T* iterator;
 	typedef const T* const_iterator;
-	iterator begin() { return &mArray[0];	}
-	const_iterator begin() const { return &mArray[0]; }
-	iterator end() { return &mArray[size()]; }
-	const_iterator end() const { return &mArray[size()]; }
+	iterator begin() { return &maArray[0];	}
+	const_iterator begin() const { return &maArray[0]; }
+	iterator end() { return &maArray[size()]; }
+	const_iterator end() const { return &maArray[size()]; }
 };
 }
 

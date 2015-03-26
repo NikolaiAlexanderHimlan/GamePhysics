@@ -27,12 +27,12 @@ private:
 	/**
 	* Holds the pair of particles that are connected by this link.
 	*/
-	Particle* mLinked[2];
+	Particle* maLinked[2];
 
 protected:
 
-	Particle* FirstLink() const { return mLinked[0];	};
-	Particle* SecondLink() const { return mLinked[1];	};
+	Particle* FirstLink() const { return maLinked[0];	};
+	Particle* SecondLink() const { return maLinked[1];	};
 
 	/**
 	* Returns the current length of the link.

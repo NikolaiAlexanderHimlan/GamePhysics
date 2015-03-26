@@ -34,7 +34,7 @@ private:
 protected:
 	virtual ManagerBase* getManager() const;
 
-	Bounding* mBounds = new Bounding();//defines the physics boundary of the particle
+	Bounding* mpBounds = new Bounding();//defines the physics boundary of the particle
 
 	/**
 	* Holds the linear position of the particle in
@@ -106,8 +106,8 @@ protected:
 
 	inline void setBounds(Bounding* newBounds)
 	{
-		delete mBounds;
-		mBounds = newBounds;
+		delete mpBounds;
+		mpBounds = newBounds;
 	}
 
 	//Actions
@@ -128,8 +128,8 @@ public:
 	}
 	virtual ~Particle()
 	{
-		delete mBounds;
-		mBounds = nullptr;
+		delete mpBounds;
+		mpBounds = nullptr;
 	};
 
 	//Maintainers
