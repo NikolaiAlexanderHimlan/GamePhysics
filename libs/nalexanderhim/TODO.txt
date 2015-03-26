@@ -5,3 +5,4 @@
 * OpenGL/Glut InputSystem (http://stackoverflow.com/a/866716)(http://www.swiftless.com/tutorials/opengl/keyboard.html)
 * Grid structure is a map with GridCoords as the key
 * #redefine macro, which does #undef then #define for the given macro
+* auto-inline: figure out a regular expression which finds all functions in headers which have an implementation and are 1-2 lines, add "inline" above/in front of the function

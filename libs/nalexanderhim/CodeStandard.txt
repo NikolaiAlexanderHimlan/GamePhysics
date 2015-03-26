@@ -1,6 +1,6 @@
 /*
 Author: Nikolai Alexander-Himlan
-Last Update: 3/23/15
+Last Update: 3/25/15
 */
 
 NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
@@ -11,6 +11,7 @@ variables may start with the following letters to indicate information about the
 	s = static variable (if not otherwise indicated by FULL_CASE naming format)
 	c = const variable (the intention is for it to be const, even if it is not actually const)
 	p = pointer
+	a = [pure] array (does not include std::vector, etc...), this includes pointer variables which are intended to be used as the head of an array
 variables will not start with one of the above letters if they are public members.
 
 classes are organized in order of private->protected->public, with variables followed by functions (starting with constructor/destructor).  Though if a variable is static or const it will be stored at the end of the class so member variables are listed first in the watch window for the debugger (unless the const value is being used for a name).
