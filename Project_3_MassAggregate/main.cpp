@@ -412,6 +412,7 @@ void Update()
 	//physics
 	gpParticleSystem->UpdatePhysics(elapsedSeconds);
 	gpParticleSystem->UpdateForces(elapsedSeconds);
+	gpParticleSystem->UpdateContacts(elapsedSeconds);
 
 	//graphics
 	glutSetWindow(glutWindowID);

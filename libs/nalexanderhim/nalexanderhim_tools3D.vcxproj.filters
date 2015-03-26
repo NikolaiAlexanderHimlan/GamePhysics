@@ -127,6 +127,9 @@
     <Filter Include="Header Files\Space3D\Volumes">
       <UniqueIdentifier>{0888309a-7ba3-4b07-8943-507227735f5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Physics\Collision">
+      <UniqueIdentifier>{53951a4b-b637-444e-b24a-12af46a696f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="GroundArea.cpp">
       <Filter>Source Files\Physics\Common Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleContactResolver.cpp">
+      <Filter>Source Files\Physics\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -348,6 +354,9 @@
       <Filter>Header Files\Physics\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleContactGenerator.h">
+      <Filter>Header Files\Physics\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleContactResolver.h">
       <Filter>Header Files\Physics\Collision</Filter>
     </ClInclude>
   </ItemGroup>

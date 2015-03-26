@@ -9,6 +9,9 @@ I certify that this assignment is entirely my own work.
 #include "Particle.h"
 #include "ParticleForceGenerator.h"
 #include "PhysicsGlobals.h"
+#include "ParticleContact.h"
+#include "ParticleContactGenerator.h"
+#include "ParticleContactResolver.h"
 
 //#include <cstddef>
 
@@ -17,6 +20,18 @@ ParticleSystem* gpParticleSystem = nullptr;
 extern ParticleSystem* getGlobalParticleSystem()
 {
 	return gpParticleSystem;
+}
+
+void ParticleSystem::InitContactGenerator(unsigned maxContacts, unsigned iterations /*= 0*/)
+{
+	mpResolver = new ParticleContactResolver(maxContacts, iterations);
+	mContactsEnabled = true;
+}
+void ParticleSystem::DisableContactGenerator()
+{
+	delete mpResolver;
+	mpResolver = nullptr;
+	mContactsEnabled = false;
 }
 
 void ParticleSystem::UpdatePhysics(Time elapsedSeconds)
@@ -46,6 +61,18 @@ void ParticleSystem::UpdateForces(Time elapsedSeconds)
 		holdForceGenerator->UpdateForce(holdParticle, elapsedSeconds);
 		}
 	}
+}
+void ParticleSystem::UpdateContacts(Time elapsedSeconds)
+{
+	if (!mContactsEnabled) return;
+
+	for (uint i = 0; i < numParticles(); i++)
+	{
+		mpResolver->addContacts(
+			getParticleContactGenerator(i)->addContact(
+			mpResolver->NextAvailableContact(), mpResolver->getLimit()));
+	}
+	mpResolver->ResolveContacts(elapsedSeconds);
 }
 
 ManageID ParticleSystem::getParticleForceID(ParticleForceGenerator* findThis)

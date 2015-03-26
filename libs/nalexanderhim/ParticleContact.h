@@ -12,6 +12,7 @@ Based on Ian Millington's cyclone physics engine.
 #include "MathTypes.h"
 
 class Particle;
+class ParticleContactResolver;
 
 /**
 * A contact represents two objects in contact (in this case
@@ -25,6 +26,7 @@ class Particle;
 */
 class ParticleContact
 {
+	friend ParticleContactResolver;
 public:
 	Particle* contacted[2];
 

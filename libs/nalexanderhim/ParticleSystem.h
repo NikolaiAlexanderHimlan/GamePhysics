@@ -16,6 +16,7 @@ class Particle;
 class ParticleSystem;
 class ParticleForceGenerator;
 class ParticleContactGenerator;
+class ParticleContactResolver;
 typedef std::pair<ParticleForceGenerator*, Particle*> ParticleForceRegistration;
 
 extern ParticleSystem* gpParticleSystem;
@@ -31,6 +32,10 @@ private:
 	std::vector<ParticleForceRegistration> mParticleForceRegistry;
 	std::vector<ParticleContactGenerator*> mParticleContactGeneratorList;
 
+	//Particle Contact system values
+	bool mContactsEnabled = false;
+	ParticleContactResolver* mpResolver = nullptr;//NOTE: no reason to be a pointer other than forward declaration
+
 protected:
 	ParticleSystem(){};
 	~ParticleSystem()
@@ -38,7 +43,9 @@ protected:
 		clearParticleForceList();
 		clearParticleForceRegistrations();
 		clearParticleContactGeneratorList();
+		DisableContactGenerator();
 	};
+
 public:
 	static bool InstantiateGlobal()
 	{
@@ -53,11 +60,6 @@ public:
 		delete gpParticleSystem;
 		gpParticleSystem = nullptr;
 	}
-	//Update Particles
-	void UpdatePhysics(Time elapsedSeconds);
-	//Update ParticleForces + apply force registrations
-	void UpdateForces(Time elapsedSeconds);
-	void UpdateContacts(Time elapsedSeconds);//check for and generate particle contacts
 
 	//Getters
 	inline Particle* getParticle(ManageID getID) const { return (Particle*)getManaged(getID);	};//TODO: safe cast
@@ -69,6 +71,21 @@ public:
 	Vector3f getTotalVelocity() const;
 	Vector3f getTotalForce() const;
 
+	//Actions
+	//Initialization
+	/**
+	* Enables Particle contact handling.  
+	* Simulator can handle up to the given number of contacts per frame.
+	* You can also optionally give a number of contact-resolution iterations to use.
+	* If you don't give a number of iterations, then twice the number of contacts will be used.
+	*/
+	void InitContactGenerator(unsigned maxContacts, unsigned iterations = 0);
+	void DisableContactGenerator();
+
+	//Update Systems
+	void UpdatePhysics(Time elapsedSeconds);//Update Particles
+	void UpdateForces(Time elapsedSeconds);//Update ParticleForces + apply force registrations
+	void UpdateContacts(Time elapsedSeconds);//check for and generate particle contacts
 
 #pragma region Particle Force Generators
 	//Getters
@@ -121,6 +138,7 @@ public:
 #pragma region Particle Contact Generators
 	//Getters
 	ManageID getParticleContactGeneratorID(ParticleContactGenerator* findThis);
+	ParticleContactGenerator* getParticleContactGenerator(ManageID contactID) const { return mParticleContactGeneratorList[contactID];	};
 
 	//Properties
 	inline uint numContactGenerators() const { return mParticleContactGeneratorList.size();	};
