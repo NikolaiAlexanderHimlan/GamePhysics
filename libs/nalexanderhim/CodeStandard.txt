@@ -1,6 +1,6 @@
 /*
 Author: Nikolai Alexander-Himlan
-Last Update: 3/25/15
+Last Update: 3/27/15
 */
 
 NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
@@ -32,7 +32,7 @@ functions are primarily categorized in the following ways (in order declared):
 //static
 	Static = static functions. (durr)
 
-functions start with a capital letter unless starting with one of the following words as a prefix, which indicates its purupose: 
+functions start with a capital letter unless starting with one of the following words as a prefix (is not a prefix if the only word), which indicates its purpose: 
 	get = indicates a getter (or false getter property)
 	set = indicates a setter (or false setter action)
 	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class.  Located under Getters. (for now)
@@ -41,6 +41,7 @@ functions start with a capital letter unless starting with one of the following 
 	remove = take something out of a container
 	clear = set empty/null
 	has/is = bool getter/property
+the function name may also start with a lower case letter if it is an extension of an existing system/built-in function, in which case the function will start with the name of the function being extended, case intact. (ex. absInv() extends the abs() function)
 
 some function return values should generally be treated in certain ways: 
 	Getters = the returned value should be a const& reference to the actual variable, this saves memory, is faster, makes it clear that the actual value is being returned, and differentiates it from implicit properties and calculations.
