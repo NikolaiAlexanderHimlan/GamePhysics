@@ -323,7 +323,7 @@
     <ClInclude Include="Rotation.h">
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
-    <ClInclude Include="MathTypes.h">
+    <ClInclude Include="MathDefines.h">
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
     <ClInclude Include="Primitives.h">

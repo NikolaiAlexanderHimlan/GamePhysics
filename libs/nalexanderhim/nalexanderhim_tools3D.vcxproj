@@ -106,11 +106,13 @@
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleCable.cpp" />
+    <ClCompile Include="ParticleContact.cpp" />
     <ClCompile Include="ParticleContactResolver.cpp" />
     <ClCompile Include="ParticleGravity.cpp" />
     <ClCompile Include="ParticleLink.cpp" />
     <ClCompile Include="ParticleRod.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
+    <ClCompile Include="ParticleWall.cpp" />
     <ClCompile Include="RotationMath.cpp" />
     <ClCompile Include="StringTools.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -120,6 +122,7 @@
     <ClInclude Include="Boundings.h" />
     <ClInclude Include="CameraView.h" />
     <ClInclude Include="ccmccooeyWrapper.h" />
+    <ClInclude Include="CodingDefines.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CountedArray.h" />
     <ClInclude Include="DataSystem.h" />
@@ -133,7 +136,7 @@
     <ClInclude Include="GroundArea.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
-    <ClInclude Include="MathTypes.h" />
+    <ClInclude Include="MathDefines.h" />
     <ClInclude Include="ParticleCable.h" />
     <ClInclude Include="ParticleContact.h" />
     <ClInclude Include="ParticleContactGenerator.h" />
