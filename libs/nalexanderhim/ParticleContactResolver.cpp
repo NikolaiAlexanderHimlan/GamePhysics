@@ -24,7 +24,7 @@ ParticleContact* ParticleContactResolver::NextAvailableContact()
 {
 	if (mCurrentContact >= mMaxContacts)
 		return nullptr;
-	return &maContacts[mCurrentContact++];
+	return &maContacts[mCurrentContact];
 }
 
 void ParticleContactResolver::ResolveContacts(Time duration)
