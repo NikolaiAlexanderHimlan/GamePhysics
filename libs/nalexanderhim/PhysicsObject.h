@@ -13,6 +13,8 @@ I certify that this assignment is entirely my own work.
 
 #include "PhysicsGlobals.h"
 
+//HACK: WARNING: mpBounds does not account for scale!
+//TODO: CONSIDER: professor proposed that PhysicsObject should contain instead of subclass Particle/Object3D.  This would allow for more controlled update/sync of position between the 2.
 class PhysicsObject :
 	public Particle, public Object3D
 {
@@ -23,19 +25,18 @@ protected:
 	//Actions
 	inline void RefreshObjectPosition()//update the object position based on the physics position
 	{
-		setWorldPosition(mPosition * (float)SIMULATION_SCALE_FACTOR);
+		setWorldPosition(FROM_SIMULATION_SCALE(mPosition));
 		doRefreshPhysPosition = false;//would be redundant at this point
 	};
 	inline void RefreshPhysicsPosition()//update the physics position based on the object position
 	{
-		mPosition = getWorldTransform().position * (float)SIMULATION_SCALE;
+		mPosition = TO_SIMULATION_SCALE(getWorldTransform().position);
 		doRefreshPhysPosition = false;//would be redundant at this point
 	};
 
 public:
-	explicit
-	PhysicsObject(float initialMass)
-		: Particle(initialMass), Object3D()
+	explicit PhysicsObject(float initialMass, std::string name = "")
+		: Particle(initialMass, name), Object3D()
 	{
 		doRefreshPhysPosition = true;//refresh at least once to sync them initially
 	}

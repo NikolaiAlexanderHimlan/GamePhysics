@@ -144,10 +144,16 @@ public:
 	inline uint numContactGenerators() const { return mParticleContactGeneratorList.size();	};
 
 	//Actions
+		//Add to Manager
+	inline void ManageParticleContactGenerator(ParticleContactGenerator* manageContactGenerator)
+	{ mParticleContactGeneratorList.push_back(manageContactGenerator);	};
+
+		//Delete object
 	void deleteParticleContactGenerator(ManageID removeID);
 	inline void deleteParticleContactGenerator(ParticleContactGenerator* removeThis)
 	{ deleteParticleContactGenerator(getParticleContactGeneratorID(removeThis));	};
 
+		//Remove from manage
 	inline void clearParticleContactGeneratorList()
 	{
 		for (uint i = 0; i < numContactGenerators(); i++)

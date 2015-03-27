@@ -9,7 +9,8 @@ I certify that this assignment is entirely my own work.
 Based on Ian Millington's cyclone physics engine.
 */
 #include <Vector3f.h>
-#include "MathTypes.h"
+#include "MathDefines.h"
+#include "Defines.h"
 
 class Particle;
 class ParticleContactResolver;
@@ -28,7 +29,8 @@ class ParticleContact
 {
 	friend ParticleContactResolver;
 public:
-	Particle* contacted[2];
+	Particle* contactA;
+	Particle* contactB;//NOTE: contactB is allowed to be null, in which case it is assumed to have infinite mass
 
 	real penetration;
 	real restitution;
@@ -38,11 +40,20 @@ protected:
 	/**
 	* Resolves this contact for both velocity and interpenetration.
 	*/
-	void Resolve(real duration);
+	void Resolve(Time duration);
 	/**
 	* Calculates the separating velocity at this contact.
 	*/
 	real CalculateSeparatingVelocity() const;
+
+	void Clear()
+	{
+		contactA = nullptr;
+		contactB = nullptr;
+		penetration = 0;
+		restitution = 0;
+		contactNormal = Vector3f::zero;
+	}
 
 private:
 	/**

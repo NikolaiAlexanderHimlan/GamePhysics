@@ -22,8 +22,8 @@ unsigned ParticleRod::addContact(ParticleContact *contact, unsigned limit) const
 	}
 
 	// Otherwise, return the contact.
-	contact->contacted[0] = FirstLink();
-	contact->contacted[1] = SecondLink();
+	contact->contactA = FirstLink();
+	contact->contactB = SecondLink();
 
 	// Calculate the normal.
 	Vector3f normal = Normal();

@@ -9,7 +9,7 @@ Based on Ian Millington's cyclone physics engine.
 #ifndef ParticleContactResolver_h__
 #define ParticleContactResolver_h__
 
-#include "MathTypes.h"
+#include "MathDefines.h"
 #include "Defines.h"
 
 class ParticleContact;

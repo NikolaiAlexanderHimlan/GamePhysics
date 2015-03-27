@@ -66,7 +66,7 @@ void ParticleSystem::UpdateContacts(Time elapsedSeconds)
 {
 	if (!mContactsEnabled) return;
 
-	for (uint i = 0; i < numParticles(); i++)
+	for (uint i = 0; i < numContactGenerators(); i++)
 	{
 		mpResolver->addContacts(
 			getParticleContactGenerator(i)->addContact(

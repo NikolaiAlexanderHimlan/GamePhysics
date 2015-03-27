@@ -195,6 +195,12 @@
     <ClCompile Include="ParticleContactResolver.cpp">
       <Filter>Source Files\Physics\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleContact.cpp">
+      <Filter>Source Files\Physics\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleWall.cpp">
+      <Filter>Source Files\Physics\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">

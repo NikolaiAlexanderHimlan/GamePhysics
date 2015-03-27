@@ -11,6 +11,7 @@ I certify that this assignment is entirely my own work.
 #include "ccmccooeyWrapper.h"
 #include "ParticleForceGenerator.h"
 
+//TODO: Ground/WorldGravity subclass which automatically has gravity "down"
 class ParticleGravity
 	: public ParticleForceGenerator
 {

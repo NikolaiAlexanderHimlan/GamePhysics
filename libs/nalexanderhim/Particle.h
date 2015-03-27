@@ -14,6 +14,7 @@ I certify that this assignment is entirely my own work.
 #include "ManagedBase.h"
 #include "FloatFactor.h"
 #include "Boundings.h"
+#include "CodingDefines.h"
 
 //Physics Handler
 class Particle
@@ -33,6 +34,8 @@ private:
 
 protected:
 	virtual ManagerBase* getManager() const;
+
+	std::string mName = "Particle";
 
 	Bounding* mpBounds = new Bounding();//defines the physics boundary of the particle
 
@@ -122,9 +125,12 @@ protected:
 	inline void clearForce() { setForce(Vector3f(0.0f));	};
 
 public:
-	Particle(float initialMass)
+	explicit Particle(float initialMass, std::string name = "")
 	{
 		setMass(initialMass);
+
+		if (name != "")
+			mName = name;
 	}
 	virtual ~Particle()
 	{
@@ -143,8 +149,16 @@ public:
 	}
 
 	//Getters
+	inline REF(std::string) getName() const
+	{
+		static const std::string NULL_PARTICLE_NAME = "null particle";
+		if (this == nullptr)
+			return NULL_PARTICLE_NAME;
+		return mName;
+	};
 	//Simulation_ prefix is to differentiate from graphical position
 	inline const Vector3f& getPhysicsPosition() const { return mPosition;	};
+	inline REF(Bounding) getBounds() const { return *mpBounds;	};
 	inline const float& getMass() const { return mMass;	};//TODO: Handle infinite mass
 	inline const Vector3f& getVelocity() const { return mVelocity;	};
 

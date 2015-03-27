@@ -58,11 +58,17 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 
 //Implementation Data
 
+//physics objects
 PhysicsObject* model1;
 PhysicsObject* model2;
-GroundArea* ground;
+
+//forces
 float gravityForce = 0.5f;
 ParticleGravity* worldGrav = nullptr;
+
+//contacts
+GroundArea* ground;
+uint maxContacts = 4;//TODO: update based on number of particles
 
 void ChangeSize(int w, int h)
 {
@@ -121,7 +127,7 @@ void setupWorld()
 		//model2 position
 		M3DVector3f model2Position;
 		model2Position[0] = 0;//X, left/right
-		model2Position[1] = 0.5f;//Y, up/down
+		model2Position[1] = -5.0f;//Y, up/down
 		model2Position[2] = 6.0f;//Z, in/out
 		model2->refLocalTransform().setPosition(model2Position);
 
@@ -149,7 +155,11 @@ void setupPhysics()
 	//create and set force registrations
 	if (worldGrav != nullptr) delete worldGrav;
 	worldGrav = new ParticleGravity(Vector3f(0.0f, -gravityForce, 0.0f));
-	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
+	//getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
+
+	//initialize particle contact generation and register particle contacts
+	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
+	getGlobalParticleSystem()->ManageParticleContactGenerator(ground);
 }
 void setupUI()
 {
@@ -240,6 +250,7 @@ void UpdateUI()
 			if (debugPhys != nullptr)
 			{
 				targtPos->set_text((
+					" Particle: " + debugPhys->getName() + 
 					" \n| Vel:\n " + debugPhys->getVelocity().toString() +
 					" \n| SimPos:\n " + debugPhys->getPhysicsPosition().toString() +
 					" \n| GrphPos:\n " + debugPhys->getWorldTransform().position.toString()
@@ -402,7 +413,7 @@ void create()
 
 	//Create Objects
 	model1 = new PhysicsObject(5.0f);
-	model2 = new PhysicsObject(10.0f);
+	model2 = new PhysicsObject(10.0f, "Falling Model");
 	model2->Manage();
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
