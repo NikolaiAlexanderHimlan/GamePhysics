@@ -39,6 +39,7 @@ public:
 	Vector3f(const Vector3f &rhs);
 	Vector3f(const Vector3f *rhs);
 	Vector3f(const float xyz[3]);
+	Vector3f(Axis direction) : Vector3f(AxisNormal(direction)) {};
 	~Vector3f();
 
 	//setters
@@ -85,7 +86,6 @@ public:
 		toNormalize.normalize();
 		return toNormalize;
 	}
-	inline Vector3f InvertedNormal() const { return one - *this;	};//[NAH]
 	void setLength(float length); //make the vector length a specific value
 	void power(float power);
 

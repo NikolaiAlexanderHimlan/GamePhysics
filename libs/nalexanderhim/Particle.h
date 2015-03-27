@@ -107,12 +107,6 @@ protected:
 		RecalculateMomentum(oldMass);
 	}
 
-	inline void setBounds(Bounding* newBounds)
-	{
-		delete mpBounds;
-		mpBounds = newBounds;
-	}
-
 	//Actions
 	inline bool setForce(const Vector3f& forceVector)
 	{
@@ -164,6 +158,11 @@ public:
 
 	//Setters
 	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
+	inline void setBounds(Bounding* newBounds)
+	{
+		delete mpBounds;
+		mpBounds = newBounds;
+	}
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	
 	//Properties

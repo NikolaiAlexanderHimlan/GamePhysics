@@ -21,6 +21,9 @@ struct SphereVolume
 	: public VolumeDefinition
 {
 	float radius = 0.0f;
+
+	SphereVolume(float sphereRadius) : radius(sphereRadius) {};
+
 	inline Vector3f HighestPoint(const Vector3f& volumePos = Vector3f::zero, Axis upAxis = UP) const
 	{
 		Vector3f highPoint;
@@ -45,4 +48,37 @@ struct SphereVolume
 	};
 };
 
+struct CubeVolume
+	: public VolumeDefinition
+{
+	float width, length, height;
+
+	CubeVolume(float cubeWidth, float cubeLength, float cubeHeight)
+		: width(cubeWidth), length(cubeLength), height(cubeHeight) {};
+
+	inline Vector3f VolumeVector() const { return Vector3f(width, height, length);	}
+
+	inline Vector3f HighestPoint(VectParam volumePos /* = Vector3f::zero */, Axis upAxis /* = UP */) const
+	{
+		Vector3f highPoint;
+
+		switch (upAxis)
+		{
+		case X:
+			highPoint.x = width;
+			break;
+		case Y:
+			highPoint.y = height;
+			break;
+		case Z:
+			highPoint.z = length;
+			break;
+		default:
+			throw std::logic_error("Invalid Axis - CubeVolume - LowestPoint!");
+			break;
+		}
+
+		return volumePos + highPoint;
+	};
+};
 #endif // VolumeDefinition_h__

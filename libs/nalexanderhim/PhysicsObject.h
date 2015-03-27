@@ -62,5 +62,28 @@ public:
 		doRefreshPhysPosition = true;//record that the physics position will need to be updated
 		return __super::refLocalTransform();
 	}
+
+	//Calculations
+	//TODO: WARNING: All the following need to convert their values from graphics to simulation
+	inline void setBatchPlane(float width, float length, Axis facing = Y, bool inv = false /*Face along the negative edge of the axis*/)
+	{
+		setBounds(new PlaneBounding(width, length, Vector3f::AxisNormal(facing) *(inv ? -1.0f : 1.0f)));
+		Object3D::setBatchPlane(width, length, facing, inv);
+	};
+	inline void setBatchTriangle(float distUp, float distLeft, float distRight /*TODO: optional color parameters*/)//distance of each corner from the center
+	{
+		setBounds(new PlaneBounding(distLeft + distRight, distUp, FORWARD));
+		Object3D::setBatchTriangle(distUp, distLeft, distRight);
+	};
+	inline void setBatchCube(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/)
+	{
+		setBounds(new CubeBounding(CubeVolume(xDimension, zDimension, yDimension)));
+		Object3D::setBatchCube(xDimension, yDimension, zDimension);
+	};
+	inline void setBatchSphere(float radius, int numSegments = 8 /*TODO: optional color parameters*/)
+	{
+		setBounds(new SphereBounding(radius));
+		Object3D::setBatchSphere(radius, numSegments);
+	};
 };
 #endif
