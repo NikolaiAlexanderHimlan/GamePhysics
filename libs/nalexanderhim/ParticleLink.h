@@ -9,7 +9,7 @@ I certify that this assignment is entirely my own work.
 Based on Ian Millington's cyclone physics engine.
 */
 #include "ParticleContactGenerator.h"
-#include "MathTypes.h"
+#include "MathDefines.h"
 
 class Particle;
 class Vector3f;

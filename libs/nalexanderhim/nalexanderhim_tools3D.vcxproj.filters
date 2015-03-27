@@ -359,6 +359,9 @@
     <ClInclude Include="ParticleContactResolver.h">
       <Filter>Header Files\Physics\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="CodingDefines.h">
+      <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

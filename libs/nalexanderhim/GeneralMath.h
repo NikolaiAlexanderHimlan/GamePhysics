@@ -18,10 +18,19 @@ using namespace std;
 
 namespace nah
 {
-#define exp10(exponent) pow(10.0, exponent);
 	//namespace math {
+		//namespace float {
 
 	static inline float absInv(float invertThis) { return -abs(invertThis);	};
+
+	static inline float sqrtKeepSign(float rootThis)
+	{
+		bool isNegative = false;
+		if (rootThis < 0) isNegative = true;
+		rootThis = sqrt(rootThis);
+		if (isNegative) rootThis *= -1;
+		return rootThis;
+	}
 	
 	//************************************
 	// Method:    checkWholeNumber
@@ -81,5 +90,6 @@ namespace nah
 
 		return wrapThis;
 	}
+		//}
 	//}
 }
