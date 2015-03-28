@@ -159,6 +159,24 @@ public:
 
 	Vector3f asRad() const;
 	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
+	//TODO: try to find a better name for the NormalWeight functions
+	/// <summary> Takes a vector and a normal and returns the vector weighted against the normal.
+	/// <para> EX. weighting (6, 5, 8) against (0,1,0)[UP] would return (0, 5, 0). </para>
+	/// </summary>
+	/// <param name="vector">The vector that is weighted against the normal.</param>
+	/// <param name="normal">The normal to weight against.</param>
+	/// <returns>The weighted version of the vector.</returns>
+	static Vector3f NormalWeight(VectParam vector, VectParam normal)
+	{ return Multiply(vector, normal); };//[NAH]
+	/// <summary> Takes a vector and a normal and returns the vector inversely weighted against the normal.
+	/// <para> EX. weighting (6, 5, 8) against (0,1,0)[UP] would return (0, 5, 0). </para>
+	/// <para> On the other hand, inversely weighting the previous vector with the normal would return (6, 0, 8). </para>
+	/// </summary>
+	/// <param name="vector">The vector that is weighted against the normal.</param>
+	/// <param name="normal">The normal to inversely weight against.</param>
+	/// <returns>The weighted version of the vector.</returns>
+	static Vector3f InvertNormalWeight(VectParam vector, VectParam normal)
+	{ return normal - NormalWeight(vector, normal);  };//[NAH]
 	static inline Vector3f clearAxes_Key(Vector3f vector, Axis axisKey);//[NAH]
 	//clears axes of a vector if the corresponding axis in axisKey is 0
 	static inline Vector3f clearAxes_Key(Vector3f vector, VectParam axisKey)

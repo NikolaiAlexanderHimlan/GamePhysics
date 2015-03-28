@@ -79,8 +79,8 @@ struct PlaneBounding
 		//NOTE: the closer to 1 the axis value in normal is, the less relevant otherLocation is
 		//TODO: limit the range of wallPoint based on the width and length
 		Vector3f wallPoint = 
-			Vector3f::Multiply(boundsLocation, normal)//location of bounds is is directly relevant based on the normal
-			+ Vector3f::Multiply(otherLocation, Vector3f::InvertedNormal(normal));//other location is inversely relevant based on the normal
+			Vector3f::NormalWeight(boundsLocation, normal)//location of bounds is is directly relevant based on the normal
+			+ Vector3f::InvertNormalWeight(otherLocation, normal);//other location is inversely relevant based on the normal
 
 		//checkLocation on opposite side from normal
 		//TODO: handle impassable
