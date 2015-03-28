@@ -80,12 +80,12 @@ public:
 	float lengthSquared() const;
 	void normalize(); //make the vector length 1
 	//returns a vector of length 1 in the direction of this vector
-	inline Vector3f normalized() const//[NAH]
+	inline Vector3f Normalized() const//[NAH]
 	{
 		Vector3f toNormalize = *this;
 		toNormalize.normalize();
 		return toNormalize;
-	}
+	};
 	void setLength(float length); //make the vector length a specific value
 	void power(float power);
 
@@ -138,8 +138,9 @@ public:
 	};//[NAH]
 
 	static inline Vector3f Difference(const Vector3f &first, const Vector3f &second) { return second - first;	};//[NAH] //gets a vector representing the space between 2 other vectors
-	static inline Vector3f DirectionTo(const Vector3f &from, const Vector3f &to) { return Difference(from, to).normalized(); };//[NAH] //gets a unit vector representing the direction from first to second
 	static inline Vector3f DirectionFrom(const Vector3f &from, const Vector3f &to) { return from + DirectionTo(from, to);	};//[NAH] //gets a unit vector pointing from first to second
+	static inline Vector3f DirectionTo(const Vector3f &from, const Vector3f &to)
+	{ return Difference(from, to).Normalized(); };//[NAH] //gets a unit vector representing the direction from first to second
 	/// <summary>Gets the point a given distance between 2 vectors. </summary>
 	/// <param name="first"></param>
 	/// <param name="second"></param>
