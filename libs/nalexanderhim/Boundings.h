@@ -127,7 +127,7 @@ struct SphereBounding
 		Vector3f vectTo = Vector3f::Distancepoint(boundsLocation, otherLocation, radius);
 		
 		//2nd, check if this vector passes the otherLocation, in which case there is definitely a collision
-		if(Vector3f::Between(boundsLocation, vectTo, otherLocation))
+		if(Vector3f::isBetween(boundsLocation, vectTo, otherLocation))
 			return true;
 
 		//3rd, check if the other bounds contains the location indicated by the calculated vector
