@@ -58,7 +58,7 @@ public:
 	}
 
 	//Getters
-	Transform& refLocalTransform()
+	inline Transform& refLocalTransform()
 	{
 		doRefreshPhysPosition = true;//record that the physics position will need to be updated
 		return __super::refLocalTransform();
