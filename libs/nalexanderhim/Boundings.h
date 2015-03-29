@@ -65,21 +65,23 @@ struct PlaneBounding
 {
 	static const BoundType BOUND_TYPE = PLANE;
 
-	PlaneBounding(float planeWidth = 0, float planeLength = 0, Vector3f planeNormal = UP, bool planeImpassable = false)
-		: width(planeWidth), length(planeLength), normal(planeNormal), impassable(planeImpassable){};
+	PlaneBounding(Vector3f planeNormal = UP, bool planeImpassable = false)
+		: normal(planeNormal), impassable(planeImpassable), infinite(true) {};
+	PlaneBounding(float planeWidth, float planeLength, Vector3f planeNormal = UP, bool planeImpassable = false)
+		: width(planeWidth), length(planeLength), normal(planeNormal), impassable(planeImpassable), infinite(false) {};
 
 	float width, length;
 	Vector3f normal;
 	bool impassable = false;//is it possible for an object to be on the opposite side of the wall from the normal?
+	bool infinite = false;//should the width/length not matter?
 
-	
 	virtual bool CheckOverlap(const Bounding& otherBounds, const Vector3f& boundsLocation, const Vector3f& otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
 	{
 		//Generate a vector with the correct location along the normal and otherLocation filling in the remaining data
 		//NOTE: the closer to 1 the axis value in normal is, the less relevant otherLocation is
 		//TODO: limit the range of wallPoint based on the width and length
 		Vector3f wallPoint = 
-			Vector3f::NormalWeight(boundsLocation, normal)//location of bounds is is directly relevant based on the normal
+			Vector3f::NormalWeight(boundsLocation, normal)//location of bounds is directly relevant based on the normal
 			+ Vector3f::InvertNormalWeight(otherLocation, normal);//other location is inversely relevant based on the normal
 
 		//checkLocation on opposite side from normal
@@ -163,7 +165,7 @@ struct CubeBounding
 		OUT_SET(overlapAmount, 
 			Vector3f::Distance(checkLocation, 
 			Vector3f::DirectionTo(boundsLocation, checkLocation)))
-		return VolumeVector().GreaterEqual_All(relativePoint);
+		return VolumeVector().GreaterEqual_All(Vector3f::abs(relativePoint));
 	};
 };
 #endif // Boundings_h__

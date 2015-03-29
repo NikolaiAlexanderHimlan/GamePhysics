@@ -143,7 +143,7 @@ void setupWorld()
 	}
 
 	//Ground plane setup
-	ground->refLocalTransform().position.y = -5.0f;
+	ground->physicsPosition.y = -5.0f;
 }
 void setupPhysics()
 {
@@ -250,10 +250,10 @@ void UpdateUI()
 			if (debugPhys != nullptr)
 			{
 				targtPos->set_text((
-					" Particle: " + debugPhys->getName() + 
-					" \n| Vel:\n " + debugPhys->getVelocity().toString() +
-					" \n| SimPos:\n " + debugPhys->getPhysicsPosition().toString() +
-					" \n| GrphPos:\n " + debugPhys->getWorldTransform().position.toString()
+					"Particle Name:\n\t" + debugPhys->getName()
+					+ "\n| GrphPos:\n\t" + debugPhys->getWorldTransform().position.toString()
+					+ "\n| SimPos:\n\t" + debugPhys->getPhysicsPosition().toString()
+					+ "\n| Velocity:\n\t" + debugPhys->getVelocity().toString()
 					).c_str());
 			}
 
