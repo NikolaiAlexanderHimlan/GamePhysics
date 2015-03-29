@@ -100,6 +100,8 @@ namespace nah
 #pragma endregion
 
 #pragma region Precision adjusted trig
+	//TODO: change case to match sin, cos, tan function case
+	//CONSIDER: overloaded functions instead of type indication character suffix
 	static inline float SinF_Precise(const float& radians) { return LimitPrecision(sin(radians));	};
 	static inline float CosF_Precise(const float& radians) { return LimitPrecision(cos(radians));	};
 	static inline float TanF_Precise(const float& radians);

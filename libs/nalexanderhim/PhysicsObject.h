@@ -15,6 +15,7 @@ I certify that this assignment is entirely my own work.
 
 //HACK: WARNING: mpBounds does not account for scale!
 //TODO: CONSIDER: professor proposed that PhysicsObject should contain instead of subclass Particle/Object3D.  This would allow for more controlled update/sync of position between the 2.
+//Combines Particle Physics with Graphical representation
 class PhysicsObject :
 	public Particle, public Object3D
 {

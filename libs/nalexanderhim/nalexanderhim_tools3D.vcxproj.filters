@@ -79,7 +79,10 @@
     <Filter Include="Source Files\Physics">
       <UniqueIdentifier>{972e28f4-5977-4276-adae-39a44cbf723e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Managment">
+    <Filter Include="Header Files\BaseTypes">
+      <UniqueIdentifier>{2a57566f-18c4-424a-aba1-bfa2b8988f1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\BaseTypes\Managment">
       <UniqueIdentifier>{7c64ea9a-a944-4a96-8a2b-70b77e27154e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Management">
@@ -115,10 +118,10 @@
     <Filter Include="Source Files\Physics\Particles">
       <UniqueIdentifier>{006f5c56-924d-4699-bc55-7e7018de6609}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\Common Objects">
+    <Filter Include="Header Files\Common Objects">
       <UniqueIdentifier>{002ae246-d6c8-4c4c-a287-9348f6890253}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Physics\Common Objects">
+    <Filter Include="Source Files\Common Objects">
       <UniqueIdentifier>{c66e64e7-f9f5-44ca-a292-89b1fd144a72}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Physics\Collision">
@@ -190,7 +193,7 @@
       <Filter>Source Files\Space3D</Filter>
     </ClCompile>
     <ClCompile Include="GroundArea.cpp">
-      <Filter>Source Files\Physics\Common Objects</Filter>
+      <Filter>Source Files\Common Objects</Filter>
     </ClCompile>
     <ClCompile Include="ParticleContactResolver.cpp">
       <Filter>Source Files\Physics\Collision</Filter>
@@ -273,13 +276,13 @@
       <Filter>Header Files\Physics\Connections</Filter>
     </ClInclude>
     <ClInclude Include="ManagedBase.h">
-      <Filter>Header Files\Managment</Filter>
+      <Filter>Header Files\BaseTypes\Managment</Filter>
     </ClInclude>
     <ClInclude Include="ManageTypes.h">
-      <Filter>Header Files\Managment</Filter>
+      <Filter>Header Files\BaseTypes\Managment</Filter>
     </ClInclude>
     <ClInclude Include="ManagerBase.h">
-      <Filter>Header Files\Managment</Filter>
+      <Filter>Header Files\BaseTypes\Managment</Filter>
     </ClInclude>
     <ClInclude Include="EngineDefines.h">
       <Filter>Header Files\Definitions</Filter>
@@ -294,7 +297,7 @@
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsObject.h">
-      <Filter>Header Files\Physics</Filter>
+      <Filter>Header Files\Common Objects</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
       <Filter>Header Files\Utilities\Time</Filter>
@@ -336,7 +339,7 @@
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
     <ClInclude Include="GroundArea.h">
-      <Filter>Header Files\Physics\Common Objects</Filter>
+      <Filter>Header Files\Common Objects</Filter>
     </ClInclude>
     <ClInclude Include="PrecisionMath.h">
       <Filter>Header Files\Utilities\Math</Filter>
