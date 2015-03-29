@@ -14,21 +14,46 @@ I certify that this assignment is entirely my own work.
 #include <cmath>
 #include <math.h>
 
+#include "MathDefines.h"
+
 using namespace std;
 
 namespace nah
 {
 	//namespace math {
+	//Utilities
+#define SAVE_SIGN(value) bool isNegative = value < 0;
+#define APPLY_SIGN(value) if(isNegative) value *= -1;/*Requires SAVE_SIGN first.*/
+
+	//Functions
+#define exp10(exponent) pow(10.0, exponent);
+
 		//namespace float {
+
+	static inline float Clamp(float clampThis, float clampMax, float clampMin = 0.0f)
+	{
+		if (clampThis > clampMax)
+			return clampMax;
+		if (clampThis < clampMin)
+			return clampMin;
+		return clampThis;
+	};
+	//Ignores signs when clamping, sign is reapplied after the clamp operation
+	static inline float ClampKeepSign(float clampThis, ufloat clampMax, ufloat clampMin = 0.0f)
+	{
+		SAVE_SIGN(clampThis);
+		Clamp(clampThis, clampMax, clampMin);
+		APPLY_SIGN(clampThis);
+		return clampThis;
+	};
 
 	static inline float absInv(float invertThis) { return -abs(invertThis);	};
 
 	static inline float sqrtKeepSign(float rootThis)
 	{
-		bool isNegative = false;
-		if (rootThis < 0) isNegative = true;
+		SAVE_SIGN(rootThis)
 		rootThis = sqrt(rootThis);
-		if (isNegative) rootThis *= -1;
+		APPLY_SIGN(rootThis)
 		return rootThis;
 	}
 	

@@ -7,7 +7,8 @@ I certify that this assignment is entirely my own work.
 */
 #ifndef _PARTICLESYSTEM_H
 #define _PARTICLESYSTEM_H
-#include "Defines.h"
+#include "TimeDefines.h"
+#include "MathDefines.h"
 #include "ManagerBase.h"
 #include "ccmccooeyWrapper.h"
 #include "CountedArray.h"

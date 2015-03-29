@@ -281,9 +281,6 @@
     <ClInclude Include="ManagerBase.h">
       <Filter>Header Files\Managment</Filter>
     </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>Header Files\Definitions</Filter>
-    </ClInclude>
     <ClInclude Include="EngineDefines.h">
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
@@ -367,6 +364,9 @@
     </ClInclude>
     <ClInclude Include="CodingDefines.h">
       <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeDefines.h">
+      <Filter>Header Files\Utilities\Time</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

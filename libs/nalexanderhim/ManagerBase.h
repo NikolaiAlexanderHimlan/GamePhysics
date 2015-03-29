@@ -16,7 +16,7 @@ namespace std {
 	class vector < T > ;
 }//*/
 
-#include "Defines.h"
+#include "MathDefines.h"
 
 //TODO: CONSIDER: make generic T class, where T is the managed class
 //TODO: alternatively, make the generic T the key type

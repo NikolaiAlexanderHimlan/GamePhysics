@@ -82,6 +82,7 @@ namespace nah
 	extern const double TO_RADIAN;
 	extern const double TO_DEGREE;
 
+	//TODO: find alternative shortening which obeys scope.
 #define DegToRad DegreesToRadians
 	static inline float DegreesToRadians(float degrees)
 	{

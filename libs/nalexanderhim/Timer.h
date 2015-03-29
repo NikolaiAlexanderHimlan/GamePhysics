@@ -11,7 +11,7 @@
 
 #include <chrono>
 
-#include "Defines.h"
+#include "TimeDefines.h"
 
 class Timer {
 	typedef std::chrono::high_resolution_clock high_resolution_clock;

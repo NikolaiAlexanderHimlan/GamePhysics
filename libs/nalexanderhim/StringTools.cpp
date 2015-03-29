@@ -6,7 +6,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "StringTools.h"
-#include "MathDefines.h"
+#include "GeneralMath.h"
 
 using namespace std;
 

@@ -9,6 +9,7 @@ I certify that this assignment is entirely my own work.
 */
 #include "ccmccooeyWrapper.h"
 #include "SpaceDefines.h"
+#include "MathDefines.h"
 
 struct VolumeDefinition
 {

@@ -10,7 +10,7 @@ Based on Ian Millington's cyclone physics engine.
 */
 #include <Vector3f.h>
 #include "MathDefines.h"
-#include "Defines.h"
+#include "TimeDefines.h"
 
 class Particle;
 class ParticleContactResolver;

@@ -128,7 +128,6 @@
     <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugDefines.h" />
     <ClInclude Include="DebugTools.h" />
-    <ClInclude Include="Defines.h" />
     <ClInclude Include="DoubleFactor.h" />
     <ClInclude Include="FactorBase.h" />
     <ClInclude Include="FloatFactor.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="Rotation.h" />
     <ClInclude Include="RotationMath.h" />
     <ClInclude Include="SpaceDefines.h" />
+    <ClInclude Include="TimeDefines.h" />
     <ClInclude Include="VolumeDefinition.h" />
     <ClInclude Include="StringTools.h" />
     <ClInclude Include="Timer.h" />

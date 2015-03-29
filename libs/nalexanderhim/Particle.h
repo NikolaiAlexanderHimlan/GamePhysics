@@ -8,7 +8,7 @@ I certify that this assignment is entirely my own work.
 #ifndef _PARTICLE_H
 #define _PARTICLE_H
 
-#include "Defines.h"
+#include "TimeDefines.h"
 #include "PhysicsDefines.h"
 #include "ccmccooeyWrapper.h"
 #include "ManagedBase.h"

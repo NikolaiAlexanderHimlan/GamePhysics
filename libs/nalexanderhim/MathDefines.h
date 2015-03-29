@@ -3,7 +3,10 @@
 #define F0 0.0f /*float 0.0f*/
 #define D0 0.0 /*double 0.0*/
 
-#define exp10(exponent) pow(10.0, exponent);
+#define U unsigned
+typedef U int uint;
+typedef float ufloat;//TODO: make unsigned float
+typedef double udouble;//TODO: make unsigned double
 
 typedef double real;
 
