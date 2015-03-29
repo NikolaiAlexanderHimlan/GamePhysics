@@ -16,6 +16,8 @@
 
 #include <ostream>
 
+//TODO: upon claim, add class to nah namespace
+
 #define Vector2f(x,y) Vector3f(x,y,0.0f)
 //#define Vector2f(allValues) Vector3f(allValues)
 #define VectParam const Vector3f&
@@ -78,6 +80,7 @@ public:
 	float length() const;
 	//Cheaper than length, useful for comparing the lengths of vectors
 	float lengthSquared() const;
+
 	void normalize(); //make the vector length 1
 	//returns a vector of length 1 in the direction of this vector
 	inline Vector3f Normalized() const//[NAH]
@@ -86,9 +89,14 @@ public:
 		toNormalize.normalize();
 		return toNormalize;
 	};
+
 	void setLength(float length); //make the vector length a specific value
 	void power(float power);
 
+	inline bool Equals_Any(VectParam rhs) const
+	{ return x == rhs.x || y == rhs.y || z == rhs.z;	};//[NAH]
+	inline bool Equals_All(VectParam rhs) const
+	{ return x == rhs.x && y == rhs.y && z == rhs.z;	};//[NAH]
 	inline bool Equals_NonZero(const Vector3f& rhs) const//compares the values of the vectors, ignoring values of 0
 	{
 		bool isEqual = true;
@@ -102,22 +110,26 @@ public:
 
 		return isEqual;
 	}
+	inline bool Greater_Any(VectParam rhs) const
+	{ return x > rhs.x || y > rhs.y || z > rhs.z;	};//[NAH]
+	inline bool Greater_All(VectParam rhs) const
+	{ return x > rhs.x && y > rhs.y && z > rhs.z;	};//[NAH]
+	inline bool Greater_NonZero(VectParam rhs) const;//[NAH]
 	bool GreaterEqual_Any(const Vector3f& rhs) const
-	{
-		return
-			x >= rhs.x || 
-			y >= rhs.y || 
-			z >= rhs.z;
-	};//[NAH]
+	{ return Greater_Any(rhs) || Equals_Any(rhs);	};//[NAH]
 	bool GreaterEqual_All(const Vector3f& rhs) const
-	{
-		return 
-			x >= rhs.x && 
-			y >= rhs.y && 
-			z >= rhs.z;
-	};//[NAH]
+	{ return Greater_All(rhs) || Equals_All(rhs);	};//[NAH]
+	inline bool GreaterEqual_NonZero(VectParam rhs) const;//[NAH]
 
 	//static math functions
+	//@return a positive version of the vector
+	static inline Vector3f abs(VectParam makeAbsolute)
+	{ return Vector3f(std::abs(makeAbsolute.x), std::abs(makeAbsolute.y), std::abs(makeAbsolute.z)); };//[NAH]
+
+	//TODO: make inline upon claim
+	static Vector3f ClampMax(VectParam clampThis, VectParam clampMax);//[NAH]
+	static Vector3f ClampMaxKeepSign(VectParam clampThis, VectParam clampMax);//[NAH]
+
 	static Vector3f Multiply(Vector3f lhs, VectParam rhs)
 	{
 		lhs.x *= rhs.x;
@@ -147,7 +159,7 @@ public:
 	/// <param name="distance"> actual distance value, will move this amount from first to second. </param>
 	/// <returns>Location of the point.</returns>
 	static inline Vector3f Distancepoint(const Vector3f &first, const Vector3f &second, float distance) { return first + DirectionTo(first, second) * distance; };//[NAH]
-	/// <param name="value"> value between 0 and 1 </param>
+	/// <param name="value"> value between 0 and 1 representing a range. </param>
 	static inline Vector3f Betweenpoint(const Vector3f &first, const Vector3f &second, float value) { return first + (Difference(first, second) * value); };//[NAH] //value between 0 and 1
 	static inline Vector3f Midpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.5f); };
 	static inline Vector3f Quaterpoint(const Vector3f &first, const Vector3f &second) { return Betweenpoint(first, second, 0.25f); };

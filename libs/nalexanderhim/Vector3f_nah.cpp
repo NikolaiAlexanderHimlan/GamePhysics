@@ -8,9 +8,25 @@ I certify that this assignment is entirely my own work.
 #include "Vector3f.h"
 #include "SpaceDefines.h"
 #include "Rotation.h"
-
 #include "RotationMath.h"
+#include "GeneralMath.h"
 using namespace nah;
+
+Vector3f Vector3f::ClampMax(VectParam clampThis, VectParam clampMax)
+{
+	return Vector3f(
+		nah::Clamp(clampThis.x, clampMax.x),
+		nah::Clamp(clampThis.y, clampMax.y),
+		nah::Clamp(clampThis.z, clampMax.z));
+}
+Vector3f Vector3f::ClampMaxKeepSign(VectParam clampThis, VectParam clampMax)
+{
+	return Vector3f(
+		nah::ClampKeepSign(clampThis.x, std::abs(clampMax.x)),
+		nah::ClampKeepSign(clampThis.y, std::abs(clampMax.y)),
+		nah::ClampKeepSign(clampThis.z, std::abs(clampMax.z)));
+}
+
 Vector3f Vector3f::asRad() const { return Vector3f(DegToRad(x), DegToRad(y), DegToRad(z)); };
 
 //implementation found here: http://stackoverflow.com/a/8208951

@@ -9,10 +9,12 @@ I certify that this assignment is entirely my own work.
 */
 #include "ccmccooeyWrapper.h"
 #include "SpaceDefines.h"
+#include "CodingDefines.h"
 #include "MathDefines.h"
 
 struct VolumeDefinition
 {
+	virtual Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos = Vector3f::zero, OUT_PARAM(real) distanceToPos = nullptr) const = 0;
 	virtual Vector3f HighestPoint(VectParam volumePos = Vector3f::zero, Axis upAxis = UP) const=0;
 	inline Vector3f LowestPoint(VectParam volumePos = Vector3f::zero, Axis upAxis = UP) const
 	{ return HighestPoint(volumePos, upAxis) * -1.0f; };
@@ -24,6 +26,13 @@ struct SphereVolume
 	float radius = 0.0f;
 
 	SphereVolume(float sphereRadius) : radius(sphereRadius) {};
+
+	virtual Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos /* = Vector3f::zero */, OUT_PARAM(real) distanceToPos /* = nullptr */) const
+	{
+		Vector3f nearVect = Vector3f::Distancepoint(volumePos, toPos, radius);
+		OUT_SET(distanceToPos, (nearVect - volumePos).length())
+		return nearVect;
+	};
 
 	inline Vector3f HighestPoint(const Vector3f& volumePos = Vector3f::zero, Axis upAxis = UP) const
 	{
@@ -58,6 +67,12 @@ struct CubeVolume
 		: width(cubeWidth), length(cubeLength), height(cubeHeight) {};
 
 	inline Vector3f VolumeVector() const { return Vector3f(width, height, length);	}
+
+	inline Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos /* = Vector3f::zero */, OUT_PARAM(real) distanceToPos /* = nullptr */) const
+	{
+		return Vector3f::ClampMaxKeepSign(
+			Vector3f::Difference(volumePos, toPos), VolumeVector());
+	};
 
 	inline Vector3f HighestPoint(VectParam volumePos /* = Vector3f::zero */, Axis upAxis /* = UP */) const
 	{
