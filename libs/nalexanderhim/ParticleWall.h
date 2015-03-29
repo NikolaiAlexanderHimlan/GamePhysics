@@ -45,7 +45,7 @@ public:
 	//Modifiers
 	inline void setGraphicsPosition(REF(Vector3f) newPosition) { physicsPosition = TO_SIMULATION_SCALE(newPosition);	};
 
-	//TODO: generate ParticleContacts if a particle has a collision with the wall
-	virtual unsigned addContact(ParticleContact* contact, unsigned limit) const;;
+	//Actions
+	virtual unsigned addContact(ParticleContact* contact, unsigned limit) const;
 };
 #endif // ParticleWall_h__

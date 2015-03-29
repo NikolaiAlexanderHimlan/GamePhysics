@@ -162,9 +162,8 @@ struct CubeBounding
 	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
 	{
 		Vector3f relativePoint = checkLocation - boundsLocation;
-		OUT_SET(overlapAmount, 
-			Vector3f::Distance(checkLocation, 
-			Vector3f::DirectionTo(boundsLocation, checkLocation)))
+		//Vector3f relativePoint = boundsLocation - checkLocation;
+		OUT_SET(overlapAmount, Vector3f::Subtract_NonZero(VolumeVector(), Vector3f::abs(relativePoint)).Length())
 		return VolumeVector().GreaterEqual_All(Vector3f::abs(relativePoint));
 	};
 };

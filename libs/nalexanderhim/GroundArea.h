@@ -29,12 +29,17 @@ public:
 	virtual ~GroundArea()
 	{};
 
+	//Initialization
 	void InitializeDefault()
 	{
 		//setBatchPlane(width, length, UP);
 		setBatchCube(getWidth(), 0.1f, getLength());
 	}
 	void Initialize();
+
+	//Actions
+	//HACK: implementation done as temporary replacement for ParticleWall, use that instead once finished
+	virtual unsigned addContact(ParticleContact* contact, unsigned limit) const;
 };
 
 #endif // GroundArea_h__

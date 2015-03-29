@@ -20,6 +20,8 @@
 #include <PhysicsObject.h>
 #include <GroundArea.h>
 #include <ParticleGravity.h>
+//HACK: including Boundings for fixing scale on bounds
+#include <Boundings.h>
 
 using namespace nah;
 
@@ -89,6 +91,12 @@ void setupModels()
 {
 	model1->setBatchCube(0.5f, 0.5f, 0.5f);
 	model2->setBatchCube(0.5f, 0.5f, 0.5f);
+	//HACK: fix bounds size since bounds do not currently account for scale
+	CubeBounding model2Bounding = *dynamic_cast<const CubeBounding*>(&model2->getBounds());
+	model2Bounding.width *= 2;
+	model2Bounding.length *= 2;
+	model2Bounding.height *= 2;
+	model2->setBounds(new CubeBounding(model2Bounding));
 }
 void setupWorld()
 {
@@ -127,7 +135,7 @@ void setupWorld()
 		//model2 position
 		M3DVector3f model2Position;
 		model2Position[0] = 0;//X, left/right
-		model2Position[1] = -5.0f;//Y, up/down
+		model2Position[1] = 0.0f;//Y, up/down
 		model2Position[2] = 6.0f;//Z, in/out
 		model2->refLocalTransform().setPosition(model2Position);
 
@@ -150,12 +158,13 @@ void setupPhysics()
 	getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
 
 	//set initial velocities
+	model1->clearPhysics();
 	model2->clearPhysics();
 
 	//create and set force registrations
 	if (worldGrav != nullptr) delete worldGrav;
 	worldGrav = new ParticleGravity(Vector3f(0.0f, -gravityForce, 0.0f));
-	//getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
+	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
 
 	//initialize particle contact generation and register particle contacts
 	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
@@ -250,10 +259,10 @@ void UpdateUI()
 			if (debugPhys != nullptr)
 			{
 				targtPos->set_text((
-					"Particle Name:\n\t" + debugPhys->getName()
-					+ "\n| GrphPos:\n\t" + debugPhys->getWorldTransform().position.toString()
-					+ "\n| SimPos:\n\t" + debugPhys->getPhysicsPosition().toString()
-					+ "\n| Velocity:\n\t" + debugPhys->getVelocity().toString()
+					"Particle Name:\n  " + debugPhys->getName()
+					+ "\n| GrphPos:\n  " + debugPhys->getWorldTransform().position.toString()
+					+ "\n| SimPos:\n  " + debugPhys->getPhysicsPosition().toString()
+					+ "\n| Velocity:\n  " + debugPhys->getVelocity().toString()
 					).c_str());
 			}
 
@@ -420,6 +429,7 @@ void create()
 void Update()
 {
 	Time elapsedSeconds = engineTimer.ElapsedSeconds();
+
 	//physics
 	gpParticleSystem->UpdatePhysics(elapsedSeconds);
 	gpParticleSystem->UpdateForces(elapsedSeconds);

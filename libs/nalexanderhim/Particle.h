@@ -44,7 +44,7 @@ protected:
 	* world space.
 	*/
 	//TODO: CONSIDER: rename Physics_Position or Simulation_Position
-	Vector3f mPosition;
+	Vector3f mPhysicsPosition;
 	/**
 	* Holds the linear velocity of the particle in
 	* world space.
@@ -68,7 +68,7 @@ protected:
 	inline void UpdatePosition(Time elapsedSeconds)
 	{
 		//Update Position
-		mPosition += //previous position
+		mPhysicsPosition += //previous position
 #ifdef COMPLEX_POSITION
 			//floating point powers are expensive, thus the #ifdef
 			(mAcceleration*0.5f*powf((float)elapsedSeconds, 2)) + //movement due to acceleration
@@ -151,18 +151,18 @@ public:
 		return mName;
 	};
 	//Simulation_ prefix is to differentiate from graphical position
-	inline const Vector3f& getPhysicsPosition() const { return mPosition;	};
+	inline const Vector3f& getPhysicsPosition() const { return mPhysicsPosition;	};
 	inline REF(Bounding) getBounds() const { return *mpBounds;	};
 	inline const float& getMass() const { return mMass;	};//TODO: Handle infinite mass
 	inline const Vector3f& getVelocity() const { return mVelocity;	};
 
 	//Setters
-	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPosition = newSimulationPos;	};
 	inline void setBounds(Bounding* newBounds)
 	{
 		delete mpBounds;
 		mpBounds = newBounds;
 	}
+	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPhysicsPosition = newSimulationPos;	};
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	
 	//Properties

@@ -22,7 +22,7 @@ void ParticleContact::Resolve(Time duration)
 		<< "Penetration: " << penetration << std::endl
 		<< "Restitution: " << restitution << std::endl
 		<< "Contact Normal: " << contactNormal.toString().c_str() << std::endl
-		;
+		<< std::endl;
 
 	Clear();//reset data values
 }
