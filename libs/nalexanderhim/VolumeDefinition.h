@@ -30,7 +30,7 @@ struct SphereVolume
 	virtual Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos /* = Vector3f::zero */, OUT_PARAM(real) distanceToPos /* = nullptr */) const
 	{
 		Vector3f nearVect = Vector3f::Distancepoint(volumePos, toPos, radius);
-		OUT_SET(distanceToPos, (nearVect - volumePos).length())
+		OUT_SET(distanceToPos, (nearVect - volumePos).Length())
 		return nearVect;
 	};
 

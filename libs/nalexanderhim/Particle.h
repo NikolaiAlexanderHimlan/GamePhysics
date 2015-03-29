@@ -167,7 +167,7 @@ public:
 	
 	//Properties
 	inline bool InfiniteMass() const { return mMass <= 0.0f;	};
-	inline float getSpeed() const { return mVelocity.length();	};
+	inline float getSpeed() const { return mVelocity.Length();	};
 	Vector3f getMomentum() const;
 	inline Vector3f getForce() const { return mAcceleration * getMass();	};
 

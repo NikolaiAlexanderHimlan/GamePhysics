@@ -30,12 +30,6 @@ Vector3f::Vector3f()
 	y = 0.0f;
 	z = 0.0f;
 }
-Vector3f::Vector3f(float allValues)
-{
-	x = allValues;
-	y = allValues;
-	z = allValues;
-}
 Vector3f::Vector3f(float X, float Y)
 {
 	x = X;
@@ -198,25 +192,10 @@ void Vector3f::toArray(float floatArray[3])
 //math functions
 void Vector3f::normalize()
 {
-	float length = this->length();
+	float length = this->Length();
 	x /= length;
 	y /= length;
 	z /= length;
-}
-void Vector3f::setLength(float value)
-{
-	float length = this->length();
-	x /= length * value;
-	y /= length * value;
-	z /= length * value;
-}
-float Vector3f::length() const
-{
-	return sqrtf(powf(x, 2.0f) + powf(y, 2.0) + powf(z, 2.0));
-}
-float Vector3f::lengthSquared() const
-{
-	return (x * x) + (y * y) + (z * z);
 }
 void Vector3f::power(float power)
 {
@@ -237,14 +216,6 @@ float Vector3f::CrossProductF(const Vector3f &first, const Vector3f &second)
 Vector3f Vector3f::CrossProduct(const Vector3f &first, const Vector3f &second)
 {
 	return Vector3f( (first.y * second.z - first.z - second.y), (first.z * second.x - first.x - second.z), (first.x * second.y - first.y - second.x) );
-}
-float Vector3f::Distance(const Vector3f &first, const Vector3f &second)
-{
-	return sqrtf( (powf(second.x - first.x, 2.0f)) + (powf(second.y - first.y, 2.0f)) + (powf(second.z - first.z, 2.0f)));	
-}
-float Vector3f::DistanceSquared(const Vector3f &first, const Vector3f &second)
-{
-	return (powf(second.x - first.x, 2.0f)) + (powf(second.y - first.y, 2.0f)) + (powf(second.z - first.z, 2.0f));
 }
 Vector3f Vector3f::Reciprical(const Vector3f &vector)
 {

@@ -245,10 +245,10 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 			vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbAlpha();
 		}
 		//calc distances
-		bigDist1 = bigDist2 = minDist1 = minDist2 = vectVerts[0].lengthSquared();
+		bigDist1 = bigDist2 = minDist1 = minDist2 = vectVerts[0].LengthSquared();
 		for (int i = 1; i < numVerts; i++)//already did first index
 		{
-			curDist = vectVerts[i].lengthSquared();
+			curDist = vectVerts[i].LengthSquared();
 			if (curDist > bigDist1) bigDist1 = curDist; else 
 			if (curDist > bigDist2) bigDist2 = curDist; else 
 			if (curDist < minDist1) minDist1 = curDist; else 

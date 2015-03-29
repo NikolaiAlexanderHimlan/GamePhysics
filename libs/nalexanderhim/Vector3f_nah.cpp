@@ -12,6 +12,10 @@ I certify that this assignment is entirely my own work.
 #include "GeneralMath.h"
 using namespace nah;
 
+//Static Values
+const float Vector3f::DEFAULT_VAL = 0.0f;//[NAH]
+const Vector3f Vector3f::defaultVect = Vector3f(DV, DV, DV);//[NAH]
+
 Vector3f Vector3f::ClampMax(VectParam clampThis, VectParam clampMax)
 {
 	return Vector3f(

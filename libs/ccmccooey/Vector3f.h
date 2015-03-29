@@ -35,13 +35,17 @@ public:
 
 public:
 	Vector3f();
-	Vector3f(float allValues);
+	Vector3f(float allValues)
+		: Vector3f(allValues, allValues, allValues)
+	{};//[NAH]
 	Vector3f(float x, float y);
 	Vector3f(float x, float y, float z);
 	Vector3f(const Vector3f &rhs);
 	Vector3f(const Vector3f *rhs);
 	Vector3f(const float xyz[3]);
-	Vector3f(Axis direction) : Vector3f(AxisNormal(direction)) {};
+	Vector3f(Axis direction)
+		: Vector3f(AxisNormal(direction))
+	{};//[NAH]
 	~Vector3f();
 
 	//setters
@@ -77,9 +81,11 @@ public:
 
 	//math functions
 	//more expensive, actual length of the vector
-	float length() const;
+	inline float Length() const
+	{ return sqrt(LengthSquared());	};//[NAH]
 	//Cheaper than length, useful for comparing the lengths of vectors
-	float lengthSquared() const;
+	inline float LengthSquared() const
+	{ return pow(x, 2.0f) + pow(y, 2.0f) + pow(z, 2.0f);	};//[NAH]
 
 	void normalize(); //make the vector length 1
 	//returns a vector of length 1 in the direction of this vector
@@ -90,9 +96,14 @@ public:
 		return toNormalize;
 	};
 
-	void setLength(float length); //make the vector length a specific value
+	//Modifiers
+	inline void setLength(float length)//Normalize then multiply by the new length
+	{ normalize(); *this *= length;	};//[NAH] //make the vector length a specific value
+
+	//Math functions
 	void power(float power);
 
+	//Comparison functions
 	inline bool Equals_Any(VectParam rhs) const
 	{ return x == rhs.x || y == rhs.y || z == rhs.z;	};//[NAH]
 	inline bool Equals_All(VectParam rhs) const
@@ -118,7 +129,7 @@ public:
 	bool GreaterEqual_Any(const Vector3f& rhs) const
 	{ return Greater_Any(rhs) || Equals_Any(rhs);	};//[NAH]
 	bool GreaterEqual_All(const Vector3f& rhs) const
-	{ return Greater_All(rhs) || Equals_All(rhs);	};//[NAH]
+	{ return x >= rhs.x && y >= rhs.y && z >= rhs.z;	};//[NAH] //NOTE: needs an implementation instead of function wrapper because some of the values might be less and some of them might be equal
 	inline bool GreaterEqual_NonZero(VectParam rhs) const;//[NAH]
 
 	//static math functions
@@ -130,6 +141,37 @@ public:
 	static Vector3f ClampMax(VectParam clampThis, VectParam clampMax);//[NAH]
 	static Vector3f ClampMaxKeepSign(VectParam clampThis, VectParam clampMax);//[NAH]
 
+	/// <summary> Subtracts the right hand value from the vector if the value is not 0. </summary>
+	/// <param name="keepLeftOnZero">
+	/// If true, will use the values of the left hand vector if either value is 0. 
+	/// <para> Overrides the [keepRightOnZero] parameter. </para>
+	/// </param>
+	/// <param name="keepRightOnZero"> If true, will use the values of the right hand vector if either value is 0. </param>
+	static inline Vector3f Subtract_NonZero(Vector3f lhs, VectParam rhs, bool keepLeftOnZero = false, bool keepRightOnZero = false)
+	{
+		if (lhs.x != 0 && rhs.x != 0)
+			lhs.x -= rhs.x;
+		else if (!keepLeftOnZero)
+			lhs.x = 0;
+		else if (keepRightOnZero)
+			lhs.x = rhs.x;
+
+		if (lhs.y != 0 && rhs.y != 0)
+			lhs.y -= rhs.y;
+		else if (!keepLeftOnZero)
+			lhs.y = 0;
+		else if (keepRightOnZero)
+			lhs.y = rhs.y;
+
+		if (lhs.z != 0 && rhs.z != 0)
+			lhs.z -= rhs.z;
+		else if (!keepLeftOnZero)
+			lhs.z = 0;
+		else if (keepRightOnZero)
+			lhs.z = rhs.z;
+
+		return lhs;
+	};//[NAH]
 	static Vector3f Multiply(Vector3f lhs, VectParam rhs)
 	{
 		lhs.x *= rhs.x;
@@ -141,13 +183,10 @@ public:
 	static float CrossProductF(const Vector3f &first, const Vector3f &second);
 	static Vector3f CrossProduct(const Vector3f &first, const Vector3f &second);
 
-	static float Distance(const Vector3f &first, const Vector3f &second);
-	static float DistanceSquared(const Vector3f &first, const Vector3f &second);
-	
-	static bool Between(const Vector3f& lhs, Vector3f rhs, const Vector3f& checkBetween)
-	{
-		return (rhs - lhs).GreaterEqual_All(checkBetween - lhs);
-	};//[NAH]
+	static inline float Distance(VectParam first, VectParam second)
+	{ return sqrt(DistanceSquared(first, second));	};//[NAH]
+	static inline float DistanceSquared(VectParam first, VectParam second)
+	{ return Difference(first, second).LengthSquared();	};//[NAH]
 
 	static inline Vector3f Difference(const Vector3f &first, const Vector3f &second) { return second - first;	};//[NAH] //gets a vector representing the space between 2 other vectors
 	static inline Vector3f DirectionFrom(const Vector3f &from, const Vector3f &to) { return from + DirectionTo(from, to);	};//[NAH] //gets a unit vector pointing from first to second
@@ -169,6 +208,9 @@ public:
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
 	static Vector3f getLookAtAngle(const Vector3f& eye, const Vector3f& lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f *vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
+
+	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)
+	{ return (rhs - lhs).GreaterEqual_All(checkBetween - lhs);	};//[NAH]
 
 	Vector3f asRad() const;
 	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
@@ -215,10 +257,6 @@ public:
 	const static Vector3f unitY;
 	const static Vector3f unitZ;
 };
-
-//Static Values
-__declspec(selectany) const float Vector3f::DEFAULT_VAL = 0.0f;//[NAH]
-__declspec(selectany) const Vector3f Vector3f::defaultVect = Vector3f(DV, DV, DV);//[NAH]
 
 #endif
 
