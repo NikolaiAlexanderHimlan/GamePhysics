@@ -1,0 +1,18 @@
+*Force Generators: 
+	-Springs
+	-Bungees
+
+*Mass Aggregate Bodies: 
+	-Cube (aggregate)
+	-Tetrahedron (3 sided pyramid)
+	-[shape of my choice]
+
+*Level Editor support
+	-data file input
+
+*Documentation
+	-document controls completely
+	-indicate the code is in lib\
+
+*Tech-Demo features
+	-can switch debug info between particles

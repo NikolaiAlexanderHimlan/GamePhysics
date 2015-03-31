@@ -1,6 +1,6 @@
 /*
 Author: Nikolai Alexander-Himlan
-Last Update: 3/29/15
+Last Update: 3/30/15
 */
 
 NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
@@ -37,8 +37,9 @@ functions start with a capital letter unless starting with one of the following 
 	set = indicates a setter (or false setter action)
 	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class.  Located under Getters. (for now)
 	reset = variation on set (setter)
-	add = put something into a container
-	remove = take something out of a container
+	(//NOTE: am currently reconsidering add/remove capitalization)
+	add = put something into a container/setter which does not replace the previous value but adds to it
+	remove = take something out of a container/setter which does not replace the previous value but subtracts from it
 	clear = set empty/null
 	as/to = conversion
 	has/is = bool getter/property
