@@ -127,6 +127,7 @@
     <ClInclude Include="CountedArray.h" />
     <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugDefines.h" />
+    <ClInclude Include="DebugKeys.h" />
     <ClInclude Include="DebugTools.h" />
     <ClInclude Include="DoubleFactor.h" />
     <ClInclude Include="FactorBase.h" />

@@ -371,6 +371,9 @@
     <ClInclude Include="TimeDefines.h">
       <Filter>Header Files\Utilities\Time</Filter>
     </ClInclude>
+    <ClInclude Include="DebugKeys.h">
+      <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

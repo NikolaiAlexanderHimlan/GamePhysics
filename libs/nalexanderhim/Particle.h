@@ -150,11 +150,21 @@ public:
 			return NULL_PARTICLE_NAME;
 		return mName;
 	};
-	//Simulation_ prefix is to differentiate from graphical position
 	inline const Vector3f& getPhysicsPosition() const { return mPhysicsPosition;	};
 	inline REF(Bounding) getBounds() const { return *mpBounds;	};
-	inline const float& getMass() const { return mMass;	};//TODO: Handle infinite mass
-	inline const Vector3f& getVelocity() const { return mVelocity;	};
+	inline REF(floatFactor) getMass() const
+	{
+		//TODO: Handle infinite mass
+		if (this == nullptr)
+			return floatFactor::ZERO;//if this is null, return infinite mass
+		return mMass;
+	};
+	inline REF(Vector3f) getVelocity() const
+	{
+		if (this == nullptr)
+			return Vector3f::zero;//if this is null return 0 vector
+		return mVelocity;
+	};
 
 	//Setters
 	inline void setBounds(Bounding* newBounds)
@@ -175,13 +185,22 @@ public:
 	void setMomentum(const Vector3f& newMomentum);
 
 	//Actions
-	inline bool AddForce(const Vector3f& forceVector)
+	inline bool addForce(const Vector3f& forceVector)
 	{
 		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
 		mAcceleration += forceVector * mMass.getFactor();
 
 		return true;//applied force successfully
+	}
+	inline bool addImpulse(REF(Vector3f) impulseVector)
+	{
+		//TODO: verify that infinite mass objects cannot recieve impulse
+		if (InfiniteMass()) return false;//objects with infinite mass cannot have impulses acting on them
+
+		mVelocity += impulseVector * mMass.getFactor();
+
+		return true;//applied impulse successfully
 	}
 	inline void clearPhysics() { clearForce(); setVelocity(0.0f);	};//HACK: publicly accessible
 };

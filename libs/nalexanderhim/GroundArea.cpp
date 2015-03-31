@@ -13,10 +13,10 @@ I certify that this assignment is entirely my own work.
 
 unsigned GroundArea::addContact(ParticleContact* contact, unsigned limit) const
 {
-	const static real restitution = 0.0;
+	const static real restitution = 0.0;//ground has no restitution
 
 	Particle* checkParticle;
-	unsigned used = 0;	//countContacts
+	unsigned used = 0;	//count contacts generated
 	for (uint i = 0; i < getGlobalParticleSystem()->numParticles(); i++)
 	{
 		checkParticle = getGlobalParticleSystem()->getParticle(i);
@@ -32,6 +32,7 @@ unsigned GroundArea::addContact(ParticleContact* contact, unsigned limit) const
 
 			used++;//increment countContacts
 		}
+		if (used >= limit) break;//no more available contacts
 	}
 	return used;
 }

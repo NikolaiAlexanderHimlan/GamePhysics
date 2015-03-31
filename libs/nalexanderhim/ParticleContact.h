@@ -29,12 +29,19 @@ class ParticleContact
 {
 	friend ParticleContactResolver;
 public:
-	Particle* contactA;
-	Particle* contactB;//NOTE: contactB is allowed to be null, in which case it is assumed to have infinite mass
+	Particle* contactA = nullptr;//NOTE: contactA should never be null if the contact is valid, if it is null assume the contact is empty and skip
+	Particle* contactB = nullptr;//NOTE: contactB is allowed to be null, in which case it is assumed to have infinite mass
 
 	real penetration;
 	real restitution;
 	Vector3f contactNormal;
+
+	/**
+	* Holds the amount each particle is moved by during interpenetration
+	* resolution.
+	*/
+	Vector3f particleMovementA;
+	Vector3f particleMovementB;
 
 protected:
 	/**
@@ -53,13 +60,20 @@ protected:
 		penetration = 0;
 		restitution = 0;
 		contactNormal = Vector3f::zero;
+		particleMovementA = Vector3f::zero;
+		particleMovementB = Vector3f::zero;
 	}
 
 private:
 	/**
 	* Handles the impulse calculations for this collision.
 	*/
-	void ResolveVelocity(real duration);
+	void ResolveVelocity(Time duration);
+
+	/**
+	* Handles the interpenetration resolution for this contact.
+	*/
+	void ResolveInterpenetration(Time duration);
 };
 
 #endif // ParticleContact_h__

@@ -14,6 +14,8 @@ I certify that this assignment is entirely my own work.
 
 unsigned ParticleWall::addContact(ParticleContact* contact, unsigned limit) const
 {
+	LOGIC_ERR("Complex Detection for ParticleWall is not working yet, please finish!");
+
 	const static real restitution = 0.0;
 
 	Particle* checkParticle;

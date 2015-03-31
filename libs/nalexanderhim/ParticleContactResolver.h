@@ -18,17 +18,16 @@ class ParticleContactResolver
 {
 protected:
 	ParticleContact* maContacts;
-	unsigned mCurrentContact = 0;
-	unsigned mMaxContacts;
-	unsigned mMaxIterations;
-	unsigned mIterationsUsed;
+	unsigned mCurrentContact = 0;//the last contact which has a value in the array
+	unsigned mMaxContacts;//the maximum number of contacts that can be stored
+	unsigned mMaxIterations;//the maximum number of iterations that can be used to resolve contact per frame
 
 public:
 	ParticleContactResolver(unsigned maxContacts, unsigned maxIterations);
 	virtual ~ParticleContactResolver();
 
 	//Setters
-	void addContacts(unsigned numNewContacts) { mCurrentContact += numNewContacts;	};
+	void addContacts(unsigned addNumContacts) { mCurrentContact += addNumContacts;	};
 
 	//Properties
 	unsigned getLimit() const { return mMaxContacts - mCurrentContact;	};//returns the remaining number of contacts available
