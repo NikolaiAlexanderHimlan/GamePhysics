@@ -65,8 +65,8 @@ public:
 		Vector3f worldScale = getLocalTransform().scale;
 
 		//TODO: parent rotation needs to affect position
-		worldPosition = parentWorldTransform.position + (getLocalTransform().position * parentWorldTransform.scale);//scale affects the position//HACK: should be influenced by rotation
-		worldRotation = parentWorldTransform.rotation + (getLocalTransform().rotation * parentWorldTransform.scale);//scale affects rotation
+		worldPosition = parentWorldTransform.position + Vector3f::Multiply(getLocalTransform().position, parentWorldTransform.scale);//scale affects the position//HACK: should be influenced by rotation
+		worldRotation = parentWorldTransform.rotation + Vector3f::Multiply(getLocalTransform().rotation, parentWorldTransform.scale);//scale affects rotation
 		worldScale *= parentWorldTransform.scale;//combine the scales
 
 		return Transform(worldPosition, worldRotation, worldScale);

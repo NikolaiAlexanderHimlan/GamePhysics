@@ -41,6 +41,8 @@ private:
 		}
 	}
 public:
+	static const FACTOR_CLASS ZERO;
+
 	FACTOR_CLASS(VALUE_TYPE val = VALUE_ZERO) { setValue(val); };
 	FACTOR_CLASS(const FACTOR_CLASS& rhs) { setValue(rhs.getValue()); };
 
@@ -77,4 +79,7 @@ public:
 	//Conversion Operators
 	operator const VALUE_TYPE&() const { return getValue(); };
 };
+
+__declspec(selectany) const FACTOR_CLASS FACTOR_CLASS::ZERO = VALUE_ZERO;
+
 #endif

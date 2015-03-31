@@ -66,7 +66,7 @@ public:
 	
 	const Vector3f Vector3f::operator+(const Vector3f &other) const;
 	const Vector3f Vector3f::operator-(const Vector3f &other) const;
-	const Vector3f Vector3f::operator*(const Vector3f &other) const;
+	//const Vector3f Vector3f::operator*(VectParam other) const;//Require explicit call to either Multiply or DotProduct
 	const Vector3f Vector3f::operator/(const Vector3f &other) const;
 	const Vector3f Vector3f::operator*(float mult) const;
 	const Vector3f Vector3f::operator/(float div) const;
