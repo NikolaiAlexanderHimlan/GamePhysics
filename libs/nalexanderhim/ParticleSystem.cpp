@@ -68,6 +68,9 @@ void ParticleSystem::UpdateContacts(Time elapsedSeconds)
 
 	for (uint i = 0; i < numContactGenerators(); i++)
 	{
+		if (mpResolver->getLimit() <= 0) break;//no more contacts available, skip the remaining contact generators
+		//TODO: cause a warning/error to indicate that the contact limit has been reached
+
 		mpResolver->addContacts(
 			getParticleContactGenerator(i)->addContact(
 			mpResolver->NextAvailableContact(), mpResolver->getLimit()));

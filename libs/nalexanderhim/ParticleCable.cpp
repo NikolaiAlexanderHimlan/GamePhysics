@@ -22,8 +22,8 @@ unsigned ParticleCable::addContact(ParticleContact *contact, unsigned limit) con
 	}
 	
 	// Otherwise, return the contact.
-	contact->contactA = FirstLink();
-	contact->contactB = SecondLink();
+	contact->contactA = linkA;
+	contact->contactB = linkB;
 
 	// Calculate the normal.
 	Vector3f normal = Normal();

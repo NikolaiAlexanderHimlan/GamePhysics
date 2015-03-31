@@ -23,17 +23,11 @@ class Vector3f;
 class ParticleLink
 	: public ParticleContactGenerator
 {
-private:
-	/**
-	* Holds the pair of particles that are connected by this link.
-	*/
-	Particle* maLinked[2];
+public:
+	Particle* linkA;
+	Particle* linkB;
 
 protected:
-
-	Particle* FirstLink() const { return maLinked[0];	};
-	Particle* SecondLink() const { return maLinked[1];	};
-
 	/**
 	* Returns the current length of the link.
 	*/

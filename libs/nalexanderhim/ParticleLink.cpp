@@ -17,12 +17,14 @@ real ParticleLink::CurrentLength() const
 real ParticleLink::CurrentLengthSquared() const
 {
 	return Vector3f::DistanceSquared(
-		maLinked[0]->getPhysicsPosition(), 
-		maLinked[1]->getPhysicsPosition());
+		linkA->getPhysicsPosition(), 
+		linkB->getPhysicsPosition());
 }
 
 Vector3f ParticleLink::Normal() const
 {
-	return Vector3f::DirectionFrom(maLinked[0]->getPhysicsPosition(), maLinked[1]->getPhysicsPosition());
+	return 
+		//Vector3f::DirectionFrom(linkA->getPhysicsPosition(), linkB->getPhysicsPosition());
+		Vector3f::DirectionTo(linkA->getPhysicsPosition(), linkB->getPhysicsPosition());
 }
 

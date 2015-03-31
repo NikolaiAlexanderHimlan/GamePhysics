@@ -20,6 +20,8 @@
 #include <PhysicsObject.h>
 #include <GroundArea.h>
 #include <ParticleGravity.h>
+#include <ParticleCable.h>
+#include <ParticleRod.h>
 //HACK: including Boundings for fixing scale on bounds
 #include <Boundings.h>
 
@@ -65,12 +67,15 @@ PhysicsObject* model1;
 PhysicsObject* model2;
 
 //forces
-float gravityForce = 0.5f;
+float gravityForce = 5.0f;
 ParticleGravity* worldGrav = nullptr;
 
 //contacts
 GroundArea* ground;
 uint maxContacts = 4;//TODO: update based on number of particles
+ParticleCable* modelLink1;
+ParticleRod* modelLink2;
+real link1Length = 3;
 
 void ChangeSize(int w, int h)
 {
@@ -118,8 +123,8 @@ void setupWorld()
 	{//Model1 setup
 	//model1 position
 	M3DVector3f model1Position;
-	model1Position[0] = 0;//X, left/right
-	model1Position[1] = 0;//Y, up/down
+		model1Position[0] = -3.0f;//X, left/right
+		model1Position[1] = -3.0f;//Y, up/down
 		model1Position[2] = 5.0f;//Z, in/out
 	model1->refLocalTransform().setPosition(model1Position);
 
@@ -164,11 +169,28 @@ void setupPhysics()
 	//create and set force registrations
 	if (worldGrav != nullptr) delete worldGrav;
 	worldGrav = new ParticleGravity(Vector3f(0.0f, -gravityForce, 0.0f));
+	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model1);
 	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
 
 	//initialize particle contact generation and register particle contacts
 	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
 	getGlobalParticleSystem()->ManageParticleContactGenerator(ground);
+
+	//*
+	modelLink1 = new ParticleCable();
+	modelLink1->linkA = model2;
+	modelLink1->linkB = model1;
+	modelLink1->maxLength = link1Length;
+	modelLink1->restitution = 0;//testing value
+	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink1);
+	//*
+	/*
+	modelLink2 = new ParticleRod();
+	modelLink2->linkA = model2;
+	modelLink2->linkB = model1;
+	modelLink2->length = link1Length;
+	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink2);
+	//*/
 }
 void setupUI()
 {
@@ -421,8 +443,9 @@ void create()
 	gcSimulationScale.setFactor(1.0f);
 
 	//Create Objects
-	model1 = new PhysicsObject(5.0f);
+	model1 = new PhysicsObject(5.0f, "Bonus Model");
 	model2 = new PhysicsObject(10.0f, "Falling Model");
+	model1->Manage();
 	model2->Manage();
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
@@ -453,6 +476,12 @@ void cleanup()
 	model2->Unmanage();
 	delete model2;
 	model2 = nullptr;
+
+	delete modelLink1;
+	modelLink1 = nullptr;
+
+	delete modelLink2;
+	modelLink2 = nullptr;
 
 	delete ground;
 	ground = nullptr;
