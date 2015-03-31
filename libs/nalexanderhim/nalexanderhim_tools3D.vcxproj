@@ -137,6 +137,7 @@
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
     <ClInclude Include="MathDefines.h" />
+    <ClInclude Include="ParticleBungee.h" />
     <ClInclude Include="ParticleCable.h" />
     <ClInclude Include="ParticleContact.h" />
     <ClInclude Include="ParticleContactGenerator.h" />
