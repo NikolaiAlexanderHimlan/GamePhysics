@@ -10,7 +10,6 @@ I certify that this assignment is entirely my own work.
 #include "Rotation.h"
 #include "RotationMath.h"
 #include "GeneralMath.h"
-using namespace nah;
 
 //Static Values
 const float Vector3f::DEFAULT_VAL = 0.0f;//[NAH]
@@ -31,10 +30,10 @@ Vector3f Vector3f::ClampMaxKeepSign(VectParam clampThis, VectParam clampMax)
 		nah::ClampKeepSign(clampThis.z, std::abs(clampMax.z)));
 }
 
-Vector3f Vector3f::asRad() const { return Vector3f(DegToRad(x), DegToRad(y), DegToRad(z)); };
+Vector3f Vector3f::asRad() const { return Vector3f(nah::DegToRad(x), nah::DegToRad(y), nah::DegToRad(z)); };
 
 //implementation found here: http://stackoverflow.com/a/8208951
-Vector3f Vector3f::getLookAtAngle(const Vector3f& eye, const Vector3f& lookAt)
+Vector3f Vector3f::getLookAtAngle(VectParam eye, VectParam lookAt)
 {
 	Vector3f lookRotation;
 
@@ -54,7 +53,7 @@ Vector3f Vector3f::getLookAtAngle(const Vector3f& eye, const Vector3f& lookAt)
 	return lookRotation;
 }
 
-const Vector3f& Vector3f::AxisNormal(Axis toNorm)
+VectParam Vector3f::AxisNormal(Axis toNorm)
 {
 	switch (toNorm)
 	{

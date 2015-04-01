@@ -21,6 +21,7 @@ public:
 	* Holds the maximum length of the cable.
 	*/
 	real maxLength;
+
 	/**
 	* Holds the restitution (bounciness) of the cable.
 	*/

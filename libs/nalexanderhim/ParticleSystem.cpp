@@ -58,7 +58,7 @@ void ParticleSystem::UpdateForces(Time elapsedSeconds)
 			//i--;//repeat this index
 		}
 		else {//both values are valid
-		holdForceGenerator->UpdateForce(holdParticle, elapsedSeconds);
+			holdForceGenerator->UpdateForce(holdParticle, elapsedSeconds);
 		}
 	}
 }

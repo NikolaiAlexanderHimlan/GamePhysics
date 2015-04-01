@@ -11,4 +11,5 @@
 * Ground/WorldGravity ParticleGravity subclass which automatically has gravity "down"
 * Boundings should contain a local offset, so the parent doesn't need to save the offset of each bounding, position pased into CheckOverlap and Contains functions is the parent position
 * by using aggregation with pointers instead of subclassing, one could dynamically allocate a larger amount of them in a subclass (ex. Physicsobject::mpParticle* -> MassAggregate::mpParticle []) 
+* use NANs (Not A Number) to represent invalid indexes (numeric equivalent to null value)
 

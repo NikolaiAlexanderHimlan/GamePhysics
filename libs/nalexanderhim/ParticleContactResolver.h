@@ -39,6 +39,4 @@ public:
 	void ResolveContacts(Time duration);
 };
 
-
-
 #endif // ParticleContactResolver_h__

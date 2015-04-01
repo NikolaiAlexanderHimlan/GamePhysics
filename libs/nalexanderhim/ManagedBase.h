@@ -29,6 +29,8 @@ protected:
 	virtual ManagerBase* getManager() const = 0;
 
 public:
+	static const bool AUTO_MANAGED = false;
+
 	virtual ~ManagedBase() {};//make sure subclass destructor is called
 	
 	//HACK: temporarily make this public until I can fix the management
@@ -50,6 +52,8 @@ private:
 	inline void Unmanage() { removeFromManager(); };//removes this from the manager
 
 public:
+	static const bool AUTO_MANAGED = true;
+
 	ManagedAuto()
 	{
 	};
