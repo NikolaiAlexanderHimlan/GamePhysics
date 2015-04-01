@@ -192,7 +192,7 @@ void Vector3f::toArray(float floatArray[3])
 
 
 //math functions
-void Vector3f::normalize()
+void Vector3f::Normalize()
 {
 	float length = this->Length();
 	x /= length;

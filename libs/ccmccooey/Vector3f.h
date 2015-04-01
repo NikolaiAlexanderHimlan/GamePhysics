@@ -22,8 +22,10 @@
 //#define Vector2f(allValues) Vector3f(allValues)
 #define VectParam const Vector3f&
 
+//pre-engine declarations
 class Rotation;
 enum Axis;
+typedef float ufloat;
 
 class Vector3f
 {
@@ -81,24 +83,24 @@ public:
 
 	//math functions
 	//more expensive, actual length of the vector
-	inline float Length() const
+	inline ufloat Length() const
 	{ return sqrt(LengthSquared());	};//[NAH]
 	//Cheaper than length, useful for comparing the lengths of vectors
-	inline float LengthSquared() const
+	inline ufloat LengthSquared() const
 	{ return pow(x, 2.0f) + pow(y, 2.0f) + pow(z, 2.0f);	};//[NAH]
 
-	void normalize(); //make the vector length 1
 	//returns a vector of length 1 in the direction of this vector
-	inline Vector3f Normalized() const//[NAH]
+	inline Vector3f getNormalized() const//[NAH]
 	{
 		Vector3f toNormalize = *this;
-		toNormalize.normalize();
+		toNormalize.Normalize();
 		return toNormalize;
 	};
 
 	//Modifiers
 	inline void setLength(float length)//Normalize then multiply by the new length
-	{ normalize(); *this *= length;	};//[NAH] //make the vector length a specific value
+	{ Normalize(); *this *= length;	};//[NAH] //make the vector length a specific value
+	void Normalize(); //make the vector length 1
 
 	//Math functions
 	void power(float power);
@@ -183,15 +185,16 @@ public:
 	static float CrossProductF(const Vector3f &first, const Vector3f &second);
 	static Vector3f CrossProduct(const Vector3f &first, const Vector3f &second);
 
-	static inline float Distance(VectParam first, VectParam second)
+	static inline ufloat Distance(VectParam first, VectParam second)
 	{ return sqrt(DistanceSquared(first, second));	};//[NAH]
-	static inline float DistanceSquared(VectParam first, VectParam second)
+	static inline ufloat DistanceSquared(VectParam first, VectParam second)
 	{ return Difference(first, second).LengthSquared();	};//[NAH]
 
 	static inline Vector3f Difference(const Vector3f &first, const Vector3f &second) { return second - first;	};//[NAH] //gets a vector representing the space between 2 other vectors
+	static inline Vector3f DirectionTo(VectParam from, VectParam to)
+	{ return Difference(from, to).getNormalized();	};//[NAH] //gets a unit vector representing the direction from first to second
 	static inline Vector3f DirectionFrom(const Vector3f &from, const Vector3f &to) { return from + DirectionTo(from, to);	};//[NAH] //gets a unit vector pointing from first to second
-	static inline Vector3f DirectionTo(const Vector3f &from, const Vector3f &to)
-	{ return Difference(from, to).Normalized(); };//[NAH] //gets a unit vector representing the direction from first to second
+
 	/// <summary>Gets the point a given distance between 2 vectors. </summary>
 	/// <param name="first"></param>
 	/// <param name="second"></param>
@@ -212,7 +215,7 @@ public:
 	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)
 	{ return (rhs - lhs).GreaterEqual_All(checkBetween - lhs);	};//[NAH]
 
-	Vector3f asRad() const;
+	Vector3f asRad() const;//[NAH]
 	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
 	//TODO: try to find a better name for the NormalWeight functions
 	/// <summary> Takes a vector and a normal and returns the vector weighted against the normal.

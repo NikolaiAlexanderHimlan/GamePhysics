@@ -63,7 +63,7 @@ Vector3f Transform::getForwardVector(char axis) const
 	//*/
 
 
-	return Vector3f(forwardX, forwardY, forwardZ).Normalized();
+	return Vector3f(forwardX, forwardY, forwardZ).getNormalized();
 }
 Vector3f Transform::getUpVector(char axis) const
 {
@@ -75,7 +75,7 @@ Vector3f Transform::getUpVector(char axis) const
 	upY = -forVect.z;
 	upZ = forVect.y;
 
-	return Vector3f(upX, upY, upZ).Normalized();
+	return Vector3f(upX, upY, upZ).getNormalized();
 }
 Vector3f Transform::getRightVector(char axis) const
 {
@@ -104,7 +104,7 @@ Vector3f Transform::getRightVector(char axis) const
 	rightY = 0.0f;//no y-axis without roll// forVect.y;
 	rightZ = -forVect.x;
 	
-	return Vector3f(rightX, rightY, rightZ).Normalized();
+	return Vector3f(rightX, rightY, rightZ).getNormalized();
 }
 
 void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
