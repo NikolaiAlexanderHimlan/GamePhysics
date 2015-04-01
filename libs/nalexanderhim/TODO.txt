@@ -9,3 +9,4 @@
 * try to get out parameter working, example here: http://users.telenet.be/bart.demeyere/C++InOutParameters.html
 * #define/boolean which causes the engine to use a set timestep instead of checking actual time, this would make debugging a lot easier, as time passing while debugging would no longer cause the physics to jump forward.
 * Ground/WorldGravity ParticleGravity subclass which automatically has gravity "down"
+* Boundings should contain a local offset, so the parent doesn't need to save the offset of each bounding, position pased into CheckOverlap and Contains functions is the parent position
