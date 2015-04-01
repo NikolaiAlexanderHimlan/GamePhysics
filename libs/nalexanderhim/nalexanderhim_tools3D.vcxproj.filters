@@ -136,6 +136,15 @@
     <Filter Include="Header Files\Physics\Forces">
       <UniqueIdentifier>{6fc1f6e4-0b39-40f9-a343-e6d4d19a6108}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Physics\MassAggregates">
+      <UniqueIdentifier>{64892d32-41bf-456f-87ef-d95ee503e80b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\MassAggregates">
+      <UniqueIdentifier>{bf615ef9-c0bb-4a95-9ed9-1a28930991fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Forces">
+      <UniqueIdentifier>{61f8a5af-790a-4428-b995-2e0bc74c064b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -190,7 +199,7 @@
       <Filter>Source Files\Management</Filter>
     </ClCompile>
     <ClCompile Include="ParticleGravity.cpp">
-      <Filter>Source Files\Physics\Particles</Filter>
+      <Filter>Source Files\Physics\Forces</Filter>
     </ClCompile>
     <ClCompile Include="Vector3f_nah.cpp">
       <Filter>Source Files\Space3D</Filter>
@@ -208,7 +217,10 @@
       <Filter>Source Files\Physics\Collision</Filter>
     </ClCompile>
     <ClCompile Include="MassAggregate.cpp">
-      <Filter>Source Files\Physics\Connections</Filter>
+      <Filter>Source Files\Physics\MassAggregates</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeAggregate.cpp">
+      <Filter>Source Files\Physics\MassAggregates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,7 +396,10 @@
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
     <ClInclude Include="MassAggregate.h">
-      <Filter>Header Files\Physics\Connections</Filter>
+      <Filter>Header Files\Physics\MassAggregates</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeAggregate.h">
+      <Filter>Header Files\Physics\MassAggregates</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

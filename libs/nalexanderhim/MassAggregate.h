@@ -19,9 +19,15 @@ class ParticleLink;
 class MassAggregate
 	: public PhysicsObject
 {
+protected:
 	//NOTE: aggregate particles will inherently affect this one through the links
 	std::vector<ParticleLink*> maAggregateLinks;//links connecting the aggregate together
 
+	uint getNumLinks() const { return maAggregateLinks.size();	};
+	
+	ParticleLink* getLink(uint linkIndex) const
+	{ return linkIndex < getNumLinks()?maAggregateLinks[linkIndex]:nullptr;	};
+	
 	void RegisterLink(ParticleLink* addLink);
 
 public:

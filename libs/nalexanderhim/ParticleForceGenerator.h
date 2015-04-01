@@ -19,7 +19,7 @@ class ParticleForceGenerator
 {
 	friend ParticleSystem;
 protected:
-	virtual void UpdateForce(Particle* applyForceTo, Time forceDuration) = 0;
+	virtual void UpdateForce(Particle* applyForceTo, Time forceDuration) const = 0;
 
 public:
 	ParticleForceGenerator(){};

@@ -96,6 +96,7 @@
   <ItemGroup>
     <ClCompile Include="CameraView.cpp" />
     <ClCompile Include="Color.cpp" />
+    <ClCompile Include="CubeAggregate.cpp" />
     <ClCompile Include="DataSystem.cpp" />
     <ClCompile Include="DebugTools.cpp" />
     <ClCompile Include="GroundArea.cpp" />
@@ -126,6 +127,7 @@
     <ClInclude Include="CodingDefines.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CountedArray.h" />
+    <ClInclude Include="CubeAggregate.h" />
     <ClInclude Include="DataSystem.h" />
     <ClInclude Include="DebugDefines.h" />
     <ClInclude Include="DebugKeys.h" />

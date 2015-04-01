@@ -19,16 +19,28 @@ unsigned GroundArea::addContact(ParticleContact* contact, unsigned limit) const
 	unsigned used = 0;	//count contacts generated
 	for (uint i = 0; i < getGlobalParticleSystem()->numParticles(); i++)
 	{
+		bool makeContact = false;
 		checkParticle = getGlobalParticleSystem()->getParticle(i);
 		Vector3f pointBeneath = checkParticle->getPhysicsPosition();
 		pointBeneath.y = physicsPosition.y;//x/z of the particle and the y position of the ground
-		if (checkParticle->getBounds().Contains(checkParticle->getPhysicsPosition(), pointBeneath, &contact[used].penetration))
+		real interlap = 0;//store penetration
+
+		if (physicsPosition.y >= checkParticle->getPhysicsPosition().y)//is below ground?
+		{
+			interlap = physicsPosition.y - checkParticle->getPhysicsPosition().y;
+			makeContact = true;
+		}
+		else if (checkParticle->getBounds().Contains(checkParticle->getPhysicsPosition(), pointBeneath, &interlap))//check for actual collision?
+			makeContact = true;
+
+		if(makeContact)
 		{
 			//There is contact
 			contact[used].contactA = checkParticle;
 			contact[used].contactB = nullptr;
 			contact[used].contactNormal = UP;
 			contact[used].restitution = restitution;
+			contact[used].penetration = interlap;
 
 			used++;//increment countContacts
 		}

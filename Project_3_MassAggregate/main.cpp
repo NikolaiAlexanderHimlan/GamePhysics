@@ -23,6 +23,7 @@
 #include <ParticleCable.h>
 #include <ParticleRod.h>
 #include <MassAggregate.h>
+#include <CubeAggregate.h>
 //HACK: including Boundings for fixing scale on bounds
 #include <Boundings.h>
 
@@ -52,12 +53,23 @@ inline int getWindowHeight()
 { return height;	};
 //{ return glutGet((GLenum)GLUT_WINDOW_HEIGHT); };
 
+//Debugging
 bool gDebugGraphics = true;
 bool gDebugPhysics = true;
 doubleFactor gcSimulationScale;
+Object3D* debugObj;
+Particle* debugPhys;
+int debugTargetIndex = 0;
+bool gPauseSimulation = false;
+
+//UI
 GLUI_Control* camPosLocl;
 GLUI_Control* camPosWrld;
-GLUI_Control* targtPos;
+GLUI_Control* targtIndx;
+GLUI_Control* targtName;
+GLUI_Control* targtPosGraph;
+GLUI_Control* targtPosPhys;
+GLUI_Control* targtVel;
 GLUI_Control* collisionVal;
 
 CameraView* mainView;
@@ -68,15 +80,15 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 //physics objects
 PhysicsObject* model1;
 PhysicsObject* model2;
-MassAggregate* aggregate1;
+CubeAggregate* aggregate1;
 
 //forces
 float gravityForce = 5.0f;
 ParticleGravity* worldGrav = nullptr;
 
 //contacts
+uint maxContacts = 50;//TODO: update based on number of particles
 GroundArea* ground;
-uint maxContacts = 4;//TODO: update based on number of particles
 ParticleCable* modelLink1;
 ParticleRod* modelLink2;
 real link1Length = 3;
@@ -100,7 +112,6 @@ void setupModels()
 {
 	model1->setBatchCube(0.5f, 0.5f, 0.5f);
 	model2->setBatchCube(0.5f, 0.5f, 0.5f);
-	aggregate1->setBatchCube(0.5f, 0.5f, 0.5f);
 
 	//model2->setBounds(new Bounding());/*Point Bounding*//*Scaled Cube Bounding
 	//HACK: fix bounds size since bounds do not currently account for scale
@@ -110,8 +121,6 @@ void setupModels()
 	model2Bounding.height *= 2;
 	model2->setBounds(new CubeBounding(model2Bounding));
 	//*/
-
-	aggregate1->setBounds(new Bounding());/*assign Point Bounding for the primary aggregate particle, bounding is simulated by the aggregation of particles.*/
 }
 void setupWorld()
 {
@@ -168,7 +177,7 @@ void setupWorld()
 	{//Aggregate1 setup
 		aggregate1->refLocalTransform().position = Vector3f(5.0f, 1.0f, 6.0f);
 		aggregate1->refLocalTransform().rotation = Vector3f(0.0f, 0.0f, 0.0f);
-		aggregate1->refLocalTransform().scale = 1.5f;
+		aggregate1->refLocalTransform().scale = 1.0f;
 	}
 
 	//Ground plane setup
@@ -194,11 +203,16 @@ void ResetPhysics()
 }
 void SetupPhysics()
 {
-	ResetPhysics();
+	//add particles to manager
+	model1->Manage();
+	model2->Manage();
+	aggregate1->Manage();
 
 	//initialize particle contact generation and register particle contacts
 	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
 	getGlobalParticleSystem()->ManageParticleContactGenerator(ground);
+
+	ResetPhysics();
 
 	//*Cable Link
 	modelLink1 = new ParticleCable();
@@ -216,40 +230,7 @@ void SetupPhysics()
 	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink2);
 	//*/
 
-	//Create a bunch of particles for the mass aggregate
-	uint addParticles = 8;
-	float aggrDist = 0.5f;//needs to be half the dimensions of the aggregate
-	real aggrMass = aggregate1->getMass();
-	Vector3f aggrPos = aggregate1->getPhysicsPosition();
-	Particle** addList = new Particle*[addParticles];
-	addList[0] = new Particle(aggrMass);
-	addList[0]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, aggrDist, aggrDist));
-	addList[1] = new Particle(aggrMass);
-	addList[1]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, aggrDist, -aggrDist));
-	addList[2] = new Particle(aggrMass);
-	addList[2]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, aggrDist, -aggrDist));
-	addList[3] = new Particle(aggrMass);
-	addList[3]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, aggrDist, aggrDist));
-	addList[4] = new Particle(aggrMass);
-	addList[4]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, -aggrDist, aggrDist));
-	addList[5] = new Particle(aggrMass);
-	addList[5]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, -aggrDist, -aggrDist));
-	addList[6] = new Particle(aggrMass);
-	addList[6]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, -aggrDist, -aggrDist));
-	addList[7] = new Particle(aggrMass);
-	addList[7]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, -aggrDist, aggrDist));
-
-	//generated links are automatically managed
-	aggregate1->GenerateInterlinkedAggregate({
-		addList[0]
-		, addList[1]
-		, addList[2]
-		, addList[3]
-		, addList[4]
-		, addList[5]
-		, addList[6]
-		, addList[7]
-	});
+	aggregate1->GenerateCubeAggregate();
 }
 void setupUI()
 {
@@ -268,9 +249,14 @@ void setupUI()
 
 		//Debug output
 		holdPanel = new GLUI_Panel(gluiWindow, "Debug Out");
+		targtPosGraph = new GLUI_StaticText(holdPanel, "Target_");
 		camPosLocl = new GLUI_StaticText(holdPanel, ("Camera_L: " + bufferText).c_str());
 		camPosWrld = new GLUI_StaticText(holdPanel, ("Camera_W: " + bufferText).c_str());
-		targtPos = new GLUI_TextBox(holdPanel, "Target_");
+		new GLUI_Separator(holdPanel);
+		targtIndx = new GLUI_EditText(holdPanel, "Index: ", &debugTargetIndex, GLUI_EDITTEXT_INT);
+		targtName = new GLUI_StaticText(holdPanel, "Target_");
+		targtPosPhys = new GLUI_StaticText(holdPanel, "Target_");
+		targtVel = new GLUI_StaticText(holdPanel, "Target_");
 
 		//Collision testing
 		holdPanel = new GLUI_Panel(gluiWindow, "Collision Testing");
@@ -314,33 +300,35 @@ void ResetSimulation()
 
 void UpdateUI()
 {
-	//Debugging
-	Object3D* debugObj;
-	PhysicsObject* debugPhys;
 	//Set debug targets
 	debugObj = aggregate1;
-	debugPhys = aggregate1;
+	if (debugTargetIndex < 0)
+		debugTargetIndex = getGlobalParticleSystem()->numParticles() - 1;//wrap back to the last index
+	else if (debugTargetIndex >= (int)getGlobalParticleSystem()->numParticles())
+		debugTargetIndex = 0;//wrap forward to the first index
+	debugPhys = getGlobalParticleSystem()->getParticle(debugTargetIndex);
+
 	//Handle Debug
 	if (gDebugPhysics || gDebugGraphics)
 	{
+		//TODO: limit character lengths so the numbers don't jump left/right as they change
 		if (gDebugGraphics)
 		{
 			//Debug output
 			camPosLocl->set_text(("Camera_L: \n" + mainView->getLocalTransform().toStringMultiLine(true, true, false)).c_str());
 			camPosWrld->set_text(("Camera_W: \n" + mainView->getWorldTransform().toStringMultiLine(true, true, false)).c_str());
 			if (debugObj != nullptr)
-				targtPos->set_text(("Target: \n" + debugObj->getWorldTransform().toStringMultiLine()).c_str());
+				targtPosGraph->set_text(("GrphObjPos: \n" + debugObj->getWorldTransform().toStringMultiLine()).c_str());
 		}
 		if (gDebugPhysics)
 		{
 			if (debugPhys != nullptr)
 			{
-				targtPos->set_text((
-					"Particle Name:\n  " + debugPhys->getName()
-					+ "\n| GrphPos:\n  " + debugPhys->getWorldTransform().position.toString()
-					+ "\n| SimPos:\n  " + debugPhys->getPhysicsPosition().toString()
-					+ "\n| Velocity:\n  " + debugPhys->getVelocity().toString()
-					).c_str());
+				targtIndx->set_int_val(debugTargetIndex);
+				targtName->set_text(("Phys Name:\n  " + debugPhys->getName()).c_str());
+				//targtPosGraph->set_text(("GrphPhysPos:\n  " + debugPhys->getWorldTransform().position.toString()).c_str());
+				targtPosPhys->set_text(("SimPos:\n  " + debugPhys->getPhysicsPosition().toString()).c_str());
+				targtVel->set_text(("Velocity:\n  " + debugPhys->getVelocity().toString()).c_str());
 			}
 
 			std::string val = "beep";
@@ -469,6 +457,12 @@ void SpecialKeys(int key, int x, int y)
 		//TODO: pause physics simulation
 	}
 
+	//iterate through all the particles for debugging
+	if (key == GLUT_KEY_PAGE_UP)//previous particle
+		debugTargetIndex--;
+	if (key == GLUT_KEY_PAGE_DOWN)//next particle
+		debugTargetIndex++;
+
 	//Rotate view
 	float viewTurnSpeed = 5.0f;
 	if (key == GLUT_KEY_LEFT)
@@ -499,13 +493,9 @@ void create()
 	gcSimulationScale.setFactor(1.0f);
 
 	//Create Objects
-	//WARNING: I think the object with the larger mass may be falling faster ?
 	model1 = new PhysicsObject(5.0f, "Bonus Model");
 	model2 = new PhysicsObject(10.0f, "Falling Model");
-	aggregate1 = new MassAggregate(5.0f, "Aggregate 1");
-	model1->Manage();
-	model2->Manage();
-	aggregate1->Manage();
+	aggregate1 = new CubeAggregate(CubeVolume(1.5f, 1.5f, 1.5f), 15.0f, "Aggregate 1");
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
 void Update()
@@ -513,9 +503,12 @@ void Update()
 	Time elapsedSeconds = engineTimer.ElapsedSeconds();
 
 	//physics
+	if (!gPauseSimulation)
+	{
 	gpParticleSystem->UpdatePhysics(elapsedSeconds);
 	gpParticleSystem->UpdateForces(elapsedSeconds);
 	gpParticleSystem->UpdateContacts(elapsedSeconds);
+	}
 
 	//graphics
 	glutSetWindow(glutWindowID);

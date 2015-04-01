@@ -33,7 +33,7 @@ public:
 	void InitializeDefault()
 	{
 		//setBatchPlane(width, length, UP);
-		setBatchCube(getWidth(), 0.1f, getLength());
+		setBatchCube(getWidth(), 0.01f, getLength());
 	}
 	void Initialize();
 
