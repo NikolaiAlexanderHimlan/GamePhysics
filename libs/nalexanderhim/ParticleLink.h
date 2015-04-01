@@ -24,8 +24,18 @@ class ParticleLink
 	: public ParticleContactGenerator
 {
 public:
-	Particle* linkA;
-	Particle* linkB;
+	//Useful for dynamically choosing the type of link at runtime
+	enum LinkType {
+		INVALID_LINK = -1, 
+
+		ROD, 
+		CABLE, 
+
+		NUM_LINK_TYPES
+	};
+
+	Particle* linkA = nullptr;
+	Particle* linkB = nullptr;
 
 protected:
 	/**
@@ -50,6 +60,12 @@ public:
 	* documentation purposes.
 	*/
 	virtual unsigned addContact(ParticleContact* contact, unsigned limit) const = 0;
+
+	//Attempts to resolve any potential contacts for only the specific link particle without affecting the other particle.
+	//virtual 
+		unsigned ResolveLinkA() const;// = 0;
+	//virtual 
+		unsigned ResolveLinkB() const;// = 0;
 };
 
 #endif // ParticleLink_h__

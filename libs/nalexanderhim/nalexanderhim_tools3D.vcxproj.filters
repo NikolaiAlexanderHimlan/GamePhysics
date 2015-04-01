@@ -207,6 +207,9 @@
     <ClCompile Include="ParticleWall.cpp">
       <Filter>Source Files\Physics\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="MassAggregate.cpp">
+      <Filter>Source Files\Physics\Connections</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -379,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="DebugKeys.h">
       <Filter>Header Files\Definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="MassAggregate.h">
+      <Filter>Header Files\Physics\Connections</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

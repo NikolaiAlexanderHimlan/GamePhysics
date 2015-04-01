@@ -22,8 +22,11 @@
 #include <ParticleGravity.h>
 #include <ParticleCable.h>
 #include <ParticleRod.h>
+#include <MassAggregate.h>
 //HACK: including Boundings for fixing scale on bounds
 #include <Boundings.h>
+
+#define RENDER_DATA mainView, shaderManager, mvpMatrix /*the necessary parameters for calling draw*/
 
 using namespace nah;
 
@@ -65,6 +68,7 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 //physics objects
 PhysicsObject* model1;
 PhysicsObject* model2;
+MassAggregate* aggregate1;
 
 //forces
 float gravityForce = 5.0f;
@@ -96,12 +100,18 @@ void setupModels()
 {
 	model1->setBatchCube(0.5f, 0.5f, 0.5f);
 	model2->setBatchCube(0.5f, 0.5f, 0.5f);
+	aggregate1->setBatchCube(0.5f, 0.5f, 0.5f);
+
+	//model2->setBounds(new Bounding());/*Point Bounding*//*Scaled Cube Bounding
 	//HACK: fix bounds size since bounds do not currently account for scale
 	CubeBounding model2Bounding = *dynamic_cast<const CubeBounding*>(&model2->getBounds());
 	model2Bounding.width *= 2;
 	model2Bounding.length *= 2;
 	model2Bounding.height *= 2;
 	model2->setBounds(new CubeBounding(model2Bounding));
+	//*/
+
+	aggregate1->setBounds(new Bounding());/*assign Point Bounding for the primary aggregate particle, bounding is simulated by the aggregation of particles.*/
 }
 void setupWorld()
 {
@@ -141,7 +151,7 @@ void setupWorld()
 		M3DVector3f model2Position;
 		model2Position[0] = 0;//X, left/right
 		model2Position[1] = 0.0f;//Y, up/down
-		model2Position[2] = 6.0f;//Z, in/out
+		model2Position[2] = 5.0f;//Z, in/out
 		model2->refLocalTransform().setPosition(model2Position);
 
 		//model2 rotation
@@ -155,28 +165,42 @@ void setupWorld()
 		model2->refLocalTransform().setScale(2.0f);
 	}
 
+	{//Aggregate1 setup
+		aggregate1->refLocalTransform().position = Vector3f(5.0f, 1.0f, 6.0f);
+		aggregate1->refLocalTransform().rotation = Vector3f(0.0f, 0.0f, 0.0f);
+		aggregate1->refLocalTransform().scale = 1.5f;
+	}
+
 	//Ground plane setup
 	ground->physicsPosition.y = -5.0f;
 }
-void setupPhysics()
+
+void ResetPhysics()
 {
 	getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
+	getGlobalParticleSystem()->clearParticleContactValues();//clear existing contacts as they are probably no longer valid
 
 	//set initial velocities
 	model1->clearPhysics();
 	model2->clearPhysics();
+	aggregate1->clearPhysics();
 
 	//create and set force registrations
 	if (worldGrav != nullptr) delete worldGrav;
 	worldGrav = new ParticleGravity(Vector3f(0.0f, -gravityForce, 0.0f));
 	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model1);
 	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
+	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, aggregate1);
+}
+void SetupPhysics()
+{
+	ResetPhysics();
 
 	//initialize particle contact generation and register particle contacts
 	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
 	getGlobalParticleSystem()->ManageParticleContactGenerator(ground);
 
-	//*
+	//*Cable Link
 	modelLink1 = new ParticleCable();
 	modelLink1->linkA = model2;
 	modelLink1->linkB = model1;
@@ -184,13 +208,48 @@ void setupPhysics()
 	modelLink1->restitution = 0;//testing value
 	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink1);
 	//*
-	/*
+	/*Rod Link
 	modelLink2 = new ParticleRod();
 	modelLink2->linkA = model2;
 	modelLink2->linkB = model1;
 	modelLink2->length = link1Length;
 	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink2);
 	//*/
+
+	//Create a bunch of particles for the mass aggregate
+	uint addParticles = 8;
+	float aggrDist = 0.5f;//needs to be half the dimensions of the aggregate
+	real aggrMass = aggregate1->getMass();
+	Vector3f aggrPos = aggregate1->getPhysicsPosition();
+	Particle** addList = new Particle*[addParticles];
+	addList[0] = new Particle(aggrMass);
+	addList[0]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, aggrDist, aggrDist));
+	addList[1] = new Particle(aggrMass);
+	addList[1]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, aggrDist, -aggrDist));
+	addList[2] = new Particle(aggrMass);
+	addList[2]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, aggrDist, -aggrDist));
+	addList[3] = new Particle(aggrMass);
+	addList[3]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, aggrDist, aggrDist));
+	addList[4] = new Particle(aggrMass);
+	addList[4]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, -aggrDist, aggrDist));
+	addList[5] = new Particle(aggrMass);
+	addList[5]->setPhysicsPosition(aggrPos + Vector3f(aggrDist, -aggrDist, -aggrDist));
+	addList[6] = new Particle(aggrMass);
+	addList[6]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, -aggrDist, -aggrDist));
+	addList[7] = new Particle(aggrMass);
+	addList[7]->setPhysicsPosition(aggrPos + Vector3f(-aggrDist, -aggrDist, aggrDist));
+
+	//generated links are automatically managed
+	aggregate1->GenerateInterlinkedAggregate({
+		addList[0]
+		, addList[1]
+		, addList[2]
+		, addList[3]
+		, addList[4]
+		, addList[5]
+		, addList[6]
+		, addList[7]
+	});
 }
 void setupUI()
 {
@@ -236,7 +295,7 @@ void myInit()
 
 	setupWorld();
 
-	setupPhysics();
+	SetupPhysics();
 
 	setupUI();
 
@@ -247,10 +306,6 @@ void ResetView()
 {
 	setupWorld();
 }
-void ResetPhysics()
-{
-	setupPhysics();
-};
 void ResetSimulation()
 {
 	ResetView();
@@ -263,8 +318,8 @@ void UpdateUI()
 	Object3D* debugObj;
 	PhysicsObject* debugPhys;
 	//Set debug targets
-	debugObj = model2;
-	debugPhys = model2;
+	debugObj = aggregate1;
+	debugPhys = aggregate1;
 	//Handle Debug
 	if (gDebugPhysics || gDebugGraphics)
 	{
@@ -310,9 +365,10 @@ void RenderScene(void)
 
 	//TODO: Depth Buffer
 	//Draw all models
-	model1->Draw(mainView, shaderManager, mvpMatrix);
-	model2->Draw(mainView, shaderManager, mvpMatrix);
-	ground->Draw(mainView, shaderManager, mvpMatrix);
+	model1->Draw(RENDER_DATA);
+	model2->Draw(RENDER_DATA);
+	aggregate1->Draw(RENDER_DATA);
+	ground->Draw(RENDER_DATA);
 
 	UpdateUI();
 
@@ -443,10 +499,13 @@ void create()
 	gcSimulationScale.setFactor(1.0f);
 
 	//Create Objects
+	//WARNING: I think the object with the larger mass may be falling faster ?
 	model1 = new PhysicsObject(5.0f, "Bonus Model");
 	model2 = new PhysicsObject(10.0f, "Falling Model");
+	aggregate1 = new MassAggregate(5.0f, "Aggregate 1");
 	model1->Manage();
 	model2->Manage();
+	aggregate1->Manage();
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
 void Update()
@@ -470,12 +529,17 @@ void cleanup()
 	mainView = nullptr;
 
 	//Clean up Objects
+	model1->Unmanage();
 	delete model1;
 	model1 = nullptr;
 
 	model2->Unmanage();
 	delete model2;
 	model2 = nullptr;
+
+	aggregate1->Unmanage();
+	delete aggregate1;
+	aggregate1 = nullptr;
 
 	delete modelLink1;
 	modelLink1 = nullptr;

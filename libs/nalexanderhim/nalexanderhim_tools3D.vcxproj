@@ -102,6 +102,7 @@
     <ClCompile Include="IntCoord.cpp" />
     <ClCompile Include="ManagedBase.cpp" />
     <ClCompile Include="ManagerBase.cpp" />
+    <ClCompile Include="MassAggregate.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="GroundArea.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
+    <ClInclude Include="MassAggregate.h" />
     <ClInclude Include="MathDefines.h" />
     <ClInclude Include="ParticleBungee.h" />
     <ClInclude Include="ParticleCable.h" />

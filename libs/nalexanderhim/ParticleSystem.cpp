@@ -100,6 +100,13 @@ ManageID ParticleSystem::getParticleContactGeneratorID(ParticleContactGenerator*
 	return iterFound - mParticleContactGeneratorList.begin();
 }
 
+void ParticleSystem::clearParticleContactValues()
+{
+	//TODO: verify this clears it
+	if (mContactsEnabled)
+		mpResolver->clearContacts();
+}
+
 void ParticleSystem::deleteParticleContactGenerator(ManageID removeID)
 {
 	if (mParticleContactGeneratorList[removeID] != nullptr)

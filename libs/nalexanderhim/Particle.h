@@ -24,10 +24,10 @@ private:
 	floatFactor mMass;//values <= 0 indicate infinite mass, since the math will not work with a mass of 0 anyway (no physics calculations)
 
 	//Maintainers
-	inline void RecalculateMomentum(float oldMass)
+	inline void RecalculateMomentum(real oldMass)
 	{
 		//Get old momentum
-		Vector3f oldMomentum = mVelocity * oldMass;
+		Vector3f oldMomentum = mVelocity * (float)oldMass;
 		//Calculate new velocity
 		mVelocity = oldMomentum * mMass.getFactor();
 	}
@@ -99,11 +99,10 @@ protected:
 	//Getters
 
 	//Setters
-	inline void setMass(float newMass)
+	inline void setMass(real newMass)
 	{
-		floatFactor oldMass = mMass;
-		mMass = newMass;
-
+		floatFactor oldMass = (float)mMass;
+		mMass = (float)newMass;
 		RecalculateMomentum(oldMass);
 	}
 
@@ -119,7 +118,7 @@ protected:
 	inline void clearForce() { setForce(Vector3f(0.0f));	};
 
 public:
-	explicit Particle(float initialMass, std::string name = "")
+	explicit Particle(real initialMass, std::string name = "")
 	{
 		setMass(initialMass);
 

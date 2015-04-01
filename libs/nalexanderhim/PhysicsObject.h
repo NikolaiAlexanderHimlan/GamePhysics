@@ -36,7 +36,7 @@ protected:
 	};
 
 public:
-	explicit PhysicsObject(float initialMass, std::string name = "")
+	explicit PhysicsObject(real initialMass, std::string name = "")
 		: Particle(initialMass, name), Object3D()
 	{
 		doRefreshPhysPosition = true;//refresh at least once to sync them initially

@@ -28,6 +28,7 @@ public:
 
 	//Setters
 	void addContacts(unsigned addNumContacts) { mCurrentContact += addNumContacts;	};
+	void clearContacts() { mCurrentContact = 0;	};//clear the contact values (don't actually need to clear the values, can just return to the front)
 
 	//Properties
 	unsigned getLimit() const { return mMaxContacts - mCurrentContact;	};//returns the remaining number of contacts available

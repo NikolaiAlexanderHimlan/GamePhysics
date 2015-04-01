@@ -145,6 +145,9 @@ public:
 	inline uint numContactGenerators() const { return mParticleContactGeneratorList.size();	};
 
 	//Actions
+		//Affect Contact system
+	void clearParticleContactValues();
+
 		//Add to Manager
 	inline void ManageParticleContactGenerator(ParticleContactGenerator* manageContactGenerator)
 	{ mParticleContactGeneratorList.push_back(manageContactGenerator);	};
