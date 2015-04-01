@@ -1,6 +1,7 @@
 /*
 Author: Nikolai Alexander-Himlan
-Last Update: 3/30/15
+Last Update: 4/1/15
+[Insert Joke Here]
 */
 
 NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
@@ -28,15 +29,15 @@ functions are primarily categorized in the following ways (in order declared):
 	Actions = the object does something, usually involving a calculation.
 //system
 	Operators = overloaded operators.
-	Type Conversions = type operators and conversion functions
+	Type Conversions = type operators and conversion functions.
 //static
 	Static = static functions. (durr)
 
 functions start with a capital letter unless starting with one of the following words as a prefix (is not a prefix if the only word), which indicates its purpose: 
 	get = indicates a getter (or false getter property)
 	set = indicates a setter (or false setter action)
-	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class.  Located under Getters. (for now)
-	reset = variation on set (setter)
+	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class.  Alternative type of Getter and listed with the other Getters. (for now)
+	reset = return to default values, variation on set (setter)
 	(//NOTE: am currently reconsidering add/remove capitalization)
 	add = put something into a container/setter which does not replace the previous value but adds to it
 	remove = take something out of a container/setter which does not replace the previous value but subtracts from it
@@ -46,6 +47,13 @@ functions start with a capital letter unless starting with one of the following 
 the function name may also start with a lower case letter if it is an extension of an existing system/built-in function, in which case the function will start with the name of the function being extended, case intact. (ex. absInv() extends the abs() function)
 
 some function return values should generally be treated in certain ways: 
-	Getters = the returned value should be a const& reference to the actual variable, this saves memory, is faster, makes it clear that the actual value is being returned, and differentiates it from implicit properties and calculations.
-	ref = the returned value is a & reference, not const.  Modifying the returned value should modify the actual variable.
-	Actions = should return a boolean indicating if the action succeeded, or potentially return an error code indicating what happened (in the future).  If error codes start being used, functions should return true for failed and false for succeed, while this is less intuitive it keeps consistant with error codes. (0==false, 1==true, so return ifFailed)
+	Getters (get) = the returned value should be a const& reference to the actual variable, this saves memory, is faster, makes it clear that the actual value is being returned, and differentiates it from implicit properties and calculations.
+	References (ref) = the returned value is a & reference, not const.  Modifying the returned value should modify the actual variable.
+	Actions = can (should?) return a boolean indicating if the action succeeded, or potentially return an error code indicating what happened (in the future).  If error codes start being used, functions should return true for failed and false for succeed, while this is less intuitive it keeps consistant with error codes. (0==false, 1==true, so return ifFailed)
+
+Function qualifiers (const, static, etc...) should be listed in the following order: 
+	virtual inline static const [type] [function]() const;
+The reason for this order is the following: 
+	virtual is the most likely to change so it goes at the front, with inline following.
+	const is applied to the return type and thus goes last, right before the return type.
+
