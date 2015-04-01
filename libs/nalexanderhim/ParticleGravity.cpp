@@ -8,4 +8,4 @@ I certify that this assignment is entirely my own work.
 #include "ParticleGravity.h"
 #include "Particle.h"
 
-void ParticleGravity::UpdateForce(Particle* applyForceTo, Time forceDuration) { applyForceTo->addForce(mGravity);	}
+void ParticleGravity::UpdateForce(Particle* applyForceTo, Time forceDuration) const { applyForceTo->addForce(mGravity * applyForceTo->getMass());	}
