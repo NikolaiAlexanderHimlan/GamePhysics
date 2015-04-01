@@ -77,7 +77,7 @@ protected:
 	}
 	inline void UpdateVelocity(Time elapsedSeconds)
 	{
-		if (InfiniteMass()) return;//velocity does not change for an object of infinite mass
+		if (hasInfiniteMass()) return;//velocity does not change for an object of infinite mass
 
 		//NOTE: expensive pow calculation, details (Ian Millington, pg. 57)
 		//Update Velocity
@@ -109,7 +109,7 @@ protected:
 	//Actions
 	inline bool setForce(const Vector3f& forceVector)
 	{
-		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
+		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
 		mAcceleration = forceVector * mMass.getFactor();
 
@@ -175,7 +175,7 @@ public:
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	
 	//Properties
-	inline bool InfiniteMass() const { return mMass <= 0.0f;	};
+	inline bool hasInfiniteMass() const { return mMass <= 0.0f;	};
 	inline float getSpeed() const { return mVelocity.Length();	};
 	Vector3f getMomentum() const;
 	inline Vector3f getForce() const { return mAcceleration * getMass();	};
@@ -186,7 +186,7 @@ public:
 	//Actions
 	inline bool addForce(const Vector3f& forceVector)
 	{
-		if (InfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
+		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
 		mAcceleration += forceVector * mMass.getFactor();
 
@@ -194,8 +194,8 @@ public:
 	}
 	inline bool addImpulse(REF(Vector3f) impulseVector)
 	{
-		//TODO: verify that infinite mass objects cannot recieve impulse
-		if (InfiniteMass()) return false;//objects with infinite mass cannot have impulses acting on them
+		//TODO: verify that infinite mass objects cannot receive impulse
+		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have impulses acting on them
 
 		mVelocity += impulseVector * mMass.getFactor();
 

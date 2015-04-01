@@ -97,7 +97,7 @@ void ParticleContact::ResolveInterpenetration(Time duration)
 	if (contactB != nullptr) totalInverseMass += contactB->getMass().getFactor();
 
 	// If all particles have infinite mass, then we do nothing.
-	if (contactA->InfiniteMass() && contactB->InfiniteMass()) return;
+	if (contactA->hasInfiniteMass() && contactB->hasInfiniteMass()) return;
 
 	// Find the amount of penetration resolution per unit of inverse mass.
 	Vector3f movePerIMass = contactNormal * (float)(penetration / totalInverseMass);
