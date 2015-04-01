@@ -81,18 +81,58 @@ struct CubeVolume
 		switch (upAxis)
 		{
 		case X:
-			highPoint.x = width;
+			highPoint.x = width * 0.5f;
 			break;
 		case Y:
-			highPoint.y = height;
+			highPoint.y = height * 0.5f;//from center
 			break;
 		case Z:
-			highPoint.z = length;
+			highPoint.z = length * 0.5f;
 			break;
 		default:
 			throw std::logic_error("Invalid Axis - CubeVolume - LowestPoint!");
 			break;
 		}
+
+		return volumePos + highPoint;
+	};
+};
+
+struct TetrahedronVolume
+	: public VolumeDefinition
+{
+	float width, length, height;
+
+	inline Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos /* = Vector3f::zero */, OUT_PARAM(real) distanceToPos /* = nullptr */) const
+	{
+		LOGIC_ERR("Tetrahedron does not yet have NearestPoint implemented!");
+	};
+
+	inline Vector3f HighestPoint(VectParam volumePos /* = Vector3f::zero */, Axis upAxis /* = UP */) const
+	{
+		Vector3f highPoint;
+
+		highPoint.y = height * 0.5f;//from center
+
+		return volumePos + highPoint;
+	};
+};
+
+struct PrismVolume
+	: public VolumeDefinition
+{
+	float width, length, height;
+
+	inline Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos /* = Vector3f::zero */, OUT_PARAM(real) distanceToPos /* = nullptr */) const
+	{
+		LOGIC_ERR("Prism does not yet have NearestPoint implemented!");
+	};
+
+	inline Vector3f HighestPoint(VectParam volumePos /* = Vector3f::zero */, Axis upAxis /* = UP */) const
+	{
+		Vector3f highPoint;
+
+		highPoint.y = height * 0.5f;//from center
 
 		return volumePos + highPoint;
 	};

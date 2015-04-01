@@ -16,6 +16,7 @@ I certify that this assignment is entirely my own work.
 #include "ccmccooeyWrapper.h"
 #include "Color.h"
 #include "RotationMath.h"
+#include "DebugDefines.h"
 
 Model::~Model()
 {
@@ -418,5 +419,15 @@ void Model::setBatchSphere(float radius, int numSegments /*= 8 /*TODO: optional 
 
 	//model load batch
 	setBatch(modelBatch, radius, radius);
+}
+
+void Model::setBatchTetrahedron(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/)
+{
+	LOGIC_ERR("Batch Tetrahedron is not currently implemented!");
+}
+
+void Model::setBatchPrism(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/)
+{
+	LOGIC_ERR("Batch Prism is not currently implemented!");
 }
 

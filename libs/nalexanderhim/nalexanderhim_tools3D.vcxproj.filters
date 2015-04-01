@@ -401,6 +401,18 @@
     <ClInclude Include="CubeAggregate.h">
       <Filter>Header Files\Physics\MassAggregates</Filter>
     </ClInclude>
+    <ClInclude Include="TetrahedronAggregate.h">
+      <Filter>Header Files\Physics\MassAggregates</Filter>
+    </ClInclude>
+    <ClInclude Include="OctahedronAggregate.h">
+      <Filter>Header Files\Physics\MassAggregates</Filter>
+    </ClInclude>
+    <ClInclude Include="PrismAggregate.h">
+      <Filter>Header Files\Physics\MassAggregates</Filter>
+    </ClInclude>
+    <ClInclude Include="AggregateMacro.h">
+      <Filter>Source Files\Physics\MassAggregates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

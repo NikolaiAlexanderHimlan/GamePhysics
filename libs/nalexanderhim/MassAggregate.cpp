@@ -6,6 +6,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "MassAggregate.h"
+#include "AggregateMacro.h"
 #include "ParticleLink.h"
 #include "ParticleRod.h"
 #include "ParticleSystem.h"
@@ -66,4 +67,33 @@ void MassAggregate::GenerateInterlinkedAggregate(nah::CountedArray<Particle*> aP
 			RegisterLink(holdRod);
 		}
 	}
+}
+
+bool MassAggregate::Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const
+{
+	if (mRenderAggregate)
+	{
+		bool combineBool = true;
+		PhysicsObject* testParticle = nullptr;
+		for (uint i = 0; i < getNumLinks(); i++)
+		{
+			if (getLink(i)->linkA == this)
+				testParticle = dynamic_cast<PhysicsObject*>(getLink(i)->linkB);
+			else if (getLink(i)->linkB == this)
+				testParticle = dynamic_cast<PhysicsObject*>(getLink(i)->linkA);
+
+			if (testParticle != nullptr)
+				combineBool &= testParticle->Draw(renderView, shaderManager, mvpMatrix);
+			else combineBool = false;
+		}
+		return combineBool;
+	}
+	else if (mLineAggregate)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		bool drawResult = __super::Draw(renderView, shaderManager, mvpMatrix);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		return drawResult;
+	}
+	else return __super::Draw(renderView, shaderManager, mvpMatrix);
 }

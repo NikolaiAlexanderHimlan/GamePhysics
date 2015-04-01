@@ -16,10 +16,14 @@ I certify that this assignment is entirely my own work.
 class Particle;
 class ParticleLink;
 
+//TODO: //CONSIDER: generate model batch by using the links, mesh will deform and shape to the particles
 class MassAggregate
 	: public PhysicsObject
 {
 protected:
+	bool mRenderAggregate = false;//should the aggregate particles be rendered or the model
+	bool mLineAggregate = true;//render aggregates in wireframe mode, is overridden by mRenderAggregate
+
 	//NOTE: aggregate particles will inherently affect this one through the links
 	std::vector<ParticleLink*> maAggregateLinks;//links connecting the aggregate together
 
@@ -52,5 +56,7 @@ public:
 
 	/// Takes an array of Particles and creates links between all of them and this, using their current distances as the max length of the link.
 	void GenerateInterlinkedAggregate(nah::CountedArray<Particle*> aParticles, ParticleLink::LinkType linkType = ParticleLink::ROD);
+
+	virtual bool Draw(CameraView* renderView, GLShaderManager& shaderManager, M3DMatrix44f& mvpMatrix) const;
 };
 #endif // MassAggregate_h__

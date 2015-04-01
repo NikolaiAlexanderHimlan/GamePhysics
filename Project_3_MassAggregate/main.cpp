@@ -32,13 +32,27 @@
 using namespace nah;
 
 //Engine Data
-
 Timer engineTimer;
 GLUI* gluiWindow;
 int glutWindowID;
+doubleFactor gcSimulationScale;
 
+//datafile parsing values
 const std::string DATA_DIR = "Data/";
+const std::string DATAFILE_NAME = "LevelData.ini";
 
+const std::string SEC_SIM = "simulation";
+const std::string VAL_SCALEFACT = "scale factor";
+const std::string VAL_GRAVITY = "gravity force";
+
+const std::string SEC_GAME = "game";
+const std::string VAL_NUM_OBJECTS = "num objects";
+
+const std::string SEC_OBJ_PREFIX = "object";
+const std::string VAL_OBJ_TYPE = "type";
+const std::string VAL_OBJ_POS = "pos";//append axis
+
+//GL rendering
 GLShaderManager	shaderManager;
 GLfloat			offset;
 GLfloat			counter;
@@ -56,10 +70,9 @@ inline int getWindowHeight()
 //Debugging
 bool gDebugGraphics = true;
 bool gDebugPhysics = true;
-doubleFactor gcSimulationScale;
 Object3D* debugObj;
 Particle* debugPhys;
-int debugTargetIndex = 0;
+int debugTargetIndex = 2;
 bool gPauseSimulation = false;
 
 //UI
@@ -78,6 +91,7 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 //Implementation Data
 
 //physics objects
+std::vector<Particle*> gameObjects;
 PhysicsObject* model1;
 PhysicsObject* model2;
 CubeAggregate* aggregate1;
@@ -92,6 +106,8 @@ GroundArea* ground;
 ParticleCable* modelLink1;
 ParticleRod* modelLink2;
 real link1Length = 3;
+float finalTrigger = 0.5;//distance at which the final link is created
+ParticleRod* finalLink = nullptr;//will be filled with a link between model1 and aggregate1
 
 void ChangeSize(int w, int h)
 {
@@ -140,19 +156,19 @@ void setupWorld()
 	}
 
 	{//Model1 setup
-	//model1 position
-	M3DVector3f model1Position;
+		//model1 position
+		M3DVector3f model1Position;
 		model1Position[0] = -3.0f;//X, left/right
 		model1Position[1] = -3.0f;//Y, up/down
 		model1Position[2] = 5.0f;//Z, in/out
-	model1->refLocalTransform().setPosition(model1Position);
+		model1->refLocalTransform().setPosition(model1Position);
 
-	//model1 rotation
-	M3DVector3f rotateModel1;
-	rotateModel1[0] = 0;
-	rotateModel1[1] = 0;
-	rotateModel1[2] = 0;
-	model1->refLocalTransform().setRotation(rotateModel1);
+		//model1 rotation
+		M3DVector3f rotateModel1;
+		rotateModel1[0] = 0;
+		rotateModel1[1] = 0;
+		rotateModel1[2] = 0;
+		model1->refLocalTransform().setRotation(rotateModel1);
 	}
 
 	{//Model2 setup
@@ -182,6 +198,20 @@ void setupWorld()
 
 	//Ground plane setup
 	ground->physicsPosition.y = -5.0f;
+}
+void LoadData()
+{
+	gpDataReader->readIniFile(DATA_DIR + DATAFILE_NAME);
+
+	gcSimulationScale.setFactor(nah::StringTools::parseSciNotation(gpDataReader->getIniKeyValue(SEC_SIM, VAL_SCALEFACT)));
+
+	int numObjects = atoi(gpDataReader->getIniKeyValue(SEC_GAME, VAL_NUM_OBJECTS).c_str());
+	//Particle* holdParticle;
+	for (int i = 0; i < numObjects; i++)
+	{
+		//holdParticle->setPhysicsPosition(Vector3f());
+		//gameObjects.push_back(holdParticle);
+	}
 }
 
 void ResetPhysics()
@@ -231,6 +261,12 @@ void SetupPhysics()
 	//*/
 
 	aggregate1->GenerateCubeAggregate();
+
+	if (finalLink != nullptr)
+	{
+		delete finalLink;
+		finalLink = nullptr;
+	}
 }
 void setupUI()
 {
@@ -276,6 +312,8 @@ void myInit()
 
 	//Projection
 	mainView->viewFrustum->SetPerspective(35.0f, (float)(width / height), 1.0f, 1000.0f);
+
+	//LoadData();
 
 	setupModels();
 
@@ -423,19 +461,19 @@ void Keys(unsigned char key, int x, int y)
 	{
 		model2->refLocalTransform().position.x -= model2Speed;//model position X down
 	}
-	if((key == 'I')||(key == 'i'))
+	if ((key == 'U') || (key == 'u'))
 	{
 		model2->refLocalTransform().position.y += model2Speed;//model position Y up
 	}
-	if((key == 'K')||(key == 'k'))
+	if ((key == 'O') || (key == 'o'))
 	{
 		model2->refLocalTransform().position.y -= model2Speed;//model position Y down
 	}
-	if((key == 'O')||(key == 'o'))
+	if ((key == 'I') || (key == 'i'))
 	{
 		model2->refLocalTransform().position.z += model2Speed;//model position Z up
 	}
-	if((key == 'U')||(key == 'u'))
+	if ((key == 'K') || (key == 'k'))
 	{
 		model2->refLocalTransform().position.z -= model2Speed;//model position Z down
 	}
@@ -453,9 +491,7 @@ void SpecialKeys(int key, int x, int y)
 	if (key == GLUT_KEY_HOME)//reset camera
 		ResetSimulation();
 	if (key == GLUT_KEY_END)//pause
-	{
-		//TODO: pause physics simulation
-	}
+		gPauseSimulation = !gPauseSimulation;
 
 	//iterate through all the particles for debugging
 	if (key == GLUT_KEY_PAGE_UP)//previous particle
@@ -495,7 +531,7 @@ void create()
 	//Create Objects
 	model1 = new PhysicsObject(5.0f, "Bonus Model");
 	model2 = new PhysicsObject(10.0f, "Falling Model");
-	aggregate1 = new CubeAggregate(CubeVolume(1.5f, 1.5f, 1.5f), 15.0f, "Aggregate 1");
+	aggregate1 = new CubeAggregate(CubeVolume(1.0f, 1.0f, 1.0f), 15.0f, "Aggregate 1");
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
 void Update()
@@ -508,6 +544,21 @@ void Update()
 	gpParticleSystem->UpdatePhysics(elapsedSeconds);
 	gpParticleSystem->UpdateForces(elapsedSeconds);
 	gpParticleSystem->UpdateContacts(elapsedSeconds);
+	}
+
+	//Check for and create final link
+	if (finalLink == nullptr)
+	{
+		if (finalTrigger >= Vector3f::Distance(
+			model1->getPhysicsPosition(), aggregate1->getPhysicsPosition()))//in range
+		{
+			//create link between model1 and aggregate1
+			finalLink = new ParticleRod();
+			finalLink->linkA = model1;
+			finalLink->linkB = aggregate1;
+			finalLink->length = link1Length;
+			getGlobalParticleSystem()->ManageParticleContactGenerator(finalLink);
+		}
 	}
 
 	//graphics
@@ -534,6 +585,7 @@ void cleanup()
 	delete aggregate1;
 	aggregate1 = nullptr;
 
+	/*prevent end of program crash due to glut extra update
 	delete modelLink1;
 	modelLink1 = nullptr;
 
@@ -542,6 +594,7 @@ void cleanup()
 
 	delete ground;
 	ground = nullptr;
+	*/
 
 	delete worldGrav;
 	worldGrav = nullptr;

@@ -89,7 +89,7 @@ protected:
 		mVelocity += (mAcceleration*(float)elapsedSeconds);
 
 		//Damping
-		//mVelocity *= (float)pow(mDamping, elapsedSeconds);
+		mVelocity *= (float)pow(mDamping, elapsedSeconds);
 		//HACK: damping disabled in space
 
 		//Clear Forces? (need to reapply force every frame)
