@@ -1,0 +1,5 @@
+"recommends against inheritance for rigid body from particle"
+
+
+okay to use friction code straight from the text
+
