@@ -1,7 +1,6 @@
 /*
 Author: Nikolai Alexander-Himlan
-Last Update: 4/1/15
-[Insert Joke Here]
+Last Update: 4/19/15
 */
 
 NOTE: the entire code base may not conform to the following standards, as much of it was written before deciding on these standards.
@@ -35,6 +34,7 @@ functions are primarily categorized in the following ways (in order declared):
 
 functions start with a capital letter unless starting with one of the following words as a prefix (is not a prefix if the only word), which indicates its purpose: 
 	get = indicates a getter (or false getter property)
+	num = indicates a specialized getter (or property) which is the amount of or counts something
 	set = indicates a setter (or false setter action)
 	ref = indicates a get-by-reference function, meaning that modifying the return value modifies the class.  Alternative type of Getter and listed with the other Getters. (for now)
 	reset = return to default values, variation on set (setter)
@@ -52,8 +52,8 @@ some function return values should generally be treated in certain ways:
 	Actions = can (should?) return a boolean indicating if the action succeeded, or potentially return an error code indicating what happened (in the future).  If error codes start being used, functions should return true for failed and false for succeed, while this is less intuitive it keeps consistant with error codes. (0==false, 1==true, so return ifFailed)
 
 Function qualifiers (const, static, etc...) should be listed in the following order: 
-	virtual inline static const [type] [function]() const;
+	inline virtual static const [type] [function]([parameters]) const;
 The reason for this order is the following: 
-	virtual is the most likely to change so it goes at the front, with inline following.
+	inline is the most likely to change so it goes at the front, with virtual following.
 	const is applied to the return type and thus goes last, right before the return type.
 

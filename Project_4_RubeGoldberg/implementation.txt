@@ -1,5 +1,5 @@
-"recommends against inheritance for rigid body from particle"
+*"recommends against inheritance for rigid body from particle"
 
+*okay to use friction code straight from the text
 
-okay to use friction code straight from the text
-
+*"Your simulation loop uses elapsed seconds - this means that you have a variable frame-rate that can cause problems, as discussed in class. It is better to have a fixed physics time-step, and then spin through that time-step as many updates as necessary to reflect the change in wall-clock time."
