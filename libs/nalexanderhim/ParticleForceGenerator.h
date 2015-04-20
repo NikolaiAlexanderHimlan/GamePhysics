@@ -23,7 +23,7 @@ protected:
 
 public:
 	ParticleForceGenerator(){};
-	~ParticleForceGenerator(){};
+	virtual ~ParticleForceGenerator(){};
 };
 
 #endif // ParticleForceGenerator_h__

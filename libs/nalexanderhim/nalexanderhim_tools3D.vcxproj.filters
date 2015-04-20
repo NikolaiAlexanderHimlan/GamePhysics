@@ -347,9 +347,6 @@
     <ClInclude Include="M3DTypes.h">
       <Filter>Header Files\Utilities\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="Rotation.h">
-      <Filter>Header Files\Space3D</Filter>
-    </ClInclude>
     <ClInclude Include="MathDefines.h">
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
@@ -412,6 +409,15 @@
     </ClInclude>
     <ClInclude Include="AggregateMacro.h">
       <Filter>Source Files\Physics\MassAggregates</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Rotation3D.h">
+      <Filter>Header Files\Space3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrixf.h">
+      <Filter>Header Files\DataTypes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

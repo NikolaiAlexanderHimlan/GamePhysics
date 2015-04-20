@@ -7,7 +7,7 @@ I certify that this assignment is entirely my own work.
 */
 #include "Vector3f.h"
 #include "SpaceDefines.h"
-#include "Rotation.h"
+#include "Rotation3D.h"
 #include "RotationMath.h"
 #include "GeneralMath.h"
 

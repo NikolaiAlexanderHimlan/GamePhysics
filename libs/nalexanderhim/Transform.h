@@ -11,7 +11,7 @@ I certify that this assignment is entirely my own work.
 #include "M3DTypes.h"
 
 #include "ccmccooeyWrapper.h"
-#include "Rotation.h"
+#include "Rotation3D.h"
 //TODO: NOTE: Professor does not like including RotationMath here in the header
 #include "RotationMath.h"
 
