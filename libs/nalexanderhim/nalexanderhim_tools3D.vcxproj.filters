@@ -109,12 +109,6 @@
     <Filter Include="Header Files\Physics\Particles">
       <UniqueIdentifier>{9d5c99a0-e4c4-44b1-ab53-a20779aaac1b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\Connections">
-      <UniqueIdentifier>{46ae4af4-36ba-4a3f-9db5-a9315bbba826}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physics\Connections">
-      <UniqueIdentifier>{3d0fb0cb-b11e-40bf-a522-3a641f3edc05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Physics\Particles">
       <UniqueIdentifier>{006f5c56-924d-4699-bc55-7e7018de6609}</UniqueIdentifier>
     </Filter>
@@ -124,26 +118,38 @@
     <Filter Include="Source Files\Common Objects">
       <UniqueIdentifier>{c66e64e7-f9f5-44ca-a292-89b1fd144a72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\Collision">
-      <UniqueIdentifier>{0897655f-f2cb-4f60-8039-80363a3ab95c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Space3D\Volumes">
       <UniqueIdentifier>{0888309a-7ba3-4b07-8943-507227735f5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Physics\Collision">
-      <UniqueIdentifier>{53951a4b-b637-444e-b24a-12af46a696f1}</UniqueIdentifier>
+    <Filter Include="Source Files\Physics\Rigid Body">
+      <UniqueIdentifier>{a49220c2-fb06-4e9a-b166-0b5768f80be6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\Forces">
-      <UniqueIdentifier>{6fc1f6e4-0b39-40f9-a343-e6d4d19a6108}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physics\MassAggregates">
+    <Filter Include="Source Files\Physics\Particles\MassAggregates">
       <UniqueIdentifier>{64892d32-41bf-456f-87ef-d95ee503e80b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Physics\MassAggregates">
-      <UniqueIdentifier>{bf615ef9-c0bb-4a95-9ed9-1a28930991fe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Physics\Forces">
+    <Filter Include="Source Files\Physics\Particles\Forces">
       <UniqueIdentifier>{61f8a5af-790a-4428-b995-2e0bc74c064b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Particles\Connections">
+      <UniqueIdentifier>{3d0fb0cb-b11e-40bf-a522-3a641f3edc05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Particles\Collision">
+      <UniqueIdentifier>{53951a4b-b637-444e-b24a-12af46a696f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Rigid Body">
+      <UniqueIdentifier>{d27c1f82-5f39-4806-b7a0-76f8e2ebc876}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Particles\Collision">
+      <UniqueIdentifier>{0897655f-f2cb-4f60-8039-80363a3ab95c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Particles\Connections">
+      <UniqueIdentifier>{46ae4af4-36ba-4a3f-9db5-a9315bbba826}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Particles\Forces">
+      <UniqueIdentifier>{6fc1f6e4-0b39-40f9-a343-e6d4d19a6108}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics\Particles\MassAggregates">
+      <UniqueIdentifier>{bf615ef9-c0bb-4a95-9ed9-1a28930991fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -184,13 +190,13 @@
       <Filter>Source Files\Physics\Particles</Filter>
     </ClCompile>
     <ClCompile Include="ParticleLink.cpp">
-      <Filter>Source Files\Physics\Connections</Filter>
+      <Filter>Source Files\Physics\Particles\Connections</Filter>
     </ClCompile>
     <ClCompile Include="ParticleCable.cpp">
-      <Filter>Source Files\Physics\Connections</Filter>
+      <Filter>Source Files\Physics\Particles\Connections</Filter>
     </ClCompile>
     <ClCompile Include="ParticleRod.cpp">
-      <Filter>Source Files\Physics\Connections</Filter>
+      <Filter>Source Files\Physics\Particles\Connections</Filter>
     </ClCompile>
     <ClCompile Include="ManagerBase.cpp">
       <Filter>Source Files\Management</Filter>
@@ -199,7 +205,7 @@
       <Filter>Source Files\Management</Filter>
     </ClCompile>
     <ClCompile Include="ParticleGravity.cpp">
-      <Filter>Source Files\Physics\Forces</Filter>
+      <Filter>Source Files\Physics\Particles\Forces</Filter>
     </ClCompile>
     <ClCompile Include="Vector3f_nah.cpp">
       <Filter>Source Files\Space3D</Filter>
@@ -208,19 +214,19 @@
       <Filter>Source Files\Common Objects</Filter>
     </ClCompile>
     <ClCompile Include="ParticleContactResolver.cpp">
-      <Filter>Source Files\Physics\Collision</Filter>
+      <Filter>Source Files\Physics\Particles\Collision</Filter>
     </ClCompile>
     <ClCompile Include="ParticleContact.cpp">
-      <Filter>Source Files\Physics\Collision</Filter>
+      <Filter>Source Files\Physics\Particles\Collision</Filter>
     </ClCompile>
     <ClCompile Include="ParticleWall.cpp">
-      <Filter>Source Files\Physics\Collision</Filter>
+      <Filter>Source Files\Physics\Particles\Collision</Filter>
     </ClCompile>
     <ClCompile Include="MassAggregate.cpp">
-      <Filter>Source Files\Physics\MassAggregates</Filter>
+      <Filter>Source Files\Physics\Particles\MassAggregates</Filter>
     </ClCompile>
     <ClCompile Include="CubeAggregate.cpp">
-      <Filter>Source Files\Physics\MassAggregates</Filter>
+      <Filter>Source Files\Physics\Particles\MassAggregates</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -282,19 +288,19 @@
       <Filter>Header Files\Physics\Particles</Filter>
     </ClInclude>
     <ClInclude Include="ParticleRod.h">
-      <Filter>Header Files\Physics\Connections</Filter>
+      <Filter>Header Files\Physics\Particles\Connections</Filter>
     </ClInclude>
     <ClInclude Include="ParticleSpring.h">
-      <Filter>Header Files\Physics\Forces</Filter>
+      <Filter>Header Files\Physics\Particles\Forces</Filter>
     </ClInclude>
     <ClInclude Include="ParticleBungee.h">
-      <Filter>Header Files\Physics\Forces</Filter>
+      <Filter>Header Files\Physics\Particles\Forces</Filter>
     </ClInclude>
     <ClInclude Include="ParticleCable.h">
-      <Filter>Header Files\Physics\Connections</Filter>
+      <Filter>Header Files\Physics\Particles\Connections</Filter>
     </ClInclude>
     <ClInclude Include="ParticleLink.h">
-      <Filter>Header Files\Physics\Connections</Filter>
+      <Filter>Header Files\Physics\Particles\Connections</Filter>
     </ClInclude>
     <ClInclude Include="ManagedBase.h">
       <Filter>Header Files\BaseTypes\Managment</Filter>
@@ -324,10 +330,10 @@
       <Filter>Header Files\Utilities\Time</Filter>
     </ClInclude>
     <ClInclude Include="ParticleForceGenerator.h">
-      <Filter>Header Files\Physics\Forces</Filter>
+      <Filter>Header Files\Physics\Particles\Forces</Filter>
     </ClInclude>
     <ClInclude Include="ParticleGravity.h">
-      <Filter>Header Files\Physics\Forces</Filter>
+      <Filter>Header Files\Physics\Particles\Forces</Filter>
     </ClInclude>
     <ClInclude Include="FloatFactor.h">
       <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
@@ -363,7 +369,7 @@
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
     <ClInclude Include="Boundings.h">
-      <Filter>Header Files\Physics\Collision</Filter>
+      <Filter>Header Files\Physics\Particles\Collision</Filter>
     </ClInclude>
     <ClInclude Include="VolumeDefinition.h">
       <Filter>Header Files\Space3D\Volumes</Filter>
@@ -372,16 +378,16 @@
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
     <ClInclude Include="ParticleWall.h">
-      <Filter>Header Files\Physics\Collision</Filter>
+      <Filter>Header Files\Physics\Particles\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleContact.h">
-      <Filter>Header Files\Physics\Collision</Filter>
+      <Filter>Header Files\Physics\Particles\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleContactGenerator.h">
-      <Filter>Header Files\Physics\Collision</Filter>
+      <Filter>Header Files\Physics\Particles\Collision</Filter>
     </ClInclude>
     <ClInclude Include="ParticleContactResolver.h">
-      <Filter>Header Files\Physics\Collision</Filter>
+      <Filter>Header Files\Physics\Particles\Collision</Filter>
     </ClInclude>
     <ClInclude Include="CodingDefines.h">
       <Filter>Header Files\Definitions</Filter>
@@ -393,22 +399,22 @@
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
     <ClInclude Include="MassAggregate.h">
-      <Filter>Header Files\Physics\MassAggregates</Filter>
+      <Filter>Header Files\Physics\Particles\MassAggregates</Filter>
     </ClInclude>
     <ClInclude Include="CubeAggregate.h">
-      <Filter>Header Files\Physics\MassAggregates</Filter>
+      <Filter>Header Files\Physics\Particles\MassAggregates</Filter>
     </ClInclude>
     <ClInclude Include="TetrahedronAggregate.h">
-      <Filter>Header Files\Physics\MassAggregates</Filter>
+      <Filter>Header Files\Physics\Particles\MassAggregates</Filter>
     </ClInclude>
     <ClInclude Include="OctahedronAggregate.h">
-      <Filter>Header Files\Physics\MassAggregates</Filter>
+      <Filter>Header Files\Physics\Particles\MassAggregates</Filter>
     </ClInclude>
     <ClInclude Include="PrismAggregate.h">
-      <Filter>Header Files\Physics\MassAggregates</Filter>
+      <Filter>Header Files\Physics\Particles\MassAggregates</Filter>
     </ClInclude>
     <ClInclude Include="AggregateMacro.h">
-      <Filter>Source Files\Physics\MassAggregates</Filter>
+      <Filter>Source Files\Physics\Particles\MassAggregates</Filter>
     </ClInclude>
     <ClInclude Include="Quaternion.h">
       <Filter>Header Files\Space3D</Filter>
@@ -418,6 +424,9 @@
     </ClInclude>
     <ClInclude Include="Matrixf.h">
       <Filter>Header Files\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="PhysicsBase.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

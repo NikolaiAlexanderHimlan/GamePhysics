@@ -155,6 +155,7 @@
     <ClInclude Include="ParticleRod.h" />
     <ClInclude Include="ParticleSpring.h" />
     <ClInclude Include="ParticleWall.h" />
+    <ClInclude Include="PhysicsBase.h" />
     <ClInclude Include="PhysicsGlobals.h" />
     <ClInclude Include="EngineDefines.h" />
     <ClInclude Include="GraphicsGlobals.h" />

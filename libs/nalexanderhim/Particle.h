@@ -8,10 +8,11 @@ I certify that this assignment is entirely my own work.
 #ifndef _PARTICLE_H
 #define _PARTICLE_H
 
+#include "ManagedBase.h"
+#include "PhysicsBase.h"
 #include "TimeDefines.h"
 #include "PhysicsDefines.h"
 #include "ccmccooeyWrapper.h"
-#include "ManagedBase.h"
 #include "FloatFactor.h"
 #include "Boundings.h"
 #include "CodingDefines.h"
@@ -19,17 +20,16 @@ I certify that this assignment is entirely my own work.
 //Physics Handler
 class Particle
 	: public ManagedBase
+	, public PhysicsBase
 {
 private:
-	floatFactor mMass;//values <= 0 indicate infinite mass, since the math will not work with a mass of 0 anyway (no physics calculations)
-
 	//Maintainers
 	inline void RecalculateMomentum(real oldMass)
 	{
 		//Get old momentum
 		Vector3f oldMomentum = mVelocity * (float)oldMass;
 		//Calculate new velocity
-		mVelocity = oldMomentum * mMass.getFactor();
+		mVelocity = oldMomentum * getMass().getFactor();
 	}
 
 protected:
@@ -39,12 +39,6 @@ protected:
 
 	Bounding* mpBounds = new Bounding();//defines the physics boundary of the particle
 
-	/**
-	* Holds the linear position of the particle in
-	* world space.
-	*/
-	//TODO: CONSIDER: rename Physics_Position or Simulation_Position
-	Vector3f mPhysicsPosition;
 	/**
 	* Holds the linear velocity of the particle in
 	* world space.
@@ -101,8 +95,8 @@ protected:
 	//Setters
 	inline void setMass(real newMass)
 	{
-		floatFactor oldMass = (float)mMass;
-		mMass = (float)newMass;
+		floatFactor oldMass = getMass();
+		__super::setMass(newMass);
 		RecalculateMomentum(oldMass);
 	}
 
@@ -111,7 +105,7 @@ protected:
 	{
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
-		mAcceleration = forceVector * mMass.getFactor();
+		mAcceleration = forceVector * getMass().getFactor();
 
 		return true;//applied force successfully
 	}
@@ -149,15 +143,7 @@ public:
 			return NULL_PARTICLE_NAME;
 		return mName;
 	};
-	inline const Vector3f& getPhysicsPosition() const { return mPhysicsPosition;	};
 	inline REF(Bounding) getBounds() const { return *mpBounds;	};
-	inline REF(floatFactor) getMass() const
-	{
-		//TODO: Handle infinite mass
-		if (this == nullptr)
-			return floatFactor::ZERO;//if this is null, return infinite mass
-		return mMass;
-	};
 	inline REF(Vector3f) getVelocity() const
 	{
 		if (this == nullptr)
@@ -171,11 +157,9 @@ public:
 		delete mpBounds;
 		mpBounds = newBounds;
 	}
-	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPhysicsPosition = newSimulationPos;	};
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
 	
 	//Properties
-	inline bool hasInfiniteMass() const { return mMass <= 0.0f;	};
 	inline float getSpeed() const { return mVelocity.Length();	};
 	Vector3f getMomentum() const;
 	inline Vector3f getForce() const { return mAcceleration * getMass();	};
@@ -188,7 +172,7 @@ public:
 	{
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
-		mAcceleration += forceVector * mMass.getFactor();
+		mAcceleration += forceVector * getMass().getFactor();
 
 		return true;//applied force successfully
 	}
@@ -197,7 +181,7 @@ public:
 		//TODO: verify that infinite mass objects cannot receive impulse
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have impulses acting on them
 
-		mVelocity += impulseVector * mMass.getFactor();
+		mVelocity += impulseVector * getMass().getFactor();
 
 		return true;//applied impulse successfully
 	}
