@@ -1,6 +1,7 @@
 * class/struct which takes a function pointer as a parameter and calls that function in its destructor.  This would allow delayed function calls (like after a return statement).
 * generic T class which stores 2 instances of T.  can act on the class as if it was actually T.  saves the last synced value (or just if the current value has changed), can check if the current value has been changed, sync the values, and get the previous value.
 	- should be implicitly castable as T
+	* Alternative "track changed" type of class, generic T class which has 3 functions, "Read", "Write", and "ClearChanged".  Read returns a const T& while Write returns a T& and marks a bool "changed" as true. ClearChanged sets "changed" to false.
 * Research: can you store a function pointer in a variable of the functions return type? (probably not)
 * OpenGL/Glut InputSystem (http://stackoverflow.com/a/866716)(http://www.swiftless.com/tutorials/opengl/keyboard.html)
 * Grid structure is a map with GridCoords as the key
@@ -12,4 +13,5 @@
 * Boundings should contain a local offset, so the parent doesn't need to save the offset of each bounding, position pased into CheckOverlap and Contains functions is the parent position
 * by using aggregation with pointers instead of subclassing, one could dynamically allocate a larger amount of them in a subclass (ex. Physicsobject::mpParticle* -> MassAggregate::mpParticle []) 
 * use NANs (Not A Number) to represent invalid indexes (numeric equivalent to null value)
+* You can subclass a generic T template.
 
