@@ -49,6 +49,7 @@ the function name may also start with a lower case letter if it is an extension 
 some function return values should generally be treated in certain ways: 
 	Getters (get) = the returned value should be a const& reference to the actual variable, this saves memory, is faster, makes it clear that the actual value is being returned, and differentiates it from implicit properties and calculations.
 	References (ref) = the returned value is a & reference, not const.  Modifying the returned value should modify the actual variable.
+	Properties = implicit properties using the "get" prefix should return a const value, even though changing the returned value wouldn't do anything, this prevents the user from modifying it and expecting anything to change. (since it looks like a getter)
 	Actions = can (should?) return a boolean indicating if the action succeeded, or potentially return an error code indicating what happened (in the future).  If error codes start being used, functions should return true for failed and false for succeed, while this is less intuitive it keeps consistant with error codes. (0==false, 1==true, so return ifFailed)
 
 Function qualifiers (const, static, etc...) should be listed in the following order: 

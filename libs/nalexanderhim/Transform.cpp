@@ -107,7 +107,7 @@ Vector3f Transform::getRightVector(char axis) const
 	return Vector3f(rightX, rightY, rightZ).getNormalized();
 }
 
-void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
+void Transform::calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const
 {
 	//TODO: only recalculate matrices if they are changed
 
@@ -115,7 +115,7 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	M3DMatrix44f rotateResult, rotateX, rotateY;// , rotateZ;
 	M3DMatrix44f scaleResult;
 
-	m3dLoadIdentity44(outResult);
+	m3dLoadIdentity44(*outResult);
 	
 	//Translation
 	m3dTranslationMatrix44(translate, position.x, position.y, -position.z);
@@ -131,8 +131,8 @@ void Transform::getRenderMatrix(M3DMatrix44f& outResult) const
 	m3dScaleMatrix44(scaleResult, scale.x, scale.y, scale.z);
 	
 	//TRANSLATE -> ROTATE -> SCALE
-	m3dMatrixMultiply44(outResult, rotateResult, scaleResult);
-	m3dMatrixMultiply44(outResult, translate, outResult);
+	m3dMatrixMultiply44(*outResult, rotateResult, scaleResult);
+	m3dMatrixMultiply44(*outResult, translate, *outResult);
 }
 
 void Transform::setPosition(const M3DVector3f& newPosition)

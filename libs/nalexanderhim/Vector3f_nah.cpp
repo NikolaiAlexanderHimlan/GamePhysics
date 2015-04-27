@@ -33,7 +33,7 @@ Vector3f Vector3f::ClampMaxKeepSign(VectParam clampThis, VectParam clampMax)
 Vector3f Vector3f::asRad() const { return Vector3f(nah::DegToRad(x), nah::DegToRad(y), nah::DegToRad(z)); };
 
 //implementation found here: http://stackoverflow.com/a/8208951
-Vector3f Vector3f::getLookAtAngle(VectParam eye, VectParam lookAt)
+Vector3f const Vector3f::calcLookAtAngle(VectParam eye, VectParam lookAt)
 {
 	Vector3f lookRotation;
 

@@ -18,8 +18,8 @@ bool Object3D::Draw(CameraView* renderToView, GLShaderManager& shaderManager, M3
 {
 	M3DMatrix44f modelTransform, viewMatrix, modelView;
 
-	renderToView->getViewMatrix(viewMatrix);
-	getWorldTransform().getRenderMatrix(modelTransform);
+	renderToView->calcViewMatrix(&viewMatrix);
+	getWorldTransform().calcRenderMatrix(&modelTransform);
 
 	//ModelView
 	m3dMatrixMultiply44(modelView, viewMatrix, modelTransform);

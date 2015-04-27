@@ -92,8 +92,8 @@ public:
 	float addRollRad(float radians);
 
 	//Calculations
-	inline Vector3f getLookAtRotation(const Vector3f lookHere) const { return Vector3f::getLookAtAngle(position, lookHere);	}; //calculates the necessary rotation in order to look at a given location from this location
-	void getRenderMatrix(M3DMatrix44f& outResult) const;
+	inline const Vector3f calcLookAtRotation(const Vector3f lookHere) const { return Vector3f::calcLookAtAngle(position, lookHere);	}; //calculates the necessary rotation in order to look at a given location from this location
+	void calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const;
 
 	//Actions
 	void moveForward(float amount);
@@ -107,7 +107,7 @@ public:
 	inline void rotateTurnRight(float degrees) { return rotateYaw(degrees);	};
 	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
 
-	inline void lookAt(const Transform& worldTransform) { rotation = getLookAtRotation(worldTransform.position).asRad();	};//look at the transform once
+	inline void lookAt(const Transform& worldTransform) { rotation = calcLookAtRotation(worldTransform.position).asRad();	};//look at the transform once
 
 	//Type Conversions
 	std::string toString(bool pos = true, bool rot = true, bool scl = true) const;

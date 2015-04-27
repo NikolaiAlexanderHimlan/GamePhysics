@@ -115,7 +115,7 @@ public:
 	//Lock to Transform, it should be noted that calling these should not actually affect the WorldPosition, though any subsequent movement by the parent should affect the world position
 #include "RotationMath.h"//TODO: move to source file
 	inline void lookAt(const Vector3f& lookHere)
-	{ setWorldRotation(getWorldTransform().getLookAtRotation(lookHere));	};
+	{ setWorldRotation(getWorldTransform().calcLookAtRotation(lookHere));	};
 	inline void setTarget(const TransformObject* targetThis)//look at this transform and keep looking at it until the lock is released
 	{
 		mpTargetTransform = targetThis;

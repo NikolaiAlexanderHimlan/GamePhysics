@@ -26,7 +26,7 @@ public:
 	inline GLFrustum* getViewFrustum() const { return viewFrustum;	}
 
 	//Calculations
-	void getViewMatrix(M3DMatrix44f& outResult) const;
+	void calcViewMatrix(OUT_PARAM(M3DMatrix44f) outResult) const;
 };
 
 #endif

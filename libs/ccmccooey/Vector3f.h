@@ -213,7 +213,7 @@ public:
 
 	static Vector3f Reciprical(VectParam vector);
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
-	static Vector3f getLookAtAngle(const Vector3f& eye, const Vector3f& lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
+	static const Vector3f calcLookAtAngle(VectParam eye, VectParam lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f* vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
 
 	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)

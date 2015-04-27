@@ -22,10 +22,10 @@ CameraView::~CameraView()
 	delete viewFrustum;
 }
 
-void CameraView::getViewMatrix(M3DMatrix44f& outResult) const
+void CameraView::calcViewMatrix(OUT_PARAM(M3DMatrix44f) outViewMat) const
 {
-	getWorldTransform().getRenderMatrix(outResult);
+	getWorldTransform().calcRenderMatrix(outViewMat);
 	M3DMatrix44f tempMatrix;
-	m3dInvertMatrix44(tempMatrix, outResult);
-	m3dCopyMatrix44(outResult, tempMatrix);
+	m3dInvertMatrix44(tempMatrix, *outViewMat);
+	m3dCopyMatrix44(*outViewMat, tempMatrix);
 }
