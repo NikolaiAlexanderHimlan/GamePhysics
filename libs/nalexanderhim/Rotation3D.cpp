@@ -15,6 +15,10 @@ float Rotation3D::getPitchRad() const	{ return isDegrees() ? nah::DegreesToRadia
 float Rotation3D::getYawRad() const		{ return isDegrees() ? nah::DegreesToRadians(getYaw()) : getYaw();	}
 float Rotation3D::getRollRad() const	{ return isDegrees() ? nah::DegreesToRadians(getRoll()) : getRoll();	}
 
+void Rotation3D::setPitchDeg(float degrees)	{ setPitch(isDegrees() ? degrees : nah::DegreesToRadians(degrees));	}
+void Rotation3D::setYawDeg(float degrees)	{ setYaw(isDegrees() ? degrees : nah::DegreesToRadians(degrees));	}
+void Rotation3D::setRollDeg(float degrees)	{ setRoll(isDegrees() ? degrees : nah::DegreesToRadians(degrees));	}
+
 bool Rotation3D::SwitchToDegrees(void)
 {
 	if (isRadians())
@@ -57,12 +61,12 @@ bool Rotation3D::TruncateRotations(bool zeroMin /*= true*/)
 	CALCULATE_ROTATION_LIMITS;
 
 	bool changedRotation = false;
-	if (x > maxVal)			{ x = maxVal; changedRotation = true;	}
-	else if (x < minVal)	{ x = minVal; changedRotation = true;	}
-	if (y > maxVal)			{ y = maxVal; changedRotation = true;	}
-	else if (x < minVal)	{ y = minVal; changedRotation = true;	}
-	if (z > maxVal)			{ z = maxVal; changedRotation = true;	}
-	else if (z < minVal)	{ z = minVal; changedRotation = true;	}
+	if (getPitch() > maxVal)		{ refPitch() = maxVal; changedRotation = true;	}
+	else if (getPitch() < minVal)	{ refPitch() = minVal; changedRotation = true;	}
+	if (getYaw() > maxVal)			{ refYaw() = maxVal; changedRotation = true;	}
+	else if (getYaw() < minVal)		{ refYaw() = minVal; changedRotation = true;	}
+	if (getRoll() > maxVal)			{ refRoll() = maxVal; changedRotation = true;	}
+	else if (getRoll() < minVal)	{ refRoll() = minVal; changedRotation = true;	}
 
 	return changedRotation;
 }
@@ -71,14 +75,60 @@ bool Rotation3D::WrapRotations(bool zeroMin /*= true*/)
 	CALCULATE_ROTATION_LIMITS;
 
 	bool changedRotation = false;
-	if (x > maxVal)			{ x = minVal; changedRotation = true;	}
-	else if (x < minVal)	{ x = maxVal; changedRotation = true;	}
-	if (y > maxVal)			{ y = minVal; changedRotation = true;	}
-	else if (x < minVal)	{ y = maxVal; changedRotation = true;	}
-	if (z > maxVal)			{ z = minVal; changedRotation = true;	}
-	else if (z < minVal)	{ z = maxVal; changedRotation = true;	}
+	if (getPitch() > maxVal)		{ refPitch() = minVal; changedRotation = true;	}
+	else if (getPitch() < minVal)	{ refPitch() = maxVal; changedRotation = true;	}
+	if (getYaw() > maxVal)			{ refYaw() = minVal; changedRotation = true;	}
+	else if (getYaw() < minVal)		{ refYaw() = maxVal; changedRotation = true;	}
+	if (getRoll() > maxVal)			{ refRoll() = minVal; changedRotation = true;	}
+	else if (getRoll() < minVal)	{ refRoll() = maxVal; changedRotation = true;	}
 
 	return changedRotation;
 }
 #pragma endregion Rotation Limiters
 
+Rotation3D Rotation3D::Add(Rotation3D lhs, Rotation3D rhs, bool lhsRotationType /*= true*/)
+{
+	bool addRadians;
+	if (lhsRotationType)
+		addRadians = lhs.isRadians();
+	else
+		addRadians = rhs.isRadians();
+
+	if(addRadians)
+	{
+		lhs.SwitchToRadians();
+		rhs.SwitchToRadians();
+	}
+	else
+	{
+		lhs.SwitchToDegrees();
+		rhs.SwitchToDegrees();
+	}
+
+	return Rotation3D(Vector3f::Add(lhs, rhs), addRadians);
+}
+
+//implementation found here: http://stackoverflow.com/a/8208951
+const Rotation3D Rotation3D::calcLookAtRotation(REF(Vector3f) eye, REF(Vector3f) lookAt, bool inRadians)
+{
+	Rotation3D lookRotation = Rotation3D(true);//start with radians
+
+	/*TODO: implement ACTUAL look at
+	#if _MSC_VER
+	#pragma warning ("Warning : LookAt is NOT implemented!")
+	#endif
+	LOG_WARNING("LookAt is NOT implemented!");
+	//*/
+
+	Vector3f diff = Difference(lookAt, eye);
+	float xzdistance = sqrt(diff.x * diff.x + diff.z * diff.z);
+	lookRotation.x = (-atan2(diff.y, xzdistance)); // rotation around x
+	lookRotation.y = (atan2(diff.x, diff.z)); // rotation around y
+	lookRotation.z = (0); // rotation around z
+
+	//switch to degrees if set to
+	if (!inRadians)
+		lookRotation.SwitchToDegrees();
+
+	return lookRotation;
+}

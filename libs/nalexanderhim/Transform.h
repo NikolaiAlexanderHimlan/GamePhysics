@@ -30,37 +30,26 @@ public:
 
 	//Getters
 
-	//Properties
-	//more efficient, only calculates the requested axes of the vector
-	Vector3f getForwardVector(char axis) const;
-	Vector3f getUpVector(char axis) const;
-	Vector3f getRightVector(char axis) const;
-	//get all axes
-	inline Vector3f getForwardVector() const { return getForwardVector('a');	};
-	inline Vector3f getUpVector() const { return getUpVector('a');	};
-	inline Vector3f getRightVector() const { return getRightVector('a');	};
-
 	//Setters
-	void setPosition(const M3DVector3f& newPosition);
+	void setPosition(REF(M3DVector3f) newPosition);
 	void setRotation(REF(M3DVector3f) newRotation, bool setDegrees = true);
-	void setScale(float newScale);
 
+	//Properties
+	const Vector3f getForwardVector() const;
+	const Vector3f getRightVector() const;
+	const Vector3f getUpVector() const;
 
 	//Modifiers
 
 	//Calculations
-	inline const Vector3f calcLookAtRotation(const Vector3f lookHere) const { return Vector3f::calcLookAtAngle(position, lookHere);	}; //calculates the necessary rotation in order to look at a given location from this location
 	void calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const;
 
 	//Actions
-	inline void rotateRollRight(float degrees) { return rotateRoll(degrees);	};
-	inline void rotateTurnRight(float degrees) { return rotateYaw(degrees);	};
-	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
 	inline void moveForward(float amount)	{ position += getForwardVector() * amount;	};
 	inline void moveRight(float amount)		{ position += getRightVector() * amount;	};
 	inline void moveUp(float amount)			{ position += getUpVector() * amount;	};
 
-	inline void lookAt(const Transform& worldTransform) { rotation = calcLookAtRotation(worldTransform.position).asRad();	};//look at the transform once
+	inline void lookAt(REF(Vector3f) targetPosition) { rotation.setDeg(Rotation3D::calcLookAtRotation(position, targetPosition));	};//look at the transform once
 
 	//Type Conversions
 	std::string toString(bool pos = true, bool rot = true, bool scl = true) const;

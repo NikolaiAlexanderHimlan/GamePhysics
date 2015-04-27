@@ -38,7 +38,7 @@ public:
 	virtual inline Transform& refLocalTransform() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
 
 	//Setters
-	inline void setLocalTransform(const Transform& newTransform) { refLocalTransform() = newTransform; };//done using getLocalTransformRef for convenience to subclasses
+	inline void setLocalTransform(const Transform& newTransform) { refLocalTransform() = newTransform;	};//done using getLocalTransformRef for convenience to subclasses
 
 	//Properties
 	inline bool hasLock() const
@@ -65,11 +65,11 @@ public:
 		Vector3f worldScale = getLocalTransform().scale;
 
 		//TODO: parent rotation needs to affect position
-		worldPosition = parentWorldTransform.position + Vector3f::Multiply(getLocalTransform().position, parentWorldTransform.scale);//scale affects the position//HACK: should be influenced by rotation
-		worldRotation = parentWorldTransform.rotation + Vector3f::Multiply(getLocalTransform().rotation, parentWorldTransform.scale);//scale affects rotation
-		worldScale *= parentWorldTransform.scale;//combine the scales
+		worldPosition = parentWorldTransform.position + Vector3f::Multiply(getLocalTransform().position, parentWorldTransform.scale);//scale affects the position//HACK: should be influenced by rotation also
+		worldRotation = parentWorldTransform.rotation + (getLocalTransform().rotation);//rotation is affected by nothing else
+		Vector3f::Multiply(worldScale, parentWorldTransform.scale);//combine the scales
 
-		return Transform(worldPosition, worldRotation, worldScale);
+		return Transform(worldPosition, Rotation3D(worldRotation, getLocalTransform().rotation.isRadians()), worldScale);
 	};
 
 	//Modifiers
@@ -88,7 +88,7 @@ public:
 		}
 		//Calculate new local position value
 		//TODO: parent rotation needs to affect position
-		refLocalTransform().position = (getLocalTransform().position / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().position;//HACK: simplified
+		refLocalTransform().position = (getLocalTransform().position / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().position;//HACK: simplified calculation
 	}
 	void setWorldRotation(const RotationVal& newWorldRotation)
 	{
@@ -98,7 +98,7 @@ public:
 			return;
 		}
 		//Calculate new local rotation value
-		refLocalTransform().rotation = (getLocalTransform().rotation / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().rotation;
+		refLocalTransform().rotation = (getLocalTransform().rotation) - mpParentTransform->getWorldTransform().rotation;//rotation is affected by nothing else
 	}
 	void setWorldScale(const Vector3f& newWorldScale)
 	{
@@ -113,9 +113,8 @@ public:
 
 	//Actions
 	//Lock to Transform, it should be noted that calling these should not actually affect the WorldPosition, though any subsequent movement by the parent should affect the world position
-#include "RotationMath.h"//TODO: move to source file
 	inline void lookAt(const Vector3f& lookHere)
-	{ setWorldRotation(getWorldTransform().calcLookAtRotation(lookHere));	};
+	{ setWorldRotation(Rotation3D::calcLookAtRotation(getWorldTransform().position, lookHere));	};
 	inline void setTarget(const TransformObject* targetThis)//look at this transform and keep looking at it until the lock is released
 	{
 		mpTargetTransform = targetThis;

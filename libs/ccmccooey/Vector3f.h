@@ -24,7 +24,8 @@
 #define VectParam const Vector3f&
 
 //pre-engine declarations
-class Rotation3D;
+class Rotation3D;//TODO: remove
+class MatrixNf;//TODO: remove
 enum Axis;
 typedef float ufloat;
 
@@ -58,31 +59,37 @@ public:
 	float getAngleY( const Vector3f& toVector );
 
 	//operators overloads
+		//Math
+	inline const Vector3f operator + (VectParam rhs) const { return Add(*this, rhs);	};//[NAH]
+	inline const Vector3f operator - (VectParam rhs) const { return Subtract(*this, rhs); };//[NAH]
+	inline const Vector3f operator / (VectParam rhs) const { return Divide(*this, rhs); };//[NAH]
+	inline const Vector3f operator - () const { return Inverse(); };//[NAH]
+	
+		//Assignment
 	Vector3f& operator = ( const Vector3f& rhs );
 	//Should do this manually// Vector3f& operator = ( const float& rhs ) { x = rhs;	y = rhs;	z = rhs;	return *this;	};//[NAH]
-	Vector3f& operator += ( const Vector3f& rhs );
-	Vector3f& operator -= ( const Vector3f& rhs );
 	Vector3f& operator *= ( const Vector3f& rhs );
-	Vector3f& operator /= ( const Vector3f& rhs );
 	Vector3f& operator *= ( float mult );
-	Vector3f& operator /= ( float div );
+	inline Vector3f& operator += (VectParam rhs) { return *this = *this + rhs;	};//[NAH]
+	inline Vector3f& operator -= (VectParam rhs) { return *this = *this - rhs;	};//[NAH]
+	inline Vector3f& operator /= (VectParam rhs) { return *this = *this / rhs;	};//[NAH]
+	Vector3f& operator /= (float div);
 
-	const Vector3f Vector3f::operator+(VectParam other) const;
-	const Vector3f Vector3f::operator-(VectParam other) const;
 	//const Vector3f Vector3f::operator*(VectParam other) const;//Require explicit call to either Multiply or DotProduct
-	const Vector3f Vector3f::operator/(const Vector3f &other) const;
 	const Vector3f Vector3f::operator*(float mult) const;
 	const Vector3f Vector3f::operator/(float div) const;
-	const Vector3f operator-() const;
 
+		//Comparison
 	bool Vector3f::operator==(VectParam other) const;
 	bool Vector3f::operator!=(VectParam other) const;
 
+		//Conversion
 	friend std::ostream& Vector3f::operator<<(std::ostream& stream, const Vector3f& vector);
 	std::string toString() const;
-	void toArray(float floatArray[3]);
+	void toArray(float outArray[3]);
 
 	//math functions
+	inline Vector3f Inverse() const { return Vector3f(-x, -y, -z);	};//[NAH]
 	//more expensive, actual length of the vector
 	inline ufloat Length() const
 	{ return sqrt(LengthSquared());	};//[NAH]
@@ -144,37 +151,20 @@ public:
 	static Vector3f ClampMax(VectParam clampThis, VectParam clampMax);//[NAH]
 	static Vector3f ClampMaxKeepSign(VectParam clampThis, VectParam clampMax);//[NAH]
 
+	inline static Vector3f Add(Vector3f lhs, VectParam rhs, bool lhsRotationType = true) {
+		lhs.x += rhs.x;
+		lhs.y += rhs.y;
+		lhs.z += rhs.z;
+		return lhs;
+	};//[NAH]
+	inline static Vector3f Subtract(VectParam lhs, VectParam rhs) { return Add(lhs, -rhs);	};
 	/// <summary> Subtracts the right hand value from the vector if the value is not 0. </summary>
 	/// <param name="keepLeftOnZero">
 	/// If true, will use the values of the left hand vector if either value is 0. 
 	/// <para> Overrides the [keepRightOnZero] parameter. </para>
 	/// </param>
 	/// <param name="keepRightOnZero"> If true, will use the values of the right hand vector if either value is 0. </param>
-	static inline Vector3f Subtract_NonZero(Vector3f lhs, VectParam rhs, bool keepLeftOnZero = false, bool keepRightOnZero = false)
-	{
-		if (lhs.x != 0 && rhs.x != 0)
-			lhs.x -= rhs.x;
-		else if (!keepLeftOnZero)
-			lhs.x = 0;
-		else if (keepRightOnZero)
-			lhs.x = rhs.x;
-
-		if (lhs.y != 0 && rhs.y != 0)
-			lhs.y -= rhs.y;
-		else if (!keepLeftOnZero)
-			lhs.y = 0;
-		else if (keepRightOnZero)
-			lhs.y = rhs.y;
-
-		if (lhs.z != 0 && rhs.z != 0)
-			lhs.z -= rhs.z;
-		else if (!keepLeftOnZero)
-			lhs.z = 0;
-		else if (keepRightOnZero)
-			lhs.z = rhs.z;
-
-		return lhs;
-	};//[NAH]
+	static Vector3f Subtract_NonZero(Vector3f lhs, VectParam rhs, bool keepLeftOnZero = false, bool keepRightOnZero = false);//[NAH]
 	static inline Vector3f Multiply(Vector3f lhs, VectParam rhs)
 	{
 		lhs.x *= rhs.x;
@@ -219,7 +209,6 @@ public:
 
 	static Vector3f Reciprical(VectParam vector);
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
-	static const Rotation3D calcLookAtAngle(VectParam eye, VectParam lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f* vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
 
 	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)

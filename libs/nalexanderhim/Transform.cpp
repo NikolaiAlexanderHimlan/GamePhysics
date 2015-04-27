@@ -19,7 +19,7 @@ I certify that this assignment is entirely my own work.
 
 const float ROTATION_LIMIT = 180.0f;//89.0 * M_PI / 180.0;
 
-Vector3f Transform::getForwardVector(char axis) const
+const Vector3f Transform::getForwardVector() const
 {
 	float forwardX = 0.0f, forwardY = 0.0f, forwardZ = 0.0f;
 
@@ -35,17 +35,6 @@ Vector3f Transform::getForwardVector(char axis) const
 	float tanR = tan(getRollRad());
 	//*/
 
-	//calculate each axis, unless an axis was specified, in which case only calculate that axis.
-	//HACK: calculating only specific axes prevents correct normalization
-	/*
-	//if (axis != 'y' && axis != 'z')//calculate x-axis
-		forwardX = cos(getYawRad()) * cos(getPitchRad());
-	//if (axis != 'x' && axis != 'z')//calculate y-axis
-		forwardY = sin(getPitchRad());//probably something extra?
-	//if (axis != 'x' && axis != 'y')//calculate z-axis
-		forwardZ = sin(getYawRad()) * cos(getPitchRad());
-	//^above math is WRONG!!!*/
-
 	//* My sourced method
 		//HACK: This method does not account for Roll, which will break the Right and Up vectors.
 	forwardX = -nah::SinF_Precise(rotation.getYawRad());
@@ -53,10 +42,9 @@ Vector3f Transform::getForwardVector(char axis) const
 	forwardZ = nah::CosF_Precise(rotation.getPitchRad()) * nah::CosF_Precise(rotation.getYawRad());
 	//*/
 
-
 	return Vector3f(forwardX, forwardY, forwardZ).getNormalized();
 }
-Vector3f Transform::getUpVector(char axis) const
+const Vector3f Transform::getUpVector() const
 {
 	float upX = 0.0f, upY = 0.0f, upZ = 0.0f;
 
@@ -67,32 +55,15 @@ Vector3f Transform::getUpVector(char axis) const
 
 	return Vector3f(upX, upY, upZ).getNormalized();
 }
-Vector3f Transform::getRightVector(char axis) const
+const Vector3f Transform::getRightVector() const
 {
 	float rightX=0.0f, rightY=0.0f, rightZ=0.0f;
-
-	//calculate each axis, unless an axis was specified, in which case only calculate that axis.
-	//HACK: calculating only specific axes prevents correct normalization
-	/*
-	//if (axis != 'y' && axis != 'z')//calculate x-axis
-		rightX = (float)cos(getYawRad() - M_PI_2);
-	//if (axis != 'x' && axis != 'z')//calculate y-axis
-		rightY = 0.0f;//(float)sin(getPitchRad() - M_PI_2)
-	//if (axis != 'x' && axis != 'y')//calculate z-axis
-		rightZ = (float)sin(getYawRad() - M_PI_2);
-	//^Am certain above math is wrong!!!*/
-
-	/*
-	rightX = sin(getYawRad() - M_PI_2);
-	rightY = -sin(getPitchRad());
-	rightZ = cos(getYawRad() - M_PI_2);
-	//doesn't work quite right*/
 
 	Vector3f crossVect = Vector3f::CrossProductF(getForwardVector(), &Vector3f(0.0f, 1.0f, 0.0f));//HACK: using the standard Up vector for cross means Roll will not work
 	rightX = crossVect.x;
 	rightY = crossVect.y;
 	rightZ = crossVect.z;
-	
+
 	return Vector3f(rightX, rightY, rightZ).getNormalized();
 }
 
@@ -114,7 +85,7 @@ void Transform::calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const
 	m3dRotationMatrix44(rotateY, (float)m3dDegToRad(rotation.y), 0.0f, 1.0f, 0.0f);
 	m3dRotationMatrix44(rotateX, (float)m3dDegToRad(rotation.x), 1.0f, 0.0f, 0.0f);
 	m3dMatrixMultiply44(rotateResult, rotateY, rotateX);
-	//m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);
+	//m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);//this line causes Roll
 	
 	//Scale
 	m3dScaleMatrix44(scaleResult, scale.x, scale.y, scale.z);
@@ -124,7 +95,7 @@ void Transform::calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const
 	m3dMatrixMultiply44(*outResult, translate, *outResult);
 }
 
-void Transform::setPosition(const M3DVector3f& newPosition)
+void Transform::setPosition(REF(M3DVector3f) newPosition)
 {
 	assignVector3f(position, newPosition);
 }
@@ -133,12 +104,6 @@ void Transform::setRotation(REF(M3DVector3f) newRotation, bool setDegrees /*= tr
 	Vector3f tempRot;
 	assignVector3f(tempRot, newRotation);
 	rotation = Rotation3D(rotation, !setDegrees);
-}
-void Transform::setScale(float newScale)
-{
-	scale.x = newScale;
-	scale.y = newScale;
-	scale.z = newScale;
 }
 
 std::string Transform::toString(bool pos /*= true*/, bool rot /*= true*/, bool scl /*= true*/) const

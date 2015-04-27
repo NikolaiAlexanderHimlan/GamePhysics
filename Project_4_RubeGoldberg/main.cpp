@@ -187,7 +187,7 @@ void setupWorld()
 		model2->refLocalTransform().rotation = (rotateModel2);
 
 		//model2 scale
-		model2->refLocalTransform().setScale(2.0f);
+		model2->refLocalTransform().scale = 2.0f;
 	}
 
 	{//Aggregate1 setup
@@ -384,7 +384,7 @@ void UpdateUI()
 void RenderScene(void)
 {
 	//Swap Colors
-	GLfloat vColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	GLfloat vColor[] = { 1.0f, 1.0f, 1.0f, 1.0f	} ;
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
@@ -442,13 +442,13 @@ void Keys(unsigned char key, int x, int y)
 	if ((key == 'Q') || (key == 'q'))
 	{
 		//roll left
-		mainView->refLocalTransform().rotateRollRight(-viewSpinSpeed);
+		mainView->refLocalTransform().rotation.rotateRollRightDeg(-viewSpinSpeed);
 	}
 
 	if ((key == 'E') || (key == 'e'))
 	{
 		//roll right
-		mainView->refLocalTransform().rotateRollRight(viewSpinSpeed);
+		mainView->refLocalTransform().rotation.rotateRollRightDeg(viewSpinSpeed);
 	}
 
 	//Move target planet
@@ -503,19 +503,19 @@ void SpecialKeys(int key, int x, int y)
 	float viewTurnSpeed = 5.0f;
 	if (key == GLUT_KEY_LEFT)
 	{
-		mainView->refLocalTransform().rotateTurnRight(-viewTurnSpeed);
+		mainView->refLocalTransform().rotation.rotateYawTurnRightDeg(-viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_RIGHT)
 	{
-		mainView->refLocalTransform().rotateTurnRight(viewTurnSpeed);
+		mainView->refLocalTransform().rotation.rotateYawTurnRightDeg(viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_UP)
 	{
-		mainView->refLocalTransform().rotateTurnUp(viewTurnSpeed);
+		mainView->refLocalTransform().rotation.rotatePitchTiltUpDeg(viewTurnSpeed);
 	}
 	if (key == GLUT_KEY_DOWN)
 	{
-		mainView->refLocalTransform().rotateTurnUp(-viewTurnSpeed);
+		mainView->refLocalTransform().rotation.rotatePitchTiltUpDeg(-viewTurnSpeed);
 	}
 }
 

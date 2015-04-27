@@ -84,32 +84,11 @@ Vector3f& Vector3f::operator=( const Vector3f& rhs )
 }
 
 //relative operators
-Vector3f& Vector3f::operator += ( const Vector3f& rhs )
-{
-	x += rhs.x;
-	y += rhs.y;
-	z += rhs.z;
-	return *this;
-}
-Vector3f& Vector3f::operator -= ( const Vector3f& rhs )
-{
-	x -= rhs.x;
-	y -= rhs.y;
-	z -= rhs.z;
-	return *this;
-}
 Vector3f& Vector3f::operator *= ( const Vector3f& rhs )
 {
 	x *= rhs.x;
 	y *= rhs.y;
 	z *= rhs.z;
-	return *this;
-}
-Vector3f& Vector3f::operator /= ( const Vector3f& rhs )
-{
-	x /= rhs.x;
-	y /= rhs.y;
-	z /= rhs.z;
 	return *this;
 }
 Vector3f& Vector3f::operator *= ( float scalar )
@@ -128,28 +107,12 @@ Vector3f& Vector3f::operator /= ( float scalar )
 }
 
 //math operators
-const Vector3f Vector3f::operator+(const Vector3f &other) const
-{
-	return Vector3f(x + other.x, y + other.y, z + other.z);
-}
-const Vector3f Vector3f::operator-(const Vector3f &other) const
-{
-	return Vector3f(x - other.x, y - other.y, z - other.z);
-}
-/*
+/*disabled multiplication operator
 const Vector3f Vector3f::operator*(const Vector3f &other) const
 {
 	return Vector3f(x * other.x, y * other.y, z * other.z);
 }
 //*/
-const Vector3f Vector3f::operator/(const Vector3f &other) const
-{
-	return Vector3f(x / other.x, y / other.y, z / other.z);
-}
-const Vector3f Vector3f::operator-() const
-{
-	return Vector3f(x * -1, y * -1, z * -1);
-}
 const Vector3f Vector3f::operator*(float mult) const
 {
 	return Vector3f(x * mult, y * mult, z * mult);
