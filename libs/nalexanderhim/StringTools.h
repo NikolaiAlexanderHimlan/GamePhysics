@@ -61,14 +61,14 @@ namespace nah
 
 		return strToConvert;
 		}//*/
-		static inline string StringToUpper(string strToConvert)
+		inline static string StringToUpper(string strToConvert)
 		{
 			for (int i = 0; i < (int)strToConvert.size(); i++){
 				strToConvert[i] = toupper(strToConvert[i]);
 			}
 			return strToConvert;
 		}
-		static inline string StringToLower(string strToConvert)
+		inline static string StringToLower(string strToConvert)
 		{
 			for (int i = 0; i < (int)strToConvert.size(); i++){
 				strToConvert[i] = tolower(strToConvert[i]);
@@ -76,7 +76,7 @@ namespace nah
 			return strToConvert;
 		}
 
-		static inline string replace(const string& forString, const string& replaceThis, const string& withThis)
+		inline static string replace(const string& forString, const string& replaceThis, const string& withThis)
 		{
 			string extraString = forString;
 			extraString.replace(forString.find(replaceThis), replaceThis.length(), withThis);
@@ -89,11 +89,11 @@ namespace nah
 		static string substring( const string& source, int startIndex, int endIndex = -1, bool includeStartIndex = true, bool includeEndIndex = true );
 #pragma region Substring - char Index
 		//TODO: figure out if the char Index substring functions should be changed to refer to the string Index substring functions to reduce duplicate funcitonality?
-		static inline string substring( const string& source, char startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( const string& source, char startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
 		{ return substring(source, (int)source.find_first_of(startChar), endChar, includeStartChar, includeEndChar);	}
-		static inline string substring( const string& source, int startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( const string& source, int startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
 		{ return substring(source, startChar, (int)source.find_first_of(endChar, startChar+1), includeStartChar, includeEndChar);	}
-		static inline string substring( const string& source, char startChar, int endChar = -1, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( const string& source, char startChar, int endChar = -1, bool includeStartChar = true, bool includeEndChar = true )
 		{ return substring(source, (int)source.find_first_of(startChar), endChar, includeStartChar, includeEndChar);	}
 		//************************************
 		// Method:    substring
@@ -123,7 +123,7 @@ namespace nah
 		/// <param name="includeStartChar"> should the starting character be included in the returned string? </param>
 		/// <param name="includeEndChar"> should the ending character be included in the returned string? </param>
 		/// <returns> A string containing the specified section of source. </returns>
-		static inline string substring( const string& source, char startChar, char endChar, unsigned int skipStartChars, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( const string& source, char startChar, char endChar, unsigned int skipStartChars, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
 		{
 			int startIndex = getSkipIndex(source, startChar, skipStartChars);
 			int endIndex = getSkipIndex(source, endChar, skipEndChars, startIndex);
@@ -154,12 +154,12 @@ namespace nah
 		/// </param>
 		/// <param name="includeStartChar"> should the starting character be included in the returned string? </param>
 		/// <param name="includeEndChar"> should the ending character be included in the returned string? </param>
-		static inline string substring( const string& source, char startChar, int endIndex, unsigned int skipStartChars, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( const string& source, char startChar, int endIndex, unsigned int skipStartChars, bool includeStartChar = true, bool includeEndChar = true )
 		{
 			int startIndex = getSkipIndex(source, startChar, skipStartChars);
 			return substring(source, startIndex, endIndex, includeStartChar, includeEndChar);
 		}
-		static inline string substring( const string& source, int startIndex, char endChar, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( const string& source, int startIndex, char endChar, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
 		{
 			int endIndex = getSkipIndex(source, endChar, skipEndChars, startIndex);
 			string tempString = substring(source, startIndex, endIndex, includeStartChar, includeEndChar);
@@ -167,11 +167,11 @@ namespace nah
 		}
 #pragma endregion
 #pragma region Substring - string Index
-		static inline string substring( const string& source, const string& startString, const string& endString, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( const string& source, const string& startString, const string& endString, bool includeStartString = true, bool includeEndString = true )
 		{ return substring(source, (int)(source.find(startString)+startString.length())-1, endString, includeStartString, includeEndString);	}
-		static inline string substring( const string& source, int startString, const string& endString, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( const string& source, int startString, const string& endString, bool includeStartString = true, bool includeEndString = true )
 		{ return substring(source, startString, (int)source.find(endString, startString+1), includeStartString, includeEndString);	}
-		static inline string substring( const string& source, const string& startString, int endString = -1, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( const string& source, const string& startString, int endString = -1, bool includeStartString = true, bool includeEndString = true )
 		{ return substring(source, (int)(source.find(startString)+startString.length())-1, endString, includeStartString, includeEndString);	}
 		//************************************
 		// Method:    substring
@@ -201,7 +201,7 @@ namespace nah
 		/// <param name="includeStartString"> should the starting string be included in the returned string? </param>
 		/// <param name="includeEndString"> should the ending string be included in the returned string? </param>
 		/// <returns> A string containing the specified section of source. </returns>
-		static inline string substring( const string& source, const string& startString, const string& endString, unsigned int skipStartStrings, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( const string& source, const string& startString, const string& endString, unsigned int skipStartStrings, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
 		{
 			int startIndex = getSkipIndex(source, startString, skipStartStrings);
 			int endIndex = getSkipIndex(source, endString, skipEndStrings, startIndex);
@@ -232,12 +232,12 @@ namespace nah
 		/// </param>
 		/// <param name="includeStartString"> should the starting string be included in the returned string? </param>
 		/// <param name="includeEndString"> should the ending string be included in the returned string? </param>
-		static inline string substring( const string& source, const string& startString, int endIndex, unsigned int skipStartStrings, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( const string& source, const string& startString, int endIndex, unsigned int skipStartStrings, bool includeStartString = true, bool includeEndString = true )
 		{
 			int startIndex = getSkipIndex(source, startString, skipStartStrings);
 			return substring(source, startIndex, endIndex, includeStartString, includeEndString);
 		}
-		static inline string substring( const string& source, int startIndex, const string& endString, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( const string& source, int startIndex, const string& endString, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
 		{
 			int endIndex = getSkipIndex(source, endString, skipEndStrings, startIndex);
 			return substring(source, startIndex, endIndex, includeStartString, includeEndString);
@@ -254,7 +254,7 @@ namespace nah
 		/// <para> 1(true) = split character is not included in either output. </para>
 		/// <para> -1 = split character is put on the left output. </para>
 		/// </param>
-		static inline void splitString(string* outLeft, string* outRight, const string& source, int splitIndex, int dropSplit = true)
+		inline static void splitString(string* outLeft, string* outRight, const string& source, int splitIndex, int dropSplit = true)
 		{
 			//TODO: more efficient method than substring?
 			*outLeft = substring(source, 0, (int)splitIndex, true, dropSplit <= -1);//include the split character in outLeft if dropSplit is -1
@@ -270,7 +270,7 @@ namespace nah
 		/// <para> 1(true) = split character is not included in either output. </para>
 		/// <para> -1 = split character is put on the left output. </para>
 		/// </param>
-		static inline void splitString(string* outLeft, string* outRight, const string& source, char splitAt, int dropSplit = true)
+		inline static void splitString(string* outLeft, string* outRight, const string& source, char splitAt, int dropSplit = true)
 		{
 			int splitIndex = (int)source.find_first_of(splitAt);
 			if (splitIndex > 0)//valid split
@@ -296,7 +296,7 @@ namespace nah
 		/// <param name="numChars"></param>
 		/// <param name="trimEnd">should the end of the string or the start of the string be trimmed?</param>
 		/// <returns></returns>
-		static inline string trim(const string& source, int numChars, bool trimEnd = true)
+		inline static string trim(const string& source, int numChars, bool trimEnd = true)
 		{
 			if(trimEnd) return substring(source, -1, int(source.length() - numChars), false, true);
 			else 		return substring(source, numChars);
@@ -354,7 +354,7 @@ namespace nah
 		/// </summary>
 		/// <param name="source"></param>
 		/// <returns>The compressed string</returns>
-		static inline string compressWhitespace(string source)
+		inline static string compressWhitespace(string source)
 		{
 			for (int i=0; i<whitespaceCount; i++)
 			{

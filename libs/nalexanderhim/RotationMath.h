@@ -34,7 +34,7 @@ namespace nah
 	/// <summary> Gets the equivalent value for a rotation in degrees between 0 and 360. </summary>
 	/// <param name="degrees">A rotation value in degrees. </param>
 	/// <returns> The equivalent rotation value between 0 and 360. </returns>
-	static inline float absoluteRotation_Degrees(float degrees)
+	inline static float absoluteRotation_Degrees(float degrees)
 	{
 		while(degrees < MIN_DEGREE)//check negative
 			return degrees +MAX_DEGREE;//equivalent positive rotation value
@@ -53,13 +53,13 @@ namespace nah
 	/// </summary>
 	/// <param name="degrees"></param>
 	/// <returns></returns>
-	static inline float oppositeRotation_Degrees(float degrees)
+	inline static float oppositeRotation_Degrees(float degrees)
 	{
 		if(degrees < MIN_DEGREE)//check negative
 			return degrees +HALF_DEGREE;//+360 to make positive then -180 to get the opposite
 		return degrees -HALF_DEGREE;//already positive, -180 to get the opposite
 	}
-	static inline float oppositeRotation_AbsDegrees(float degrees)
+	inline static float oppositeRotation_AbsDegrees(float degrees)
 	{ return absoluteRotation_Degrees(oppositeRotation_Degrees(degrees));	}
 #pragma endregion
 #pragma region Radians Math
@@ -71,9 +71,9 @@ namespace nah
 #define MIN_RADIAN MIN_ROTATION_RADIANS
 #define MAX_RADIAN MAX_ROTATION_RADIANS
 #define HALF_RADIAN HALF_ROTATION_RADIANS
-	static inline float absoluteRotation_Radians(float radians);
-	static inline float oppositeRotation_Radians(float radians);
-	static inline float oppositeRotation_AbsRadians(float radians)
+	inline static float absoluteRotation_Radians(float radians);
+	inline static float oppositeRotation_Radians(float radians);
+	inline static float oppositeRotation_AbsRadians(float radians)
 	;//{ return absoluteRotation_Radians(oppositeRotation_Radians(radians));	}
 #pragma endregion
 #pragma region Conversion
@@ -84,14 +84,14 @@ namespace nah
 
 	//TODO: find alternative shortening which obeys scope.
 #define DegToRad DegreesToRadians
-	static inline float DegreesToRadians(float degrees)
+	inline static float DegreesToRadians(float degrees)
 	{
 		//trace("radical",degrees * Math.PI / 180);
 		float radians = (float)(degrees * TO_RADIAN);
 		return (radians);
 	}
 #define RadToDeg RadiansToDegrees
-	static inline float RadiansToDegrees(float radians)
+	inline static float RadiansToDegrees(float radians)
 	{
 		//trace("severity",radians * 180/Math.PI);
 		float degrees = (float)(radians * TO_DEGREE);
@@ -102,13 +102,13 @@ namespace nah
 #pragma region Precision adjusted trig
 	//TODO: change case to match sin, cos, tan function case
 	//CONSIDER: overloaded functions instead of type indication character suffix
-	static inline float SinF_Precise(const float& radians) { return LimitPrecision(sin(radians));	};
-	static inline float CosF_Precise(const float& radians) { return LimitPrecision(cos(radians));	};
-	static inline float TanF_Precise(const float& radians);
+	inline static float SinF_Precise(const float& radians) { return LimitPrecision(sin(radians));	};
+	inline static float CosF_Precise(const float& radians) { return LimitPrecision(cos(radians));	};
+	inline static float TanF_Precise(const float& radians);
 
-	static inline double SinD_Precise(const double& radians);
-	static inline double CosD_Precise(const double& radians);
-	static inline double TanD_Precise(const double& radians);
+	inline static double SinD_Precise(const double& radians);
+	inline static double CosD_Precise(const double& radians);
+	inline static double TanD_Precise(const double& radians);
 #pragma endregion
 	//}
 }

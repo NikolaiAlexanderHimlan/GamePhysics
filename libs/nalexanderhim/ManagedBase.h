@@ -32,7 +32,7 @@ public:
 	static const bool AUTO_MANAGED = false;
 
 	virtual ~ManagedBase() {};//make sure subclass destructor is called
-	
+
 	//HACK: temporarily make this public until I can fix the management
 	inline void Manage() { addToManager();	};//adds this to the manager
 	inline void Unmanage() { removeFromManager();	};//removes this from the manager
@@ -44,12 +44,12 @@ class ManagedAuto
 {
 	//friend ManagerBase;
 private:
-	static inline void handleAdd(void* ptr);//does shenanigans to add to manager
-	static inline void handleRemove(void* ptr);//handles removing
+	inline static void handleAdd(void* ptr);//does shenanigans to add to manager
+	inline static void handleRemove(void* ptr);//handles removing
 
 	//HACK: change permissions
-	inline void Manage() { addToManager(); };//adds this to the manager
-	inline void Unmanage() { removeFromManager(); };//removes this from the manager
+	inline void Manage() { addToManager();	};//adds this to the manager
+	inline void Unmanage() { removeFromManager();	};//removes this from the manager
 
 public:
 	static const bool AUTO_MANAGED = true;

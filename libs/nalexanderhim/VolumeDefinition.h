@@ -17,7 +17,7 @@ struct VolumeDefinition
 	virtual Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos = Vector3f::zero, OUT_PARAM(real) distanceToPos = nullptr) const = 0;
 	virtual Vector3f HighestPoint(VectParam volumePos = Vector3f::zero, Axis upAxis = UP) const=0;
 	inline Vector3f LowestPoint(VectParam volumePos = Vector3f::zero, Axis upAxis = UP) const
-	{ return HighestPoint(volumePos, upAxis) * -1.0f; };
+	{ return HighestPoint(volumePos, upAxis) * -1.0f;	};
 };
 
 struct SphereVolume

@@ -43,11 +43,11 @@ private:
 public:
 	static const FACTOR_CLASS ZERO;
 
-	FACTOR_CLASS(VALUE_TYPE val = VALUE_ZERO) { setValue(val); };
-	FACTOR_CLASS(const FACTOR_CLASS& rhs) { setValue(rhs.getValue()); };
+	FACTOR_CLASS(VALUE_TYPE val = VALUE_ZERO) { setValue(val);	};
+	FACTOR_CLASS(const FACTOR_CLASS& rhs) { setValue(rhs.getValue());	};
 
 	//Getters
-	inline const VALUE_TYPE& getValue() const { return mValue; };
+	inline const VALUE_TYPE& getValue() const { return mValue;	};
 	inline FACTOR_TYPE getFactor() const {
 		//RefreshFactor();
 		return mFactor;
@@ -73,11 +73,11 @@ public:
 // 	inline FACTOR_TYPE& Factor() { return &mFactor	};
 
 	//Operators
-	inline const FACTOR_CLASS& operator =(const VALUE_TYPE& rhs) { setValue(rhs); return *this; };
-	inline const FACTOR_CLASS& operator =(const FACTOR_CLASS& rhs) { setValue(rhs.getValue()); return *this; };
+	inline const FACTOR_CLASS& operator =(const VALUE_TYPE& rhs) { setValue(rhs); return *this;	};
+	inline const FACTOR_CLASS& operator =(const FACTOR_CLASS& rhs) { setValue(rhs.getValue()); return *this;	};
 
 	//Conversion Operators
-	operator const VALUE_TYPE&() const { return getValue(); };
+	operator const VALUE_TYPE&() const { return getValue();	};
 };
 
 __declspec(selectany) const FACTOR_CLASS FACTOR_CLASS::ZERO = VALUE_ZERO;

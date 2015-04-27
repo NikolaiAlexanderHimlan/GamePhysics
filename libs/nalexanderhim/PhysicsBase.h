@@ -23,7 +23,6 @@ protected:
 	* Holds the linear position of the particle in
 	* world space.
 	*/
-	//TODO: CONSIDER: rename Physics_Position or Simulation_Position
 	Vector3f mPhysicsPosition;
 
 	//Setters
@@ -35,7 +34,7 @@ protected:
 
 public:
 	//Getters
-	inline const Vector3f& getPhysicsPosition() const { return mPhysicsPosition; };
+	inline const Vector3f& getPhysicsPosition() const { return mPhysicsPosition;	};
 	inline REF(floatFactor) getMass() const
 	{
 		//TODO: Handle infinite mass
@@ -45,9 +44,9 @@ public:
 	};
 
 	//Setters
-	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPhysicsPosition = newSimulationPos; };
+	inline void setPhysicsPosition(const Vector3f& newSimulationPos) { mPhysicsPosition = newSimulationPos;	};
 
 	//Properties
-	inline bool hasInfiniteMass() const { return mMass <= 0.0f; };
+	inline bool hasInfiniteMass() const { return mMass <= 0.0f;	};
 };
 #endif // PhysicsBase_h__

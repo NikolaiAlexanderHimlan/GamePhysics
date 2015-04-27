@@ -28,8 +28,8 @@ namespace nah
 		std::map<std::string, std::map<std::string, std::string>> mIniFileMap;
 		std::map<std::string, std::map<std::string, std::string>> mIniWriteQueue;//stores data to be written to .ini file
 
-		DataSystem(void) { mIniFileMap = std::map<std::string, std::map<std::string, std::string>>(); }
-		~DataSystem(void){ clearFileData(); }
+		DataSystem(void) { mIniFileMap = std::map<std::string, std::map<std::string, std::string>>();	}
+		~DataSystem(void){ clearFileData();	}
 
 		bool checkFileExtension(std::string& filenameReference)
 		{
@@ -39,8 +39,8 @@ namespace nah
 
 	public:
 		//TODO: able to specify the data file formats you would like to read and only instantiate the system for those
-		static inline void instantiateGlobal(void){ gpDataReader = new DataSystem(); }
-		static inline bool clearGlobal(void)
+		inline static void instantiateGlobal(void){ gpDataReader = new DataSystem();	}
+		inline static bool clearGlobal(void)
 		{
 			delete gpDataReader;
 			gpDataReader = nullptr;

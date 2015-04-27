@@ -45,11 +45,11 @@ namespace nah
 		static const ColorVal	MIN_COLOR;
 #define ALPHA_OPAQUE			MAX_COLOR
 #define ALPHA_CLEAR				MIN_COLOR
-		
-		//CONSIDER: move to source file so RandMath is not included in header
-		static inline Color RandomColor(bool randomAlpha = false) { return Color(randomFloat(MIN_COLOR, MAX_COLOR), randomFloat(MIN_COLOR, MAX_COLOR), randomFloat(MIN_COLOR, MAX_COLOR), randomAlpha?randomFloat(ALPHA_CLEAR,ALPHA_OPAQUE):ALPHA_OPAQUE); };
 
-		static inline CountedArray<ColorVal> RandomColorValueArray(int numColors, bool randomAlpha = false);
+		//CONSIDER: move to source file so RandMath is not included in header
+		inline static Color RandomColor(bool randomAlpha = false) { return Color(randomFloat(MIN_COLOR, MAX_COLOR), randomFloat(MIN_COLOR, MAX_COLOR), randomFloat(MIN_COLOR, MAX_COLOR), randomAlpha?randomFloat(ALPHA_CLEAR,ALPHA_OPAQUE):ALPHA_OPAQUE);	};
+
+		inline static CountedArray<ColorVal> RandomColorValueArray(int numColors, bool randomAlpha = false);
 
 #pragma region Static Colors
 		static const Color Empty;
@@ -91,10 +91,10 @@ namespace nah
 
 		~Color(void){}
 
-		inline ColorVal rgbRed()	const { return mRed; }
-		inline ColorVal rgbGreen()	const { return mGreen; }
-		inline ColorVal rgbBlue()	const { return mBlue; }
-		inline ColorVal rgbAlpha()	const { return mAlpha; }
+		inline ColorVal rgbRed()	const { return mRed;	}
+		inline ColorVal rgbGreen()	const { return mGreen;	}
+		inline ColorVal rgbBlue()	const { return mBlue;	}
+		inline ColorVal rgbAlpha()	const { return mAlpha;	}
 
 		//the type used for abstract color values
 		AbstractColor getAbstractColor() const;

@@ -32,7 +32,7 @@ public:
 		setBatch(batch);
 	}
 	virtual ~Model();
-	
+
 	//Getters
 	float getMaxDistVert() const { return mMaxDistVert;	};
 	float getMinDistVert() const { return mMinDistVert;	};

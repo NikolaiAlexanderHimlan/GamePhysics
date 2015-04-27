@@ -28,7 +28,7 @@ int StringTools::getSkipIndex(const string& source, const string& skipString, in
 
 std::string StringTools::substring(const string& source, int startIndex, int endIndex /*= -1*/, bool includeStartIndex /*= true*/, bool includeEndIndex /*= true */)
 {
-	if(source == "") { __debugbreak(); throw std::logic_error("empty string!"); }
+	if(source == "") { __debugbreak(); throw std::logic_error("empty string!");	}
 
 	if(startIndex < 0) startIndex = 0;//if startIndex is negative, return the string up until endIndex
 	else if(!includeStartIndex) startIndex++;//cut the startIndex

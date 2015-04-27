@@ -114,9 +114,9 @@ public:
 	typedef T* iterator;
 	typedef const T* const_iterator;
 	iterator begin() { return &maArray[0];	}
-	const_iterator begin() const { return &maArray[0]; }
-	iterator end() { return &maArray[size()]; }
-	const_iterator end() const { return &maArray[size()]; }
+	const_iterator begin() const { return &maArray[0];	}
+	iterator end() { return &maArray[size()];	}
+	const_iterator end() const { return &maArray[size()];	}
 };
 }
 

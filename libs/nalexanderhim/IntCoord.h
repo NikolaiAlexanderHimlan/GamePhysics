@@ -131,12 +131,12 @@ namespace nah
 		//void normalize(void);//makes vector a unit vector (length of 1)
 		//TODO: normalized(void);//returns a unit vector (length of 1)
 
-		inline int combineToSingleInt() const { return getX() + getY(); }//TODO: rename
+		inline int combineToSingleInt() const { return getX() + getY();	}//TODO: rename
 #pragma endregion
 
 #pragma region specific coord values
-		static inline IntCoord zero(void){ return IntCoord(0,0);	}
-		static inline IntCoord one(void){ return IntCoord(1,1);		}
+		inline static IntCoord zero(void){ return IntCoord(0,0);	}
+		inline static IntCoord one(void){ return IntCoord(1,1);		}
 #pragma endregion
 
 #pragma region feedback functions
@@ -198,23 +198,23 @@ namespace nah
 		/// <param name="value2">Source integer coordinate.</param>
 		/// <returns></returns>
 		public static IntCoord operator +(IntCoord value1, IntCoord value2)
-		{ return Add(value1, value2); }
+		{ return Add(value1, value2);	}
 		/// <summary>Adds an integer to both values of an integer coordinate
 		/// </summary>
 		/// <param name="value1">Source integer coordinate.</param>
 		/// <param name="value2">Source integer.</param>
 		/// <returns></returns>
 		public static IntCoord operator +(IntCoord value1, int value2)
-		{ return Add(value1, value2); }
+		{ return Add(value1, value2);	}
 		/// <summary>Adds a vector and integer coordinate.
 		/// </summary>
 		/// <param name="value1"></param>
 		/// <param name="value2"></param>
 		/// <returns>A Vector2 so the float precision isn't lost.</returns>
 		public static Vector2 operator +(Vector2 value1, IntCoord value2)
-		{ return Add(value1, value2); }
+		{ return Add(value1, value2);	}
 		public static Vector2 operator +(IntCoord value1, Vector2 value2)
-		{ return Add(value2, value1); }//order doesn't matter for addition
+		{ return Add(value2, value1);	}//order doesn't matter for addition
 		// Summary:
 		//     Returns a vector pointing in the opposite direction.
 		//
@@ -222,7 +222,7 @@ namespace nah
 		//   value:
 		//     Source vector.
 		public static IntCoord operator -(IntCoord value)
-		{ return new IntCoord(-value.X, -value.Y); }
+		{ return new IntCoord(-value.X, -value.Y);	}
 		//
 		// Summary:
 		//     Subtracts a vector from a vector.
@@ -234,16 +234,16 @@ namespace nah
 		//   value2:
 		//     source vector.
 		public static IntCoord operator -(IntCoord value1, IntCoord value2)
-		{ return Subtract(value1, value2); }
+		{ return Subtract(value1, value2);	}
 		public static IntCoord operator -(IntCoord value1, int value2)
-		{ return Subtract(value1, value2); }
+		{ return Subtract(value1, value2);	}
 		/// <summary>Multiplies a vector by a scalar value.
 		/// </summary>
 		/// <param name="scaleFactor">Scalar value.</param>
 		/// <param name="value"> Source vector.</param>
 		/// <returns>IntCoord result of multiplication.</returns>
 		public static IntCoord operator *(float scaleFactor, IntCoord value)
-		{ return Multiply(value, scaleFactor); }
+		{ return Multiply(value, scaleFactor);	}
 		//
 		// Summary:
 		//     Multiplies a vector by a scalar value.
@@ -255,7 +255,7 @@ namespace nah
 		//   scaleFactor:
 		//     Scalar value.
 		public static IntCoord operator *(IntCoord value, float scaleFactor)
-		{ return Multiply(value, scaleFactor); }
+		{ return Multiply(value, scaleFactor);	}
 		//
 		// Summary:
 		//     Multiplies the components of two vectors by each other.
@@ -267,11 +267,11 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static IntCoord operator *(IntCoord value1, IntCoord value2)
-		{ return Multiply(value1, value2); }
+		{ return Multiply(value1, value2);	}
 		public static Vector2 operator *(IntCoord value1, Vector2 value2)//return Vector 2 so precision isn't inherently lost
-		{ return Multiply(value1, value2); }
+		{ return Multiply(value1, value2);	}
 		public static Vector2 operator *(Vector2 value1, IntCoord value2)//return Vector 2 so precision isn't inherently lost
-		{ return Multiply(value2, value1); }
+		{ return Multiply(value2, value1);	}
 		//
 		// Summary:
 		//     Divides a vector by a scalar value.
@@ -283,7 +283,7 @@ namespace nah
 		//   divider:
 		//     The divisor.
 		public static IntCoord operator /(IntCoord value1, float divider)
-		{ return Divide(value1, divider); }
+		{ return Divide(value1, divider);	}
 		//
 		// Summary:
 		//     Divides the components of a vector by the components of another vector.
@@ -295,7 +295,7 @@ namespace nah
 		//   value2:
 		//     Divisor vector.
 		public static IntCoord operator /(IntCoord value1, IntCoord value2)
-		{ return Divide(value1, value2); }
+		{ return Divide(value1, value2);	}
 		//
 		// Summary:
 		//     Tests vectors for equality.
@@ -366,16 +366,16 @@ namespace nah
 		/// <param name="value2">Source integer coordinate.</param>
 		/// <returns>IntCoord result</returns>
 		public static IntCoord Add(IntCoord value1, IntCoord value2)
-		{ return new IntCoord(value1.X + value2.X, value1.Y + value2.Y); }
+		{ return new IntCoord(value1.X + value2.X, value1.Y + value2.Y);	}
 		/// <summary>Adds an integer to both values of an integer coordinate
 		/// </summary>
 		/// <param name="value1">Source integer coordinate.</param>
 		/// <param name="value2">Source integer.</param>
 		/// <returns></returns>
 		public static IntCoord Add(IntCoord value1, int value2)
-		{ return new IntCoord(value1.X + value2, value1.Y + value2); }
+		{ return new IntCoord(value1.X + value2, value1.Y + value2);	}
 		public static Vector2 Add(Vector2 value2, IntCoord value1)
-		{ return new Vector2(value1.X + value2.X, value1.Y + value2.Y); }
+		{ return new Vector2(value1.X + value2.X, value1.Y + value2.Y);	}
 		//
 		// Summary:
 		//     Adds two vectors.
@@ -390,7 +390,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] Sum of the source vectors.
 		public static void Add(ref IntCoord value1, ref IntCoord value2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a IntCoord containing the 2D Cartesian coordinates of a point specified
@@ -414,7 +414,7 @@ namespace nah
 		//     Barycentric coordinate b3, which expresses the weighting factor toward vertex
 		//     3 (specified in value3).
 		public static IntCoord Barycentric(IntCoord value1, IntCoord value2, IntCoord value3, float amount1, float amount2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a IntCoord containing the 2D Cartesian coordinates of a point specified
@@ -442,7 +442,7 @@ namespace nah
 		//     [OutAttribute] The 2D Cartesian coordinates of the specified point are placed
 		//     in this IntCoord on exit.
 		public static void Barycentric(ref IntCoord value1, ref IntCoord value2, ref IntCoord value3, float amount1, float amount2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Performs a Catmull-Rom interpolation using the specified positions.
@@ -463,7 +463,7 @@ namespace nah
 		//   amount:
 		//     Weighting factor.
 		public static IntCoord CatmullRom(IntCoord value1, IntCoord value2, IntCoord value3, IntCoord value4, float amount)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Performs a Catmull-Rom interpolation using the specified positions.
@@ -487,7 +487,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] A vector that is the result of the Catmull-Rom interpolation.
 		public static void CatmullRom(ref IntCoord value1, ref IntCoord value2, ref IntCoord value3, ref IntCoord value4, float amount, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Restricts a value to be within a specified range.
@@ -502,7 +502,7 @@ namespace nah
 		//   max:
 		//     The maximum value.
 		public static IntCoord Clamp(IntCoord value1, IntCoord min, IntCoord max)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Restricts a value to be within a specified range.
@@ -520,14 +520,14 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The clamped value.
 		public static void Clamp(ref IntCoord value1, ref IntCoord min, ref IntCoord max, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		/// <summary>Clamps a value to the bounds of a given rectangle.
 		/// </summary>
 		/// <param name="value">value to clamp</param>
 		/// <param name="bounds">boundaries for the value</param>
 		/// <returns>How much value was changed by.</returns>
 		public static IntCoord Clamp(ref IntCoord value, Microsoft.Xna.Framework.Rectangle bounds)
-		{ return value.Clamp(bounds); }
+		{ return value.Clamp(bounds);	}
 		//
 		// Summary:
 		//     Calculates the distance between two vectors.
@@ -539,11 +539,11 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static int Distance(IntCoord coord1, IntCoord coord2)
-		{ return Distance(coord1.X, coord2.X, coord1.Y, coord2.Y); }
+		{ return Distance(coord1.X, coord2.X, coord1.Y, coord2.Y);	}
 		private static int Distance(IntCoord coord1, int x2, int y2)//STYLE: should the actual coord be first or second?
-		{ return Distance(coord1.X, x2, coord1.Y, y2); }
+		{ return Distance(coord1.X, x2, coord1.Y, y2);	}
 		private static int Distance(int x1, int x2, int y1, int y2)//STYLE: should it be row1,col1,row2,col2 or row1,row2,col1,col2
-		{ return Math.Abs(x1 - x2) + Math.Abs(y1 - y2); }
+		{ return Math.Abs(x1 - x2) + Math.Abs(y1 - y2);	}
 		//
 		// Summary:
 		//     Calculates the distance between two vectors.
@@ -558,7 +558,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The distance between the vectors.
 		public static void Distance(ref IntCoord value1, ref IntCoord value2, out float result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Calculates the distance between two vectors squared.
@@ -570,7 +570,7 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static float DistanceSquared(IntCoord value1, IntCoord value2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Calculates the distance between two vectors squared.
@@ -585,7 +585,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The distance between the vectors squared.
 		public static void DistanceSquared(ref IntCoord value1, ref IntCoord value2, out float result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Divides a vector by a scalar value.
@@ -597,7 +597,7 @@ namespace nah
 		//   divider:
 		//     The divisor.
 		public static IntCoord Divide(IntCoord value1, float divider)
-		{ return new IntCoord((float)value1.X / divider, (float)value1.Y / divider); }
+		{ return new IntCoord((float)value1.X / divider, (float)value1.Y / divider);	}
 		//
 		// Summary:
 		//     Divides the components of a vector by the components of another vector.
@@ -609,7 +609,7 @@ namespace nah
 		//   value2:
 		//     Divisor vector.
 		public static IntCoord Divide(IntCoord value1, IntCoord value2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Divides a vector by a scalar value.
@@ -624,7 +624,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the division.
 		public static void Divide(ref IntCoord value1, float divider, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Divides the components of a vector by the components of another vector.
@@ -639,7 +639,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the division.
 		public static void Divide(ref IntCoord value1, ref IntCoord value2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Calculates the dot product of two vectors. If the two vectors are unit vectors,
@@ -655,7 +655,7 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static float Dot(IntCoord value1, IntCoord value2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Calculates the dot product of two vectors and writes the result to a user-specified
@@ -675,7 +675,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The dot product of the two vectors.
 		public static void Dot(ref IntCoord value1, ref IntCoord value2, out float result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a value that indicates whether the current instance is equal to a
@@ -701,12 +701,12 @@ namespace nah
 		//   other:
 		//     The Object to compare with the current IntCoord.
 		public bool Equals(IntCoord other)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Gets the hash code of the vector object.
 		public override int GetHashCode()
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Performs a Hermite spline interpolation.
@@ -727,7 +727,7 @@ namespace nah
 		//   amount:
 		//     Weighting factor.
 		public static IntCoord Hermite(IntCoord value1, IntCoord tangent1, IntCoord value2, IntCoord tangent2, float amount)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Performs a Hermite spline interpolation.
@@ -751,17 +751,17 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the Hermite spline interpolation.
 		public static void Hermite(ref IntCoord value1, ref IntCoord tangent1, ref IntCoord value2, ref IntCoord tangent2, float amount, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Calculates the length of the vector.
 		public float Length()
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Calculates the length of the vector squared.
 		public float LengthSquared()
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Performs a linear interpolation between two vectors.
@@ -776,7 +776,7 @@ namespace nah
 		//   amount:
 		//     Value between 0 and 1 indicating the weight of value2.
 		public static IntCoord Lerp(IntCoord value1, IntCoord value2, float amount)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Performs a linear interpolation between two vectors.
@@ -794,7 +794,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the interpolation.
 		public static void Lerp(ref IntCoord value1, ref IntCoord value2, float amount, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a vector that contains the highest value from each matching pair
@@ -807,7 +807,7 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static IntCoord Max(IntCoord value1, IntCoord value2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a vector that contains the highest value from each matching pair
@@ -823,7 +823,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The maximized vector.
 		public static void Max(ref IntCoord value1, ref IntCoord value2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a vector that contains the lowest value from each matching pair of
@@ -836,7 +836,7 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static IntCoord Min(IntCoord value1, IntCoord value2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a vector that contains the lowest value from each matching pair of
@@ -852,14 +852,14 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The minimized vector.
 		public static void Min(ref IntCoord value1, ref IntCoord value2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		/// <summary>Multiplies a vector by a scalar value.
 		/// </summary>
 		/// <param name="value1">Source vector.</param>
 		/// <param name="scaleFactor"> Scalar value.</param>
 		/// <returns></returns>
 		public static IntCoord Multiply(IntCoord value1, float scaleFactor)
-		{ return new IntCoord(value1.X * scaleFactor, value1.Y * scaleFactor); }
+		{ return new IntCoord(value1.X * scaleFactor, value1.Y * scaleFactor);	}
 		//
 		// Summary:
 		//     Multiplies the components of two vectors by each other.
@@ -871,9 +871,9 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static IntCoord Multiply(IntCoord value1, IntCoord value2)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		public static Vector2 Multiply(IntCoord value1, Vector2 value2)//return Vector 2 so precision isn't inherently lost
-		{ return (Vector2)value1 * value2; }
+		{ return (Vector2)value1 * value2;	}
 		//
 		// Summary:
 		//     Multiplies a vector by a scalar value.
@@ -888,7 +888,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the multiplication.
 		public static void Multiply(ref IntCoord value1, float scaleFactor, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Multiplies the components of two vectors by each other.
@@ -903,7 +903,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the multiplication.
 		public static void Multiply(ref IntCoord value1, ref IntCoord value2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a vector pointing in the opposite direction.
@@ -912,7 +912,7 @@ namespace nah
 		//   value:
 		//     Source vector.
 		public static IntCoord Negate(IntCoord value)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Returns a vector pointing in the opposite direction.
@@ -924,24 +924,24 @@ namespace nah
 		//   result:
 		//     [OutAttribute] Vector pointing in the opposite direction.
 		public static void Negate(ref IntCoord value, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 
 		/// <summary>Turns the current vector into a unit vector. The result is a vector one unit in length pointing in the same direction as the original vector.
 		/// </summary>
 		public void Normalize()
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		/// <summary>Creates a unit vector from the specified vector. The result is a vector one unit in length pointing in the same direction as the original vector.
 		/// </summary>
 		/// <param name="value">Source IntCoord.</param>
 		/// <returns>unit vector</returns>
 		public static IntCoord Normalize(IntCoord value)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		/// <summary>Creates a unit vector from the specified vector, writing the result to a user-specified variable. The result is a vector one unit in length pointing in the same direction as the original vector.
 		/// </summary>
 		/// <param name="value">Source IntCoord.</param>
 		/// <param name="result">[OutAttribute] Normalized vector.</param>
 		public static void Normalize(ref IntCoord value, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Determines the reflect vector of the given vector and normal.
@@ -953,7 +953,7 @@ namespace nah
 		//   normal:
 		//     Normal of vector.
 		public static IntCoord Reflect(IntCoord vector, IntCoord normal)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Determines the reflect vector of the given vector and normal.
@@ -968,7 +968,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The created reflect vector.
 		public static void Reflect(ref IntCoord vector, ref IntCoord normal, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Interpolates between two values using a cubic equation.
@@ -983,7 +983,7 @@ namespace nah
 		//   amount:
 		//     Weighting value.
 		public static IntCoord SmoothStep(IntCoord value1, IntCoord value2, float amount)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Interpolates between two values using a cubic equation.
@@ -1001,7 +1001,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The interpolated value.
 		public static void SmoothStep(ref IntCoord value1, ref IntCoord value2, float amount, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Subtracts a vector from a vector.
@@ -1013,14 +1013,14 @@ namespace nah
 		//   value2:
 		//     Source vector.
 		public static IntCoord Subtract(IntCoord value1, IntCoord value2)
-		{ return new IntCoord(value1.X - value2.X, value1.Y - value2.Y); }
+		{ return new IntCoord(value1.X - value2.X, value1.Y - value2.Y);	}
 		/// <summary>Subtracts an integer from both values in an integer coordinate
 		/// </summary>
 		/// <param name="value1"></param>
 		/// <param name="value2"></param>
 		/// <returns></returns>
 		public static IntCoord Subtract(IntCoord value1, int value2)
-		{ return new IntCoord(value1.X - value2, value1.Y - value2); }
+		{ return new IntCoord(value1.X - value2, value1.Y - value2);	}
 		//
 		// Summary:
 		//     Subtracts a vector from a vector.
@@ -1035,7 +1035,7 @@ namespace nah
 		//   result:
 		//     [OutAttribute] The result of the subtraction.
 		public static void Subtract(ref IntCoord value1, ref IntCoord value2, out IntCoord result)
-		{ throw new NotImplementedException(); }
+		{ throw new NotImplementedException();	}
 		//
 		// Summary:
 		//     Retrieves a string representation of the current object.
@@ -1059,7 +1059,7 @@ namespace nah
 		//     The transformation matrix.
 		//public static IntCoord Transform(IntCoord position, Matrix matrix);
 		public static IntCoord Transform(IntCoord position)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms a single IntCoord, or the vector normal (x, y, 0, 0), by a specified
@@ -1073,7 +1073,7 @@ namespace nah
 		//     The Quaternion rotation to apply.
 		//public static IntCoord Transform(IntCoord value, Quaternion rotation);
 		public static IntCoord Transform(IntCoord value, MissingType Quaternion)
-		{ throw new MissingMemberException("Has not added Quaternion"); }
+		{ throw new MissingMemberException("Has not added Quaternion");	}
 		//
 		// Summary:
 		//     Transforms a IntCoord by the given Matrix.
@@ -1089,7 +1089,7 @@ namespace nah
 		//     [OutAttribute] The IntCoord resulting from the transformation.
 		//public static void Transform(ref IntCoord position, ref Matrix matrix, out IntCoord result);
 		public static IntCoord Transform(IntCoord position, out IntCoord result)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms a IntCoord, or the vector normal (x, y, 0, 0), by a specified Quaternion
@@ -1106,7 +1106,7 @@ namespace nah
 		//     [OutAttribute] An existing IntCoord filled in with the result of the rotation.
 		//public static void Transform(ref IntCoord value, ref Quaternion rotation, out IntCoord result);
 		public static void Transform(ref IntCoord value, out IntCoord result)
-		{ throw new MissingMemberException("Has not added Quaternion"); }
+		{ throw new MissingMemberException("Has not added Quaternion");	}
 		//
 		// Summary:
 		//     Transforms an array of IntCoords by a specified Matrix.
@@ -1122,7 +1122,7 @@ namespace nah
 		//     An existing array into which the transformed IntCoords are written.
 		//public static void Transform(IntCoord[] sourceArray, ref Matrix matrix, IntCoord[] destinationArray);
 		public static void Transform(IntCoord position, IntCoord[] destinationArray)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms an array of IntCoords by a specified Quaternion.
@@ -1138,7 +1138,7 @@ namespace nah
 		//     An existing array into which the transformed IntCoords are written.
 		//public static void Transform(IntCoord[] sourceArray, ref Quaternion rotation, IntCoord[] destinationArray);
 		public static void Transform(IntCoord[] sourceArray, IntCoord[] destinationArray)
-		{ throw new MissingMemberException("Has not added Quaternion"); }
+		{ throw new MissingMemberException("Has not added Quaternion");	}
 		//
 		// Summary:
 		//     Transforms a specified range in an array of IntCoords by a specified Matrix
@@ -1165,7 +1165,7 @@ namespace nah
 		//     The number of IntCoords to be transformed.
 		//public static void Transform(IntCoord[] sourceArray, int sourceIndex, ref Matrix matrix, IntCoord[] destinationArray, int destinationIndex, int length);
 		public static void Transform(IntCoord[] sourceArray, int sourceIndex, IntCoord[] destinationArray, int destinationIndex, int length)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms a specified range in an array of IntCoords by a specified Quaternion
@@ -1192,7 +1192,7 @@ namespace nah
 		//     The number of IntCoords to be transformed.
 		//public static void Transform(IntCoord[] sourceArray, int sourceIndex, ref Quaternion rotation, IntCoord[] destinationArray, int destinationIndex, int length);
 		public static void Transform(IntCoord[] sourceArray, int sourceIndex, ref MissingType Quaternion, IntCoord[] destinationArray, int destinationIndex, int length)
-		{ throw new MissingMemberException("Has not added Quaternion"); }
+		{ throw new MissingMemberException("Has not added Quaternion");	}
 		//
 		// Summary:
 		//     Transforms a 2D vector normal by a matrix.
@@ -1205,7 +1205,7 @@ namespace nah
 		//     The transformation matrix.
 		//public static IntCoord TransformNormal(IntCoord normal, Matrix matrix);
 		public static IntCoord TransformNormal(IntCoord normal)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms a vector normal by a matrix.
@@ -1221,7 +1221,7 @@ namespace nah
 		//     [OutAttribute] The IntCoord resulting from the transformation.
 		//public static void TransformNormal(ref IntCoord normal, ref Matrix matrix, out IntCoord result);
 		public static void TransformNormal(ref IntCoord normal, out IntCoord result)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms an array of IntCoord vector normals by a specified Matrix.
@@ -1237,7 +1237,7 @@ namespace nah
 		//     An existing array into which the transformed vector normals are written.
 		//public static void TransformNormal(IntCoord[] sourceArray, ref Matrix matrix, IntCoord[] destinationArray);
 		public static void TransformNormal(IntCoord[] sourceArray, IntCoord[] destinationArray)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		//
 		// Summary:
 		//     Transforms a specified range in an array of IntCoord vector normals by a specified
@@ -1264,7 +1264,7 @@ namespace nah
 		//     The number of vector normals to be transformed.
 		//public static void TransformNormal(IntCoord[] sourceArray, int sourceIndex, ref Matrix matrix, IntCoord[] destinationArray, int destinationIndex, int length);
 		public static void TransformNormal(IntCoord[] sourceArray, int sourceIndex, IntCoord[] destinationArray, int destinationIndex, int length)
-		{ throw new MissingMemberException("Has not added Matrix"); }
+		{ throw new MissingMemberException("Has not added Matrix");	}
 		*/
 	};
 }
