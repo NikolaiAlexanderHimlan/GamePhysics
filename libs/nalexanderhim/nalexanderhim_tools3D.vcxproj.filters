@@ -228,6 +228,9 @@
     <ClCompile Include="CubeAggregate.cpp">
       <Filter>Source Files\Physics\Particles\MassAggregates</Filter>
     </ClCompile>
+    <ClCompile Include="Rotation3D.cpp">
+      <Filter>Source Files\Space3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">

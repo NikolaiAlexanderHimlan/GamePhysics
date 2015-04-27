@@ -12,54 +12,23 @@ I certify that this assignment is entirely my own work.
 
 #include "ccmccooeyWrapper.h"
 #include "Rotation3D.h"
-//TODO: NOTE: Professor does not like including RotationMath here in the header
-#include "RotationMath.h"
+#include "CodingDefines.h"
 
 class Transform
 {
 public:
 	Vector3f position;
 	//TODO: replace rotation with a quaternion
-	Vector3f rotation;//degrees
-	//Rotation rotation;//degrees
 	//CONSIDER: replace with Scale object which is essentially a Vector3fFactor to make division cheaper
+	Rotation3D rotation;
 	Vector3f scale;
 
 public:
-	Transform(const Vector3f& init_position = Vector3f::zero, const Vector3f& init_rotation = Vector3f::zero, const Vector3f& init_scale = Vector3f::one);
-	~Transform();
+	Transform(REF(Vector3f) init_position = Vector3f::zero, REF(Rotation3D) init_rotation = Rotation3D(Vector3f::zero, true), REF(Vector3f) init_scale = Vector3f::one)
+		: position(init_position), rotation(init_rotation), scale(init_scale) {};
+	~Transform() {};
 
 	//Getters
-	//Named Rotations
-	inline float getPitch(bool degrees) const
-	{
-		if (degrees)
-			return getPitchDeg();
-		else
-			return getPitchRad();
-	};
-	inline float getYaw(bool degrees) const
-	{
-		if (degrees)
-			return getYawDeg();
-		else
-			return getYawRad();
-	};
-	inline float getRoll(bool degrees) const
-	{
-		if (degrees)
-			return getRollDeg();
-		else
-			return getRollRad();
-	};
-	//Degrees
-	inline float getPitchDeg() const { return rotation.x;	};
-	inline float getYawDeg() const { return rotation.y;	};
-	inline float getRollDeg() const { return rotation.z;	};
-	//Radians
-	inline float getPitchRad() const { return nah::DegreesToRadians(getPitchDeg());	};
-	inline float getYawRad() const { return nah::DegreesToRadians(getYawDeg());	};
-	inline float getRollRad() const { return nah::DegreesToRadians(getRollDeg());	};
 
 	//Properties
 	//more efficient, only calculates the requested axes of the vector
@@ -73,39 +42,23 @@ public:
 
 	//Setters
 	void setPosition(const M3DVector3f& newPosition);
-	void setRotation(const M3DVector3f& newRotation);
+	void setRotation(REF(M3DVector3f) newRotation, bool setDegrees = true);
 	void setScale(float newScale);
 
-	inline void setPitch(float degrees) { rotation.x = degrees;	};
-	inline void setYaw(float degrees) { rotation.y = degrees;	};
-	inline void setRoll(float degrees) { rotation.z = degrees;	};
-	inline void setPitchRad(float radians);
-	inline void setYawRad(float radians);
-	inline void setRollRad(float radians);
 
 	//Modifiers
-	float addPitchDeg(float degrees);
-	float addYawDeg(float degrees);
-	float addRoll(float degrees);
-	float addPitchRad(float radians);
-	float addYawRad(float radians);
-	float addRollRad(float radians);
 
 	//Calculations
 	inline const Vector3f calcLookAtRotation(const Vector3f lookHere) const { return Vector3f::calcLookAtAngle(position, lookHere);	}; //calculates the necessary rotation in order to look at a given location from this location
 	void calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const;
 
 	//Actions
-	void moveForward(float amount);
-	void moveRight(float amount);
-	void moveUp(float amount);
-
-	void rotatePitch(float degrees);
-	void rotateYaw(float degrees);
-	void rotateRoll(float degrees);
 	inline void rotateRollRight(float degrees) { return rotateRoll(degrees);	};
 	inline void rotateTurnRight(float degrees) { return rotateYaw(degrees);	};
 	inline void rotateTurnUp(float degrees) { return rotatePitch(degrees);	};
+	inline void moveForward(float amount)	{ position += getForwardVector() * amount;	};
+	inline void moveRight(float amount)		{ position += getRightVector() * amount;	};
+	inline void moveUp(float amount)			{ position += getUpVector() * amount;	};
 
 	inline void lookAt(const Transform& worldTransform) { rotation = calcLookAtRotation(worldTransform.position).asRad();	};//look at the transform once
 
@@ -114,4 +67,4 @@ public:
 	std::string toStringMultiLine(bool pos = true, bool rot = true, bool scl = true) const;
 };
 
-#endif
+#endif // Transform_h__

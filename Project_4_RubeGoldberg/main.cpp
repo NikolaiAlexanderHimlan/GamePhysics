@@ -62,10 +62,10 @@ GLint			width = 800, height = 600;
 
 inline int getWindowWidth()
 { return width;	};
-//{ return glutGet((GLenum)GLUT_WINDOW_WIDTH); };
+//{ return glutGet((GLenum)GLUT_WINDOW_WIDTH);	};
 inline int getWindowHeight()
 { return height;	};
-//{ return glutGet((GLenum)GLUT_WINDOW_HEIGHT); };
+//{ return glutGet((GLenum)GLUT_WINDOW_HEIGHT);	};
 
 //Debugging
 bool gDebugGraphics = true;
@@ -144,13 +144,13 @@ void setupWorld()
 		mainView->clearParent();
 		mainView->clearTarget();
 		M3DVector3f viewPosition;
-		M3DVector3f rotateView;
+		Rotation3D rotateView = Rotation3D(false);
 		viewPosition[0] = 0;//left/right
 		viewPosition[1] = -3;//up/down
 		viewPosition[2] = -15;//towards/away
-		rotateView[0] = 0;
-		rotateView[1] = 0;
-		rotateView[2] = 0;
+		rotateView.x = 0;
+		rotateView.y = 0;
+		rotateView.z = 0;
 		mainView->setWorldPosition(viewPosition);
 		mainView->setWorldRotation(rotateView);
 	}
@@ -161,14 +161,14 @@ void setupWorld()
 		model1Position[0] = -3.0f;//X, left/right
 		model1Position[1] = -3.0f;//Y, up/down
 		model1Position[2] = 5.0f;//Z, in/out
-		model1->refLocalTransform().setPosition(model1Position);
+		model1->refLocalTransform().position = (model1Position);
 
 		//model1 rotation
-		M3DVector3f rotateModel1;
-		rotateModel1[0] = 0;
-		rotateModel1[1] = 0;
-		rotateModel1[2] = 0;
-		model1->refLocalTransform().setRotation(rotateModel1);
+		Rotation3D rotateModel1;
+		rotateModel1.x = 0;
+		rotateModel1.y = 0;
+		rotateModel1.z = 0;
+		model1->refLocalTransform().rotation = (rotateModel1);
 	}
 
 	{//Model2 setup
@@ -177,14 +177,14 @@ void setupWorld()
 		model2Position[0] = 0;//X, left/right
 		model2Position[1] = 0.0f;//Y, up/down
 		model2Position[2] = 5.0f;//Z, in/out
-		model2->refLocalTransform().setPosition(model2Position);
+		model2->refLocalTransform().position = (model2Position);
 
 		//model2 rotation
-		M3DVector3f rotateModel2;
-		rotateModel2[0] = 0;
-		rotateModel2[1] = 0;
-		rotateModel2[2] = 0;
-		model2->refLocalTransform().setRotation(rotateModel2);
+		Rotation3D rotateModel2;
+		rotateModel2.x = 0;
+		rotateModel2.y = 0;
+		rotateModel2.z = 0;
+		model2->refLocalTransform().rotation = (rotateModel2);
 
 		//model2 scale
 		model2->refLocalTransform().setScale(2.0f);
@@ -192,7 +192,7 @@ void setupWorld()
 
 	{//Aggregate1 setup
 		aggregate1->refLocalTransform().position = Vector3f(5.0f, 1.0f, 6.0f);
-		aggregate1->refLocalTransform().rotation = Vector3f(0.0f, 0.0f, 0.0f);
+		aggregate1->refLocalTransform().rotation = Rotation3D(0.0f, 0.0f, 0.0f);
 		aggregate1->refLocalTransform().scale = 1.0f;
 	}
 

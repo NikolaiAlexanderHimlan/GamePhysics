@@ -24,7 +24,7 @@
 #define VectParam const Vector3f&
 
 //pre-engine declarations
-class Rotation;
+class Rotation3D;
 enum Axis;
 typedef float ufloat;
 
@@ -182,6 +182,12 @@ public:
 		lhs.z *= rhs.z;
 		return lhs;
 	};//[NAH]
+	inline static Vector3f Divide(Vector3f lhs, VectParam rhs) {
+		lhs.x = lhs.x / rhs.x;
+		lhs.y = lhs.y / rhs.y;
+		lhs.z = lhs.z / rhs.z;
+		return lhs;
+	};//[NAH]
 	static float DotProduct(VectParam first, VectParam second);
 	static float CrossProductF(VectParam first, VectParam second);
 	static Vector3f CrossProduct(VectParam first, VectParam second);
@@ -213,7 +219,7 @@ public:
 
 	static Vector3f Reciprical(VectParam vector);
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
-	static const Vector3f calcLookAtAngle(VectParam eye, VectParam lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
+	static const Rotation3D calcLookAtAngle(VectParam eye, VectParam lookAt);//[NAH] //calculates the necessary angle in order to look at a given location from this location
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f* vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
 
 	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)

@@ -19,16 +19,6 @@ I certify that this assignment is entirely my own work.
 
 const float ROTATION_LIMIT = 180.0f;//89.0 * M_PI / 180.0;
 
-Transform::Transform(const Vector3f& init_position, const Vector3f& init_rotation, const Vector3f& init_scale)
-{
-	position = init_position;
-	rotation = init_rotation;
-	scale = init_scale;
-}
-Transform::~Transform()
-{
-}
-
 Vector3f Transform::getForwardVector(char axis) const
 {
 	float forwardX = 0.0f, forwardY = 0.0f, forwardZ = 0.0f;
@@ -57,9 +47,10 @@ Vector3f Transform::getForwardVector(char axis) const
 	//^above math is WRONG!!!*/
 
 	//* My sourced method
-	forwardX = -nah::SinF_Precise(getYawRad());
-	forwardY = nah::SinF_Precise(getPitchRad());
-	forwardZ = nah::CosF_Precise(getPitchRad()) * nah::CosF_Precise(getYawRad());
+		//HACK: This method does not account for Roll, which will break the Right and Up vectors.
+	forwardX = -nah::SinF_Precise(rotation.getYawRad());
+	forwardY = nah::SinF_Precise(rotation.getPitchRad());
+	forwardZ = nah::CosF_Precise(rotation.getPitchRad()) * nah::CosF_Precise(rotation.getYawRad());
 	//*/
 
 
@@ -69,11 +60,10 @@ Vector3f Transform::getUpVector(char axis) const
 {
 	float upX = 0.0f, upY = 0.0f, upZ = 0.0f;
 
-	//WARNING: WILL NOT WORK WITH ROLL!
-	Vector3f forVect = getForwardVector();
-	upX = 0.0f;//no x-axis without roll// forVect.x;
-	upY = -forVect.z;
-	upZ = forVect.y;
+	Vector3f crossVect = Vector3f::CrossProductF(getForwardVector(), getRightVector());
+	upX = crossVect.x;
+	upY = crossVect.y;
+	upZ = crossVect.z;
 
 	return Vector3f(upX, upY, upZ).getNormalized();
 }
@@ -98,11 +88,10 @@ Vector3f Transform::getRightVector(char axis) const
 	rightZ = cos(getYawRad() - M_PI_2);
 	//doesn't work quite right*/
 
-	//WARNING: WILL NOT WORK WITH ROLL!
-	Vector3f forVect = getForwardVector();
-	rightX = forVect.z;
-	rightY = 0.0f;//no y-axis without roll// forVect.y;
-	rightZ = -forVect.x;
+	Vector3f crossVect = Vector3f::CrossProductF(getForwardVector(), &Vector3f(0.0f, 1.0f, 0.0f));//HACK: using the standard Up vector for cross means Roll will not work
+	rightX = crossVect.x;
+	rightY = crossVect.y;
+	rightZ = crossVect.z;
 	
 	return Vector3f(rightX, rightY, rightZ).getNormalized();
 }
@@ -139,62 +128,17 @@ void Transform::setPosition(const M3DVector3f& newPosition)
 {
 	assignVector3f(position, newPosition);
 }
-void Transform::setRotation(const M3DVector3f& newRotation)
+void Transform::setRotation(REF(M3DVector3f) newRotation, bool setDegrees /*= true*/)
 {
-	assignVector3f(rotation, newRotation);
+	Vector3f tempRot;
+	assignVector3f(tempRot, newRotation);
+	rotation = Rotation3D(rotation, !setDegrees);
 }
 void Transform::setScale(float newScale)
 {
 	scale.x = newScale;
 	scale.y = newScale;
 	scale.z = newScale;
-}
-
-void Transform::moveForward(float amount)
-{
-	//position.z -= amount;
-
-	//Vector3f::EulerForward(getPitchRad(), getYawRad(), getRollRad());
-
-	position += getForwardVector() * amount;
-}
-void Transform::moveRight(float amount)
-{
-	//position.x += amount;
-	position += getRightVector() * amount;
-}
-void Transform::moveUp(float amount)
-{
-	//position.y += amount;
-	position += getUpVector() * amount;
-}
-
-void Transform::rotatePitch(float degrees)
-{
-	//rotation.x -= amount;
-	float newAngle = getPitchDeg() + degrees;
-	//newAngle = nah::DegreesToRadians(newAngle);
-
-	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
-	setPitch(newAngle);
-}
-void Transform::rotateYaw(float degrees)
-{
-	//rotation.y += amount;
-	float newAngle = getYawDeg() - degrees;
-	//newAngle = nah::DegreesToRadians(newAngle);
-
-	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
-	setYaw(newAngle);
-}
-void Transform::rotateRoll(float degrees)
-{
-	//rotation.z += degrees;
-	float newAngle = getRollDeg() + degrees;
-	//newAngle = nah::DegreesToRadians(newAngle);
-
-	newAngle = nah::wrapFloat(newAngle, ROTATION_LIMIT, -ROTATION_LIMIT);
-	setRoll(newAngle);
 }
 
 std::string Transform::toString(bool pos /*= true*/, bool rot /*= true*/, bool scl /*= true*/) const

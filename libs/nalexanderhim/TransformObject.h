@@ -90,7 +90,7 @@ public:
 		//TODO: parent rotation needs to affect position
 		refLocalTransform().position = (getLocalTransform().position / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().position;//HACK: simplified
 	}
-	void setWorldRotation(const Vector3f& newWorldRotation)
+	void setWorldRotation(const RotationVal& newWorldRotation)
 	{
 		if (mpParentTransform == nullptr)
 		{

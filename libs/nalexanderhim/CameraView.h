@@ -12,6 +12,7 @@ I certify that this assignment is entirely my own work.
 class GLFrustum;
 
 #include "TransformObject.h"
+#include "CodingDefines.h"
 
 class CameraView
 	: public TransformObject
@@ -24,6 +25,7 @@ public:
 	
 	//Getters
 	inline GLFrustum* getViewFrustum() const { return viewFrustum;	}
+	void getViewProjection(OUT_PARAM(M3DMatrix44f) outProj) const;
 
 	//Calculations
 	void calcViewMatrix(OUT_PARAM(M3DMatrix44f) outResult) const;
