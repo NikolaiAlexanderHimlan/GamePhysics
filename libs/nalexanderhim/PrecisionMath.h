@@ -14,7 +14,7 @@ namespace nah
 {
 	//Handles precision
 	static const double MIN_SCI_LIMIT = 1e-005;
-	
+
 	//TODO: figure out whether doing ref or value first retains more precision?
 	//Will set any number less than MIN_SCI_LIMIT to 0
 	static double& LimitPrecision(double& limitThis)

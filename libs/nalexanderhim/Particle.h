@@ -158,7 +158,7 @@ public:
 		mpBounds = newBounds;
 	}
 	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
-	
+
 	//Properties
 	inline float getSpeed() const { return mVelocity.Length();	};
 	Vector3f getMomentum() const;

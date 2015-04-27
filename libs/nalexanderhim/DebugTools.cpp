@@ -48,7 +48,7 @@ void Debug_OpenGL::outputText(const Vector3f& location, const nah::Color& color,
 	glLoadIdentity();
 	glPushAttrib(GL_DEPTH_TEST);
 	glDisable(GL_DEPTH_TEST);
-	
+
 	//plus 3
 	glDisable(GL_TEXTURE_2D);
 	//*/

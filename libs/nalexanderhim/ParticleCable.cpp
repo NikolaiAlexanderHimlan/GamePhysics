@@ -14,13 +14,13 @@ unsigned ParticleCable::addContact(ParticleContact *contact, unsigned limit) con
 {
 	// Find the length of the cable.
 	real length = CurrentLength();
-	
+
 	// Check if we’re overextended.
 	if (length <= maxLength)
 	{
 		return 0;
 	}
-	
+
 	// Otherwise, return the contact.
 	contact->contactA = linkA;
 	contact->contactB = linkB;

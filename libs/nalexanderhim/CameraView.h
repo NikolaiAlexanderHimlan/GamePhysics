@@ -22,7 +22,7 @@ public:
 
 	CameraView(const Transform& initialTransform = Transform());
 	~CameraView();
-	
+
 	//Getters
 	inline GLFrustum* getViewFrustum() const { return viewFrustum;	}
 	void getViewProjection(OUT_PARAM(M3DMatrix44f) outProj) const;

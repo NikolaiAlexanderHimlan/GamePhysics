@@ -34,14 +34,14 @@ void Model::setBatch(GLBatch* batch, float maxDistVert, float minDistVert)
 
 	/*Copy Data - Disabled
 	mpModelBatch = new BatchData();
-	
+
 	GLfloat			vVerts[] = { -0.5f, 0.0f, 0.0f,
 		0.5f, 0.0f, 0.0f,
-		0.0f, 0.5f, 0.0f };
+		0.0f, 0.5f, 0.0f	};
 
 	GLfloat			vColors[] = { 1.0f, 0.0f, 0.0f, 1.0f,
 		0.0f, 1.0f, 0.0f, 1.0f,
-		0.0f, 0.0f, 1.0f, 1.0f };
+		0.0f, 0.0f, 1.0f, 1.0f	};
 
 	mpModelBatch->Begin(GL_TRIANGLES, 3);
 	mpModelBatch->CopyVertexData3f(vVerts);
@@ -198,7 +198,7 @@ void Model::setBatchCube(float xDimension, float yDimension, float zDimension)
 			1, 5, 6, 2,
 			2, 6, 7, 3,
 			3, 7, 8, 4,
-			5, 1, 4, 8 };
+			5, 1, 4, 8	};
 
 		Vector3f vectVerts[numVerts];
 		{

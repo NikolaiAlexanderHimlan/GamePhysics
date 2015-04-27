@@ -98,15 +98,15 @@ public:
 	//Actions
 	//HACKS: ParticleForceGenerator not managed type
 	void ManageParticleForceGenerator(ParticleForceGenerator* manageForce)
-	{ mParticleForceList.push_back(manageForce); };
-	
+	{ mParticleForceList.push_back(manageForce);	};
+
 	//refer to getParticleForceID for potential implementation
 	bool CheckManaged_ParticleForce(ParticleForceGenerator* checkThis, ManageID verifyID = INVALID_ID) const;
 
 	void deleteParticleForce(ManageID removeID);
 	inline void deleteParticleForce(ParticleForceGenerator* removeThis)
 	{ deleteParticleForce(getParticleForceID(removeThis));	};
-	
+
 	inline void clearParticleForceList()
 	{
 		for (uint i = 0; i < numForceGenerators(); i++)

@@ -28,10 +28,10 @@ protected:
 	std::vector<ParticleLink*> maAggregateLinks;//links connecting the aggregate together
 
 	uint getNumLinks() const { return maAggregateLinks.size();	};
-	
+
 	ParticleLink* getLink(uint linkIndex) const
 	{ return linkIndex < getNumLinks()?maAggregateLinks[linkIndex]:nullptr;	};
-	
+
 	void RegisterLink(ParticleLink* addLink);
 
 public:
@@ -46,7 +46,7 @@ public:
 	/// <param name="newLink"> One of the links in newLink must either be THIS or a nullptr.  If one of them is a nullptr, THIS will be assigned as that link. </param>
 	/// <returns> If the link was added to the aggregate. </returns>
 	bool MergeIntoAggregate(ParticleLink* newLink);
-	
+
 	/// <summary>
 	/// Attempts to add an array of links to the MassAggregate.
 	/// </summary>

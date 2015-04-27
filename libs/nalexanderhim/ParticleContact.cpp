@@ -57,7 +57,7 @@ void ParticleContact::ResolveVelocity(Time duration)
 
 	// Calculate the new separating velocity.
 	real newSepVelocity = -separatingVelocity * restitution;
-	
+
 	real deltaVelocity = newSepVelocity - separatingVelocity;
 
 	// We apply the change in velocity to each object in proportion to
@@ -65,16 +65,16 @@ void ParticleContact::ResolveVelocity(Time duration)
 	// actual mass] get less change in velocity).
 	real totalInverseMass = contactA->getMass().getFactor();
 	if (contactB != nullptr) totalInverseMass += contactB->getMass().getFactor();
-	
+
 	// If all particles have infinite mass, then impulses have no effect.
 	if (totalInverseMass <= 0) return;
-	
+
 	// Calculate the impulse to apply.
 	real impulse = deltaVelocity / totalInverseMass;
-	
+
 	// Find the amount of impulse per unit of inverse mass.
 	Vector3f impulsePerIMass = contactNormal * (float)impulse;
-	
+
 	// Apply impulses: they are applied in the direction of the contact,
 	// and are proportional to the inverse mass.
 	contactA->setVelocity( contactA->getVelocity() +

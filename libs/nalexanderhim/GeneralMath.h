@@ -30,7 +30,7 @@ namespace nah
 
 		//namespace float {
 
-	static inline float Clamp(float clampThis, float clampMax, float clampMin = 0.0f)
+	inline static float Clamp(float clampThis, float clampMax, float clampMin = 0.0f)
 	{
 		if (clampThis > clampMax)
 			return clampMax;
@@ -39,7 +39,7 @@ namespace nah
 		return clampThis;
 	};
 	//Ignores signs when clamping, sign is reapplied after the clamp operation
-	static inline float ClampKeepSign(float clampThis, ufloat clampMax, ufloat clampMin = 0.0f)
+	inline static float ClampKeepSign(float clampThis, ufloat clampMax, ufloat clampMin = 0.0f)
 	{
 		SAVE_SIGN(clampThis);
 		Clamp(clampThis, clampMax, clampMin);
@@ -47,16 +47,16 @@ namespace nah
 		return clampThis;
 	};
 
-	static inline float absInv(float invertThis) { return -abs(invertThis);	};
+	inline static float absInv(float invertThis) { return -abs(invertThis);	};
 
-	static inline float sqrtKeepSign(float rootThis)
+	inline static float sqrtKeepSign(float rootThis)
 	{
 		SAVE_SIGN(rootThis)
 		rootThis = sqrt(rootThis);
 		APPLY_SIGN(rootThis)
 		return rootThis;
 	}
-	
+
 	//************************************
 	// Method:    checkWholeNumber
 	// FullName:  checkWholeNumber
@@ -71,23 +71,23 @@ namespace nah
 	/// <param name="checkThis"></param>
 	/// <param name="precision">how precisely to check</param>
 	/// <returns> if the number is a whole number </returns>
-	static inline bool checkWholeNumber(float checkThis, double precision = 0.000001)
+	inline static bool checkWholeNumber(float checkThis, double precision = 0.000001)
 	{
 		//return checkThis == floor(checkThis);
 		return fabs(checkThis - std::floor(checkThis)) < precision;
 	}
 
-	static inline bool equalsInRange(float rhs, float lhs, float range)
+	inline static bool equalsInRange(float rhs, float lhs, float range)
 	{ return abs(rhs-lhs) <= range;	}
 
-	static inline int round(float roundThis)
+	inline static int round(float roundThis)
 	{ 
 		if(roundThis >0) return (int)std::floor(roundThis+0.5f);
 		else if(roundThis <0) return (int)std::ceil(roundThis-0.5f);
 		return 0;//roundThis is 0
 	}
 
-	static inline float wrapFloat(float wrapThis, float maxWrap = 1.0f, float minWrap = 0.0f)
+	inline static float wrapFloat(float wrapThis, float maxWrap = 1.0f, float minWrap = 0.0f)
 	{
 
 		const float WRAP_RANGE = maxWrap - minWrap;//difference between the min and max ranges
@@ -98,11 +98,11 @@ namespace nah
 
 		//check if range is acceptable
 		if (WRAP_RANGE <= ACCEPTABLE_RANGE) return WRAP_RANGE;
-		
+
 		//check min value
 		while (wrapThis < minWrap)
 			wrapThis += WRAP_RANGE;
-		
+
 		//check max value
 		while (wrapThis > maxWrap)
 			wrapThis -= WRAP_RANGE;
