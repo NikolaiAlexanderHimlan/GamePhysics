@@ -11,7 +11,8 @@ I certify that this assignment is entirely my own work.
 #include "CodingDefines.h"
 #include "MathDefines.h"
 #include "DebugDefines.h"
-#include <stdexcept>//used for LOGIC_ERR, move to .cpp file
+
+class VectorNf;
 
 class Matrixf
 {
@@ -38,6 +39,7 @@ protected:
 
 public:
 	Matrixf();
+	Matrixf(uint rows, uint columns);
 	~Matrixf() { clearMatrix();	};
 
 	//Getters
@@ -47,6 +49,12 @@ public:
 
 	//Properties
 	inline uint Count() const { return numRows() * numCols();	};
+	VectorNf getRowVector(uint rowIndex) const;
+	VectorNf getColVector(uint colIndex) const;
+
+	//Modifiers
+	void setRowVector(uint rowIndex, REF(VectorNf) newRow);
+	void setColVector(uint colIndex, REF(VectorNf) newCol);
 
 	//Calculations
 	inline uint getIndex(uint row, uint col) const { return row*col;	};
@@ -55,6 +63,7 @@ public:
 	inline void clearMatrix() { delete[] maMatrixValues;	};
 
 	//Operators
+	inline Matrixf operator *(const Matrixf& rhs);
 	inline matType& operator [](uint index) { return refValue(index);	};
 	inline REF(matType) operator [](uint index) const { return refValue(index);	};;
 	inline matType& operator ()(uint row, uint col) { return refValue(row, col);	};
@@ -69,5 +78,27 @@ public:
 	static Matrixf Multiply(REF(Matrixf) lhs, REF(Matrixf) rhs);
 	static void Multiply(REF(Matrixf) lhs, REF(Matrixf) rhs, OUT_PARAM(Matrixf) result);
 };
+
+//TODO: move below to source file
+#include <stdexcept>//used for LOGIC_ERR, move to .cpp file
+#include "VectorMath.h"
+Matrixf Matrixf::operator*(REF(Matrixf) rhs)
+{
+	if (numCols() != rhs.numRows())
+		LOGIC_ERR(("Cols " + numCols() + " does not match Rows " + rhs.numRows()));
+
+	Matrixf mult = Matrixf(numRows(), rhs.numCols());
+	VectorNf curRow;
+
+	for (uint i = 0; i < numRows(); i++)
+	{
+		curRow = getRowVector(i);
+		for (uint j = 0; j < rhs.numCols(); j++)
+		{
+			mult.refValue(i, j) = Dot(curRow, rhs.getColVector(j));
+		}
+	}
+	return mult;
+}
 
 #endif // Matrix_h__

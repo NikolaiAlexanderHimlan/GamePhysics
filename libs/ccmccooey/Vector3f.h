@@ -24,8 +24,6 @@
 #define VectParam const Vector3f&
 
 //pre-engine declarations
-class Rotation3D;//TODO: remove
-class MatrixNf;//TODO: remove
 enum Axis;
 typedef float ufloat;
 
@@ -68,10 +66,10 @@ public:
 		//Assignment
 	Vector3f& operator = ( const Vector3f& rhs );
 	//Should do this manually// Vector3f& operator = ( const float& rhs ) { x = rhs;	y = rhs;	z = rhs;	return *this;	};//[NAH]
-	Vector3f& operator *= ( const Vector3f& rhs );
 	Vector3f& operator *= ( float mult );
 	inline Vector3f& operator += (VectParam rhs) { return *this = *this + rhs;	};//[NAH]
 	inline Vector3f& operator -= (VectParam rhs) { return *this = *this - rhs;	};//[NAH]
+	//Vector3f& operator *= ( VectParam rhs );//Require explicit call to either Multiply or DotProduct
 	inline Vector3f& operator /= (VectParam rhs) { return *this = *this / rhs;	};//[NAH]
 	Vector3f& operator /= (float div);
 

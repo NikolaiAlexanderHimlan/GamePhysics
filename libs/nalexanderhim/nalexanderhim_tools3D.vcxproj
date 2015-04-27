@@ -139,6 +139,7 @@
     <ClInclude Include="FloatFactor.h" />
     <ClInclude Include="GeneralMath.h" />
     <ClInclude Include="GroundArea.h" />
+    <ClInclude Include="VectorMath.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
     <ClInclude Include="MassAggregate.h" />

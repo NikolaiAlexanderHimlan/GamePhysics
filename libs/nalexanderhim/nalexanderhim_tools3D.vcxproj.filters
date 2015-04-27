@@ -431,6 +431,9 @@
     <ClInclude Include="PhysicsBase.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="VectorMath.h">
+      <Filter>Header Files\Utilities\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

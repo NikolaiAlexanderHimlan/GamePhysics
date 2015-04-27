@@ -9,6 +9,9 @@ I certify that this assignment is entirely my own work.
 */
 #include "ccmccooeyWrapper.h"
 #include "CodingDefines.h"
+
+class Matrixf;
+
 //typedef Vector3f Rotation3D;/*2 variations of Rotation implementations [Comment this line to switch]
 class Rotation3D
 	: public Vector3f
@@ -122,6 +125,7 @@ public:
 	static Rotation3D Multiply(REF(Rotation3D) lhs, REF(Vector3f) rhs);
 
 	static const Rotation3D calcLookAtRotation(REF(Vector3f) eye, REF(Vector3f) lookAt, bool inRadians = true); //calculates the necessary angle in order to look at one location from another location.
+	static const Matrixf calcLookAtMatrix(REF(Vector3f) eye, REF(Vector3f) lookAt, bool inRadians = true);
 };
 //*/
 #endif // Rotation_h__
