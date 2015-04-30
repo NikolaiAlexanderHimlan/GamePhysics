@@ -231,6 +231,12 @@
     <ClCompile Include="Rotation3D.cpp">
       <Filter>Source Files\Space3D</Filter>
     </ClCompile>
+    <ClCompile Include="IntertiaTensor.cpp">
+      <Filter>Source Files\Physics\Rigid Body</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixR.cpp">
+      <Filter>Source Files\DataTypes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -426,6 +432,15 @@
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
     <ClInclude Include="MatrixR.h">
+      <Filter>Header Files\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="IntertiaTensor.h">
+      <Filter>Header Files\Physics\Rigid Body</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix44r.h">
+      <Filter>Header Files\DataTypes</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix33r.h">
       <Filter>Header Files\DataTypes</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsBase.h">

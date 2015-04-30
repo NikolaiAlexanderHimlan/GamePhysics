@@ -101,9 +101,11 @@
     <ClCompile Include="DebugTools.cpp" />
     <ClCompile Include="GroundArea.cpp" />
     <ClCompile Include="IntCoord.cpp" />
+    <ClCompile Include="IntertiaTensor.cpp" />
     <ClCompile Include="ManagedBase.cpp" />
     <ClCompile Include="ManagerBase.cpp" />
     <ClCompile Include="MassAggregate.cpp" />
+    <ClCompile Include="MatrixR.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Particle.cpp" />
@@ -139,6 +141,9 @@
     <ClInclude Include="FloatFactor.h" />
     <ClInclude Include="GeneralMath.h" />
     <ClInclude Include="GroundArea.h" />
+    <ClInclude Include="IntertiaTensor.h" />
+    <ClInclude Include="Matrix33r.h" />
+    <ClInclude Include="Matrix44r.h" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />
