@@ -55,12 +55,12 @@ public:
 		gpParticleSystem = new ParticleSystem();
 
 		return true;
-	}
+	};
 	static void ClearGlobal()
 	{
 		delete gpParticleSystem;
 		gpParticleSystem = nullptr;
-	}
+	};
 
 	//Getters
 	inline Particle* getParticle(ManageID getID) const { return (Particle*)getManaged(getID);	};//TODO: safe cast
@@ -84,7 +84,7 @@ public:
 	void DisableContactGenerator();
 
 	//Update Systems
-	void UpdatePhysics(Time elapsedSeconds);//Update Particles
+	void PhysicsUpdate(Time elapsedSeconds);//Update Particles
 	void UpdateForces(Time elapsedSeconds);//Update ParticleForces + apply force registrations
 	void UpdateContacts(Time elapsedSeconds);//check for and generate particle contacts
 
@@ -112,8 +112,8 @@ public:
 		for (uint i = 0; i < numForceGenerators(); i++)
 		{
 			deleteParticleForce(i);
-		}
-	}
+		};
+	};
 #pragma endregion Particle Force Generators
 
 
@@ -132,7 +132,7 @@ public:
 	{
 		//all Particles and ParticleForceGenerators are saved elsewhere, just clear the list
 		mParticleForceRegistry.clear();
-	}
+	};
 #pragma endregion Particle Force Registrations
 
 
@@ -163,7 +163,7 @@ public:
 		for (uint i = 0; i < numContactGenerators(); i++)
 		{
 			deleteParticleContactGenerator(i);
-		}
+		};
 	};
 #pragma endregion Particle Contact Generators
 };

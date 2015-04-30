@@ -40,29 +40,29 @@ public:
 		: Particle(initialMass, name), Object3D()
 	{
 		doRefreshPhysPosition = true;//refresh at least once to sync them initially
-	}
+	};
 	virtual ~PhysicsObject(){};
 
-	virtual void UpdatePhysics(Time elapsedSeconds)
+	virtual void PhysicsUpdate(Time elapsedSeconds)
 	{
 		//check if object position has been updated
 		if (doRefreshPhysPosition)
 		{
 			doRefreshPhysPosition = false;//has synced
 			RefreshPhysicsPosition();
-		}
+		};
 
-		__super::UpdatePhysics(elapsedSeconds);
+		__super::PhysicsUpdate(elapsedSeconds);
 
 		RefreshObjectPosition();
-	}
+	};
 
 	//Getters
 	inline Transform& refLocalTransform()
 	{
 		doRefreshPhysPosition = true;//record that the physics position will need to be updated
 		return __super::refLocalTransform();
-	}
+	};
 
 	//Calculations
 	//TODO: WARNING: All the following need to convert their values from graphics to simulation

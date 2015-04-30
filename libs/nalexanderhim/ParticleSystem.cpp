@@ -34,11 +34,11 @@ void ParticleSystem::DisableContactGenerator()
 	mContactsEnabled = false;
 }
 
-void ParticleSystem::UpdatePhysics(Time elapsedSeconds)
+void ParticleSystem::PhysicsUpdate(Time elapsedSeconds)
 {
 	for (uint i = 0; i < numParticles(); i++)
 	{
-		getParticle(i)->UpdatePhysics(elapsedSeconds);
+		getParticle(i)->PhysicsUpdate(elapsedSeconds);
 	}
 }
 void ParticleSystem::UpdateForces(Time elapsedSeconds)

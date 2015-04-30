@@ -366,7 +366,7 @@ void UpdateUI()
 				targtName->set_text(("Phys Name:\n  " + debugPhys->getName()).c_str());
 				//targtPosGraph->set_text(("GrphPhysPos:\n  " + debugPhys->getWorldTransform().position.toString()).c_str());
 				targtPosPhys->set_text(("SimPos:\n  " + debugPhys->getPhysicsPosition().toString()).c_str());
-				targtVel->set_text(("Velocity:\n  " + debugPhys->getVelocity().toString()).c_str());
+				targtVel->set_text(("Velocity:\n  " + debugPhys->getVelocityLinear().toString()).c_str());
 			}
 
 			std::string val = "beep";
@@ -384,7 +384,7 @@ void UpdateUI()
 void RenderScene(void)
 {
 	//Swap Colors
-	GLfloat vColor[] = { 1.0f, 1.0f, 1.0f, 1.0f	} ;
+	GLfloat vColor[] = { 1.0f, 1.0f, 1.0f, 1.0f	};
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
