@@ -144,7 +144,7 @@
     <ClInclude Include="M3DTypes.h" />
     <ClInclude Include="MassAggregate.h" />
     <ClInclude Include="MathDefines.h" />
-    <ClInclude Include="Matrixf.h" />
+    <ClInclude Include="MatrixR.h" />
     <ClInclude Include="OctahedronAggregate.h" />
     <ClInclude Include="ParticleBungee.h" />
     <ClInclude Include="ParticleCable.h" />

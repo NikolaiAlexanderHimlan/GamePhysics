@@ -425,7 +425,7 @@
     <ClInclude Include="Rotation3D.h">
       <Filter>Header Files\Space3D</Filter>
     </ClInclude>
-    <ClInclude Include="Matrixf.h">
+    <ClInclude Include="MatrixR.h">
       <Filter>Header Files\DataTypes</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsBase.h">

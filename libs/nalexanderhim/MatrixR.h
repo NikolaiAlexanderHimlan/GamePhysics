@@ -14,9 +14,9 @@ I certify that this assignment is entirely my own work.
 
 class VectorNf;
 
-class Matrixf
+class MatrixR
 {
-	typedef float matType;
+	typedef real matType;
 protected:
 	int mRows, mCols;
 
@@ -38,9 +38,9 @@ protected:
 	}
 
 public:
-	Matrixf();
-	Matrixf(uint rows, uint columns);
-	~Matrixf() { clearMatrix();	};
+	MatrixR();
+	MatrixR(uint rows, uint columns);
+	~MatrixR() { clearMatrix();	};
 
 	//Getters
 	inline int numRows() const { return mRows;	};
@@ -63,31 +63,32 @@ public:
 	inline void clearMatrix() { delete[] maMatrixValues;	};
 
 	//Operators
-	inline Matrixf operator *(const Matrixf& rhs);
+	inline MatrixR operator *(const MatrixR& rhs);
 	inline matType& operator [](uint index) { return refValue(index);	};
 	inline REF(matType) operator [](uint index) const { return refValue(index);	};;
 	inline matType& operator ()(uint row, uint col) { return refValue(row, col);	};
 	inline REF(matType) operator ()(uint row, uint col) const { return refValue(row, col);	};
 
 	//Static functions
-	inline static Matrixf Identity() { return Matrixf();	};
+	inline static MatrixR Identity() { return MatrixR();	};
+	static void LoadIdentity(OUT_PARAM(MatrixR) loadInto);
 
-	static Matrixf Inverse(REF(Matrixf) mat);
-	static void Invert(Matrixf& mat);
+	static MatrixR Inverse(REF(MatrixR) mat);
+	static void Invert(MatrixR& mat);
 
-	static Matrixf Multiply(REF(Matrixf) lhs, REF(Matrixf) rhs);
-	static void Multiply(REF(Matrixf) lhs, REF(Matrixf) rhs, OUT_PARAM(Matrixf) result);
+	static MatrixR Multiply(REF(MatrixR) lhs, REF(MatrixR) rhs);
+	static void Multiply(REF(MatrixR) lhs, REF(MatrixR) rhs, OUT_PARAM(MatrixR) result);
 };
 
 //TODO: move below to source file
 #include <stdexcept>//used for LOGIC_ERR, move to .cpp file
 #include "VectorMath.h"
-Matrixf Matrixf::operator*(REF(Matrixf) rhs)
+MatrixR MatrixR::operator*(REF(MatrixR) rhs)
 {
 	if (numCols() != rhs.numRows())
 		LOGIC_ERR(("Cols " + numCols() + " does not match Rows " + rhs.numRows()));
 
-	Matrixf mult = Matrixf(numRows(), rhs.numCols());
+	MatrixR mult = MatrixR(numRows(), rhs.numCols());
 	VectorNf curRow;
 
 	for (uint i = 0; i < numRows(); i++)
