@@ -178,7 +178,7 @@ float Vector3f::DotProduct(const Vector3f &first, const Vector3f &second)
 }
 float Vector3f::CrossProductF(const Vector3f &first, const Vector3f &second)
 {
-	return (first.y * second.z - first.z - second.y) + (first.z * second.x - first.x - second.z) + (first.x * second.y - first.y - second.x);
+	return (first.y * second.z - first.z * second.y) + (first.z * second.x - first.x * second.z) + (first.x * second.y - first.y * second.x);
 }
 Vector3f Vector3f::CrossProduct(const Vector3f &first, const Vector3f &second)
 {
