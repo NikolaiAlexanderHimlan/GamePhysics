@@ -27,10 +27,10 @@ private:
 	inline void RecalculateMomentum(real oldMass)
 	{
 		//Get old momentum
-		Vector3f oldMomentum = mVelocity * (float)oldMass;
+		Vector3f oldMomentum = mVelocityLinear * (float)oldMass;
 		//Calculate new velocity
-		mVelocity = oldMomentum * getMass().getFactor();
-	}
+		mVelocityLinear = oldMomentum * getMass().getFactor();
+	};
 
 protected:
 	virtual ManagerBase* getManager() const;
@@ -38,25 +38,6 @@ protected:
 	std::string mName = "Particle";
 
 	Bounding* mpBounds = new Bounding();//defines the physics boundary of the particle
-
-	/**
-	* Holds the linear velocity of the particle in
-	* world space.
-	*/
-	Vector3f mVelocity = 0.0f;
-	/**
-	* Holds the acceleration of the particle. This value
-	* can be used to set acceleration due to gravity (its primary
-	* use), or any other constant acceleration.
-	*/
-	Vector3f mAcceleration = 0.0f;
-
-	/**
-	* Holds the amount of damping applied to linear
-	* motion. Damping is required to remove energy added
-	* through numerical instability in the integrator.
-	*/
-	udouble mDamping = 0.999;
 
 	//Maintainers
 	inline void UpdatePosition(Time elapsedSeconds)
@@ -67,8 +48,8 @@ protected:
 			//floating point powers are expensive, thus the #ifdef
 			(mAcceleration*0.5f*powf((float)elapsedSeconds, 2)) + //movement due to acceleration
 #endif
-			(mVelocity*(float)elapsedSeconds);//movement due to velocity
-	}
+			(mVelocityLinear*(float)elapsedSeconds);//movement due to velocity
+	};
 	inline void UpdateVelocity(Time elapsedSeconds)
 	{
 		if (hasInfiniteMass()) return;//velocity does not change for an object of infinite mass
@@ -80,15 +61,16 @@ protected:
 		//TODO: CONSIDER: should the acceleration be applied when adding force, which would allow forces to be applied over a separate time
 		//NOTE: damping would stay here (unless moved to a damping force generator) and clear forces and mAcceleration wouldn't be necessary (unless I wanted to save up the total force over a frame or use acceleration in the velocity calculation)
 		//Acceleration
-		mVelocity += (mAcceleration*(float)elapsedSeconds);
+		//TODO: NOTE: acceleration recalculated
+		mVelocityLinear += (mAccumulator.acceleration*(float)elapsedSeconds);
 
 		//Damping
-		mVelocity *= (float)pow(mDamping, elapsedSeconds);
+		mVelocityLinear *= (float)pow(mDampingLinear, elapsedSeconds);
 		//HACK: damping disabled in space
 
 		//Clear Forces? (need to reapply force every frame)
 		clearForce();
-	}
+	};
 
 	//Getters
 
@@ -98,17 +80,18 @@ protected:
 		floatFactor oldMass = getMass();
 		__super::setMass(newMass);
 		RecalculateMomentum(oldMass);
-	}
+	};
 
 	//Actions
-	inline bool setForce(const Vector3f& forceVector)
+	inline bool setForce(REF(Vector3f) forceVector)
 	{
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
-		mAcceleration = forceVector * getMass().getFactor();
+		//TODO: NOTE: acceleration recalculated
+		mAccumulator.acceleration = forceVector * getMass().getFactor();
 
 		return true;//applied force successfully
-	}
+	};
 	inline void clearForce() { setForce(Vector3f(0.0f));	};
 
 public:
@@ -118,7 +101,7 @@ public:
 
 		if (name != "")
 			mName = name;
-	}
+	};
 	virtual ~Particle()
 	{
 		delete mpBounds;
@@ -126,14 +109,16 @@ public:
 	};
 
 	//Maintainers
-	virtual inline void UpdatePhysics(Time elapsedSeconds)
+	virtual inline void PhysicsUpdate(Time elapsedSeconds)
 	{
 		UpdatePosition(elapsedSeconds);
 
 		UpdateVelocity(elapsedSeconds);
 
+		mAccumulator.NextFrame();
+
 		//Update Physics
-	}
+	};
 
 	//Getters
 	inline REF(std::string) getName() const
@@ -148,43 +133,42 @@ public:
 	{
 		if (this == nullptr)
 			return Vector3f::zero;//if this is null return 0 vector
-		return mVelocity;
+		return mVelocityLinear;
 	};
 
 	//Setters
-	inline void setBounds(Bounding* newBounds)
-	{
-		delete mpBounds;
-		mpBounds = newBounds;
-	}
-	inline void setVelocity(const Vector3f& newVelocity) { mVelocity = newVelocity;	};
+	inline void setBounds(Bounding* newBounds) { SAFE_ASSIGN(mpBounds) = newBounds;	};
+	inline void setVelocity(REF(Vector3f) newVelocity) { mVelocityLinear = newVelocity;	};
 
 	//Properties
-	inline float getSpeed() const { return mVelocity.Length();	};
+	inline float getSpeed() const { return mVelocityLinear.Length();	};
 	Vector3f getMomentum() const;
-	inline Vector3f getForce() const { return mAcceleration * getMass();	};
+	inline Vector3f getForce() const
+	//TODO: NOTE: acceleration recalculated
+	{ return mAccumulator.force + (mAccumulator.acceleration * getMass()); };
 
 	//Manipulators
-	void setMomentum(const Vector3f& newMomentum);
+	void setMomentum(REF(Vector3f) newMomentum);
 
 	//Actions
-	inline bool addForce(const Vector3f& forceVector)
+	inline bool addForce(REF(Vector3f) forceVector)
 	{
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
 
-		mAcceleration += forceVector * getMass().getFactor();
+		//TODO: NOTE: acceleration recalculated
+		mAccumulator.acceleration += forceVector * getMass().getFactor();
 
 		return true;//applied force successfully
-	}
+	};
 	inline bool addImpulse(REF(Vector3f) impulseVector)
 	{
 		//TODO: verify that infinite mass objects cannot receive impulse
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have impulses acting on them
 
-		mVelocity += impulseVector * getMass().getFactor();
+		mVelocityLinear += impulseVector * getMass().getFactor();
 
 		return true;//applied impulse successfully
-	}
+	};
 	inline void clearPhysics() { clearForce(); setVelocity(0.0f);	};//HACK: publicly accessible
 };
 #endif

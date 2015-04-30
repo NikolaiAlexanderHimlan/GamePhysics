@@ -145,6 +145,7 @@
     <ClInclude Include="IntertiaTensor.h" />
     <ClInclude Include="Matrix33r.h" />
     <ClInclude Include="Matrix44r.h" />
+    <ClInclude Include="RigidBody.h" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />

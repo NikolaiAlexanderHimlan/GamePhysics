@@ -3,5 +3,8 @@
 #define OUT_PARAM(DataType) DataType* /*Makes it clear that this parameter is used as an output.*/
 #define OUT_SET(outParam, value) if(outParam != nullptr){ *outParam = value; }
 
+#define SAFE_ASSIGN(pointerVar) if(pointerVar != nullptr) { delete pointerVar; } pointerVar /*= [new value]*/
+#define SAFE_DELETE(pointerVar) if(pointerVar != nullptr) { delete pointerVar; pointerVar = nullptr; }
+
 #define BoolToStr(boolIn) (boolIn?"True":"False")
 #define EnableToStr(boolIn) (boolIn?"Enabled":"Disabled")

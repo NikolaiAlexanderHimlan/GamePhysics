@@ -452,6 +452,9 @@
     <ClInclude Include="VectorMath.h">
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Header Files\Physics\Rigid Body</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="CodeStandard.txt" />

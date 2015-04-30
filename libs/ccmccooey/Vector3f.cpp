@@ -148,7 +148,7 @@ std::string Vector3f::toString() const
 	ss << (*this);
 	return ss.str();
 }
-void Vector3f::toArray(float floatArray[3])
+void Vector3f::toArray(float floatArray[3]) const
 {
 	floatArray[0] = x;
 	floatArray[1] = y;

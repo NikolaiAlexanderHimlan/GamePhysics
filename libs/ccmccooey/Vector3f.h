@@ -59,9 +59,9 @@ public:
 	//operators overloads
 		//Math
 	inline const Vector3f operator + (VectParam rhs) const { return Add(*this, rhs);	};//[NAH]
-	inline const Vector3f operator - (VectParam rhs) const { return Subtract(*this, rhs); };//[NAH]
-	inline const Vector3f operator / (VectParam rhs) const { return Divide(*this, rhs); };//[NAH]
-	inline const Vector3f operator - () const { return Inverse(); };//[NAH]
+	inline const Vector3f operator - (VectParam rhs) const { return Subtract(*this, rhs);	};//[NAH]
+	inline const Vector3f operator / (VectParam rhs) const { return Divide(*this, rhs);	};//[NAH]
+	inline const Vector3f operator - () const { return Inverse();	};//[NAH]
 	
 		//Assignment
 	Vector3f& operator = ( const Vector3f& rhs );
@@ -84,7 +84,7 @@ public:
 		//Conversion
 	friend std::ostream& Vector3f::operator<<(std::ostream& stream, const Vector3f& vector);
 	std::string toString() const;
-	void toArray(float outArray[3]);
+	void toArray(float outArray[3]) const;
 
 	//math functions
 	inline Vector3f Inverse() const { return Vector3f(-x, -y, -z);	};//[NAH]

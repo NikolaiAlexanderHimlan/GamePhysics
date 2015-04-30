@@ -6,14 +6,17 @@ Class: EPG-425 <Section 51>
 Assignment: pa 4
 Certification of Authenticity:
 I certify that this assignment is entirely my own work.
+Based on Ian Millington's cyclone physics engine.
 */
 #include <stdexcept>
 #include "CodingDefines.h"
 #include "MathDefines.h"
 #include "DebugDefines.h"
+#include "CountedArray.h"//TODO: forward declare CountedArray
+#include "VectorMath.h"//TODO: try to forward declare
 
 class Vector3f;
-class VectorNf;
+//class VectorNf;
 class Quaternion;
 
 class MatrixR
@@ -29,7 +32,7 @@ protected:
 		if (index >= Count())
 			LOGIC_ERR("Invalid Matrix Index!");
 		return maMatrixValues[index];
-	}
+	};
 	inline matType& refValue(uint row, uint col) const
 	{
 		if (row >= numRows())
@@ -37,7 +40,7 @@ protected:
 		if (col >= numCols())
 			LOGIC_ERR("Invalid Matrix Column!");
 		return refValue(getIndex(row, col));
-	}
+	};
 
 public:
 	MatrixR();
@@ -46,8 +49,8 @@ public:
 	virtual ~MatrixR() { clearMatrix();	};
 
 	//Getters
-	inline int numRows() const { return mRows;	};
-	inline int numCols() const { return mCols;	};
+	inline uint numRows() const { return mRows;	};
+	inline uint numCols() const { return mCols;	};
 	inline matType getValue(uint index) const { return refValue(index);	};
 
 	//Setters
