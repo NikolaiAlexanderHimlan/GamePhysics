@@ -237,6 +237,9 @@
     <ClCompile Include="MatrixR.cpp">
       <Filter>Source Files\DataTypes</Filter>
     </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>Source Files\Space3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">

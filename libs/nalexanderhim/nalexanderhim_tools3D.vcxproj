@@ -117,6 +117,7 @@
     <ClCompile Include="ParticleRod.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleWall.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Rotation3D.cpp" />
     <ClCompile Include="RotationMath.cpp" />
     <ClCompile Include="StringTools.cpp" />
