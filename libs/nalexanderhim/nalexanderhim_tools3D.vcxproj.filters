@@ -151,6 +151,12 @@
     <Filter Include="Header Files\Physics\Particles\MassAggregates">
       <UniqueIdentifier>{bf615ef9-c0bb-4a95-9ed9-1a28930991fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Physics\Rigid Body\Forces">
+      <UniqueIdentifier>{c936ec24-1880-4366-adb0-f71d4d25e915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Physics\Rigid Body\Forces">
+      <UniqueIdentifier>{0a800c79-0388-4f5e-8656-05a4e254f764}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraView.cpp">
@@ -240,8 +246,23 @@
     <ClCompile Include="Quaternion.cpp">
       <Filter>Source Files\Space3D</Filter>
     </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Source Files\Physics\Rigid Body</Filter>
+    </ClCompile>
     <ClCompile Include="ParticleObject.cpp">
       <Filter>Source Files\Common Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyGravity.cpp">
+      <Filter>Source Files\Physics\Rigid Body\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyForceGenerator.cpp">
+      <Filter>Source Files\Physics\Rigid Body\Forces</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidObject.cpp">
+      <Filter>Source Files\Common Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodySystem.cpp">
+      <Filter>Source Files\Physics\Rigid Body</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -456,6 +477,18 @@
       <Filter>Header Files\Utilities\Math</Filter>
     </ClInclude>
     <ClInclude Include="RigidBody.h">
+      <Filter>Header Files\Physics\Rigid Body</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyForceGenerator.h">
+      <Filter>Header Files\Physics\Rigid Body\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyGravity.h">
+      <Filter>Header Files\Physics\Rigid Body\Forces</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidObject.h">
+      <Filter>Header Files\Common Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodySystem.h">
       <Filter>Header Files\Physics\Rigid Body</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,6 +9,7 @@ I certify that this assignment is entirely my own work.
 #define _TRANSFORM_OBJECT_H
 
 #include "Transform.h"
+#include "CodingDefines.h"
 
 //Object containing a transform and handling complex transformations
 class TransformObject

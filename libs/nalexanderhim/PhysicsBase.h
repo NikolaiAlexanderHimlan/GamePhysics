@@ -18,30 +18,6 @@ class Matrix44r;
 //Base class for physics objects such as particles and rigid bodies, providing shared function declarations
 class PhysicsBase
 {
-public:
-	struct PhysicsAccumulator //Accumulation of physics effects over the course of a frame.
-	{
-		Vector3f force; //Holds the accumulated force to be applied at the next integration step.
-		Vector3f torque; //Holds the accumulated torque to be applied at the next integration step.
-		Vector3f acceleration; // Holds the acceleration of the rigid body.  This value can be used to set acceleration due to gravity(its primary use), or any other constant acceleration.
-
-		REF(Vector3f) LastFrameAcceleration(void) const { return mLastFrameAcceleration;	};
-		void NextFrame()//Clears the accumulation and stores the last frame acceleration.
-		{
-			//Save LastFrame accumulations
-			mLastFrameAcceleration = acceleration;
-
-			//Clear accumulations
-			force = Vector3f::zero;
-			torque = Vector3f::zero;
-			acceleration = Vector3f::zero;
-		};
-
-	protected:
-		Vector3f mLastFrameAcceleration; //Holds the linear acceleration of the rigid body, for the previous frame.
-	};
-	typedef PhysicsAccumulator PhysAccum;//Short name.
-
 private:
 protected:
 	std::string mName = "PhysicsBase";
@@ -71,9 +47,42 @@ protected:
 	//Holds the linear velocity of the particle in world space.
 	Vector3f mVelocityLinear = 0.0f;
 
-	PhysAccum mAccumulator;
+	// Holds the acceleration of the rigid body.  This value can be used to set acceleration due to gravity (its primary use), or any other constant acceleration.
+	Vector3f mAccelerationConstant;
 
-	//GameLoop
+	//Physics Accumulation
+	//Holds the accumulated force to be applied at the next integration step.
+	Vector3f mForceAccum;
+	//Holds the linear acceleration of the rigid body, for the previous frame.
+	Vector3f mLastFrameAcceleration;
+
+		//GameLoop
+	inline void UpdatePosition(Time elapsedSeconds)
+	{
+		//Update Position
+		mPhysicsPosition += //previous position
+#ifdef COMPLEX_POSITION
+			//floating point powers are expensive, thus the #ifdef
+			(mAcceleration*0.5f*powf((float)elapsedSeconds, 2)) + //movement due to acceleration
+#endif
+			(mVelocityLinear*(float)elapsedSeconds);//movement due to velocity
+	};
+	inline void UpdateVelocity(Time elapsedSeconds)
+	{
+		if (hasInfiniteMass()) return;//velocity does not change for an object of infinite mass
+
+		//NOTE: expensive pow calculation, details (Ian Millington, pg. 57)
+		//Update Velocity
+
+		//TODO: decide if velocity should be updated in Physics(elapsed time) or Force(duration)
+		//TODO: CONSIDER: should the acceleration be applied when adding force, which would allow forces to be applied over a separate time
+		//NOTE: damping would stay here (unless moved to a damping force generator) and clear forces and mAcceleration wouldn't be necessary (unless I wanted to save up the total force over a frame or use acceleration in the velocity calculation)
+		//Acceleration
+		mVelocityLinear += (getAccelerationAccum()*(float)elapsedSeconds);
+
+		//Damping
+		mVelocityLinear *= (float)pow(mDampingLinear, elapsedSeconds);
+	};
 
 	//Setters
 	inline virtual void setMass(real newMass) { mMass = (float)newMass;	};
@@ -82,14 +91,34 @@ protected:
 	//virtual Matrix44r calcTransformMatrix() const = 0;
 
 	//Actions
-	virtual void clearPhysics() = 0;//Clear stored physics values in preparation for the next frame.
 	// Clears the accumulated physics for the frame. This will be called automatically after each integration step.
-	void clearAccumulators();
+	virtual void clearAccumulators()
+	{
+		//Clear accumulations
+		mForceAccum = Vector3f::zero;
+	};
 
 public:
-	//TODO: NOTE: need category name for "Update" type functions
+	explicit PhysicsBase(real initialMass, std::string name = "")
+	{
+		setMass(initialMass);
+
+		if (name != "")
+			mName = name;
+	};
+
 	//GameLoop
-	virtual void PhysicsUpdate(Time elapsedSeconds) = 0;
+	//GameLoop
+	inline virtual void PhysicsUpdate(Time elapsedSeconds)
+	{
+		UpdatePosition(elapsedSeconds);
+
+		UpdateVelocity(elapsedSeconds);
+
+		//Prepare for the next frame
+		mLastFrameAcceleration = getAccelerationAccum();
+		clearAccumulators();
+	};
 	void PhysicsFixedUpdate(Time elapsedSeconds);//Calls PhysicsUpdate using the simulation timestep enough times to match the actual elapsed time.
 
 	//Getters
@@ -144,6 +173,9 @@ public:
 	* The acceleration is given in world local space.
 	*/
 	Vector3f getAcceleration() const;
+	// Calculate all the acceleration for this frame by taking force into account.
+	Vector3f getAccelerationAccum() const
+	{ return mAccelerationConstant + (mForceAccum * mMass.getFactor());	};
 	/**
 	* Fills the given vector with the current accumulated value for linear acceleration.
 	* The acceleration accumulators are set during the integration step.
@@ -196,14 +228,16 @@ public:
 	* Sets the constant acceleration of the rigid body.
 	* @param acceleration The new acceleration of the rigid body.
 	*/
-	void setAcceleration(REF(Vector3f) acceleration);
+	void setAccelerationConst(REF(Vector3f) acceleration)
+	{ mAccelerationConstant = acceleration;	};
 	/**
 	* Sets the constant acceleration of the rigid body by component.
 	* @param x The x coordinate of the new acceleration of the rigid body.
 	* @param y The y coordinate of the new acceleration of the rigid body.
 	* @param z The z coordinate of the new acceleration of the rigid body.
 	*/
-	void setAcceleration(const real x, const real y, const real z);
+	void setAccelerationConst(const real x, const real y, const real z)
+	{ setAccelerationConst(Vector3f((float)x, (float)y, (float)z));	};
 
 	//Properties
 	inline bool hasInfiniteMass() const { return mMass <= 0.0f;	};
@@ -219,27 +253,27 @@ public:
 	* @param point The point to covert, given in world space.
 	* @return The converted point, in local space.
 	*/
-	virtual Vector3f calcPointInLocalSpace(REF(Vector3f) point) const = 0;
+	//virtual Vector3f calcPointInLocalSpace(REF(Vector3f) point) const = 0;
 	/**
 	* Converts the given point from world space into the body's local space.
 	* @param point The point to covert, given in local space.
 	* @return The converted point, in world space.
 	*/
-	virtual Vector3f calcPointInWorldSpace(REF(Vector3f) point) const = 0;
+	//virtual Vector3f calcPointInWorldSpace(REF(Vector3f) point) const = 0;
 	/**
 	* Converts the given direction from world space into the body's local space.
 	* @note When a direction is converted between frames of reference, there is no translation required.
 	* @param direction The direction to covert, given in world space.
 	* @return The converted direction, in local space.
 	*/
-	virtual Vector3f calcDirectionInLocalSpace(REF(Vector3f) direction) const = 0;
+	//virtual Vector3f calcDirectionInLocalSpace(REF(Vector3f) direction) const = 0;
 	/**
 	* Converts the given direction from world space into the body's local space.
 	* @note When a direction is converted between frames of reference, there is no translation required.
 	* @param direction The direction to covert, given in local space.
 	* @return The converted direction, in world space.
 	*/
-	virtual Vector3f calcDirectionInWorldSpace(REF(Vector3f) direction) const = 0;
+	//virtual Vector3f calcDirectionInWorldSpace(REF(Vector3f) direction) const = 0;
 
 	//Actions
 	// Applies the given change in velocity.
@@ -252,6 +286,14 @@ public:
 	virtual bool addForce(REF(Vector3f) forceVector) = 0;
 	// Creates an instantaneous change in velocity over a single frame.
 	virtual bool addImpulse(REF(Vector3f) impulseVector) = 0;
+	//HACK: publicly accessible
+	inline virtual void clearPhysics(bool clearConstAccel = true)
+	{
+		if (clearConstAccel)
+			mAccelerationConstant = 0.0f;
+		mForceAccum = 0.0f;
+		setVelocityLinear(0.0f);
+	};
 
 	//Refresh
 };

@@ -13,8 +13,8 @@ class IntertiaTensor
 	: public Matrix33r
 {
 public:
-	IntertiaTensor();
-	~IntertiaTensor();
+	IntertiaTensor(){};
+	~IntertiaTensor(){};
 
 	//Setters
 	//Sets the value of the matrix from inertia tensor values.

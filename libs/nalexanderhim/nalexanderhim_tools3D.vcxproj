@@ -119,6 +119,11 @@
     <ClCompile Include="ParticleWall.cpp" />
     <ClCompile Include="ParticleObject.cpp" />
     <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="RigidBodyForceGenerator.cpp" />
+    <ClCompile Include="RigidBodyGravity.cpp" />
+    <ClCompile Include="RigidBodySystem.cpp" />
+    <ClCompile Include="RigidObject.cpp" />
     <ClCompile Include="Rotation3D.cpp" />
     <ClCompile Include="RotationMath.cpp" />
     <ClCompile Include="StringTools.cpp" />
@@ -147,6 +152,10 @@
     <ClInclude Include="Matrix33r.h" />
     <ClInclude Include="Matrix44r.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="RigidBodyForceGenerator.h" />
+    <ClInclude Include="RigidBodyGravity.h" />
+    <ClInclude Include="RigidBodySystem.h" />
+    <ClInclude Include="RigidObject.h" />
     <ClInclude Include="VectorMath.h" />
     <ClInclude Include="IntegerFactor.h" />
     <ClInclude Include="M3DTypes.h" />

@@ -12,20 +12,16 @@
 #include <Object3D.h>
 #include <Color.h>
 #include <DebugTools.h>
-#include <ParticleSystem.h>
 #include <Timer.h>
 #include <CountedArray.h>
 #include <DataSystem.h>
 #include <StringTools.h>
 #include <ParticleObject.h>
 #include <GroundArea.h>
-#include <ParticleGravity.h>
-#include <ParticleCable.h>
-#include <ParticleRod.h>
-#include <MassAggregate.h>
-#include <CubeAggregate.h>
-//HACK: including Boundings for fixing scale on bounds
-#include <Boundings.h>
+#include <Boundings.h>//HACK: including Boundings for fixing scale on bounds
+#include <RigidObject.h>
+#include <RigidBodySystem.h>
+#include <TransformObject.h>
 
 #define RENDER_DATA mainView, shaderManager, mvpMatrix /*the necessary parameters for calling draw*/
 
@@ -71,7 +67,7 @@ inline int getWindowHeight()
 bool gDebugGraphics = true;
 bool gDebugPhysics = true;
 Object3D* debugObj;
-Particle* debugPhys;
+RigidBody* debugPhys;
 int debugTargetIndex = 2;
 bool gPauseSimulation = false;
 
@@ -83,6 +79,7 @@ GLUI_Control* targtName;
 GLUI_Control* targtPosGraph;
 GLUI_Control* targtPosPhys;
 GLUI_Control* targtVel;
+GLUI_Control* targtRot;
 GLUI_Control* collisionVal;
 
 CameraView* mainView;
@@ -91,23 +88,16 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 //Implementation Data
 
 //physics objects
-std::vector<Particle*> gameObjects;
-ParticleObject* model1;
-ParticleObject* model2;
-CubeAggregate* aggregate1;
+std::vector<RigidBody*> gameObjects;
+RigidObject* model1;
+RigidObject* model2;
 
 //forces
 float gravityForce = 5.0f;
-ParticleGravity* worldGrav = nullptr;
 
 //contacts
 uint maxContacts = 50;//TODO: update based on number of particles
 GroundArea* ground;
-ParticleCable* modelLink1;
-ParticleRod* modelLink2;
-real link1Length = 3;
-float finalTrigger = 0.5;//distance at which the final link is created
-ParticleRod* finalLink = nullptr;//will be filled with a link between model1 and aggregate1
 
 void ChangeSize(int w, int h)
 {
@@ -131,11 +121,11 @@ void setupModels()
 
 	//model2->setBounds(new Bounding());/*Point Bounding*//*Scaled Cube Bounding
 	//HACK: fix bounds size since bounds do not currently account for scale
-	CubeBounding model2Bounding = *dynamic_cast<const CubeBounding*>(&model2->getBounds());
+	RigidBody::RigidBounds model2Bounding = model2->getBounds();
 	model2Bounding.width *= 2;
 	model2Bounding.length *= 2;
 	model2Bounding.height *= 2;
-	model2->setBounds(new CubeBounding(model2Bounding));
+	model2->setBounds(model2Bounding);
 	//*/
 }
 void setupWorld()
@@ -143,7 +133,7 @@ void setupWorld()
 	{//view setup
 		mainView->clearParent();
 		mainView->clearTarget();
-		M3DVector3f viewPosition;
+		Vector3f viewPosition;
 		Rotation3D rotateView = Rotation3D(false);
 		viewPosition[0] = 0;//left/right
 		viewPosition[1] = -3;//up/down
@@ -157,7 +147,7 @@ void setupWorld()
 
 	{//Model1 setup
 		//model1 position
-		M3DVector3f model1Position;
+		Vector3f model1Position;
 		model1Position[0] = -3.0f;//X, left/right
 		model1Position[1] = -3.0f;//Y, up/down
 		model1Position[2] = 5.0f;//Z, in/out
@@ -173,7 +163,7 @@ void setupWorld()
 
 	{//Model2 setup
 		//model2 position
-		M3DVector3f model2Position;
+		Vector3f model2Position;
 		model2Position[0] = 0;//X, left/right
 		model2Position[1] = 0.0f;//Y, up/down
 		model2Position[2] = 5.0f;//Z, in/out
@@ -188,12 +178,6 @@ void setupWorld()
 
 		//model2 scale
 		model2->refLocalTransform().scale = 2.0f;
-	}
-
-	{//Aggregate1 setup
-		aggregate1->refLocalTransform().position = Vector3f(5.0f, 1.0f, 6.0f);
-		aggregate1->refLocalTransform().rotation = Rotation3D(0.0f, 0.0f, 0.0f);
-		aggregate1->refLocalTransform().scale = 1.0f;
 	}
 
 	//Ground plane setup
@@ -216,57 +200,30 @@ void LoadData()
 
 void ResetPhysics()
 {
-	getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
-	getGlobalParticleSystem()->clearParticleContactValues();//clear existing contacts as they are probably no longer valid
+	//TODO: RigidBody force system
+	//getGlobalParticleSystem()->clearParticleForceRegistrations();//clear existing force registrations so there don't end up being duplicates
+	//getGlobalParticleSystem()->clearParticleContactValues();//clear existing contacts as they are probably no longer valid
 
 	//set initial velocities
 	model1->clearPhysics();
 	model2->clearPhysics();
-	aggregate1->clearPhysics();
 
-	//create and set force registrations
-	if (worldGrav != nullptr) delete worldGrav;
-	worldGrav = new ParticleGravity(Vector3f(0.0f, -gravityForce, 0.0f));
-	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model1);
-	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, model2);
-	getGlobalParticleSystem()->RegisterParticleForce(worldGrav, aggregate1);
+	//set constant acceleration
+	model1->setAccelerationConst(0.0, -gravityForce, 0.0);
+	model2->setAccelerationConst(0.0, -gravityForce, 0.0);
 }
 void SetupPhysics()
 {
 	//add particles to manager
 	model1->Manage();
 	model2->Manage();
-	aggregate1->Manage();
 
+	//TODO: RigidBody contact system
 	//initialize particle contact generation and register particle contacts
-	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
-	getGlobalParticleSystem()->ManageParticleContactGenerator(ground);
+	//getGlobalRigidBodySystem()->InitContactGenerator(maxContacts);
+	//getGlobalRigidBodySystem()->ManageParticleContactGenerator(ground);
 
 	ResetPhysics();
-
-	//*Cable Link
-	modelLink1 = new ParticleCable();
-	modelLink1->linkA = model2;
-	modelLink1->linkB = model1;
-	modelLink1->maxLength = link1Length;
-	modelLink1->restitution = 0;//testing value
-	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink1);
-	//*
-	/*Rod Link
-	modelLink2 = new ParticleRod();
-	modelLink2->linkA = model2;
-	modelLink2->linkB = model1;
-	modelLink2->length = link1Length;
-	getGlobalParticleSystem()->ManageParticleContactGenerator(modelLink2);
-	//*/
-
-	aggregate1->GenerateCubeAggregate();
-
-	if (finalLink != nullptr)
-	{
-		delete finalLink;
-		finalLink = nullptr;
-	}
 }
 void setupUI()
 {
@@ -339,12 +296,12 @@ void ResetSimulation()
 void UpdateUI()
 {
 	//Set debug targets
-	debugObj = aggregate1;
+	debugObj = model2;
 	if (debugTargetIndex < 0)
-		debugTargetIndex = getGlobalParticleSystem()->numParticles() - 1;//wrap back to the last index
-	else if (debugTargetIndex >= (int)getGlobalParticleSystem()->numParticles())
+		debugTargetIndex = getGlobalRigidBodySystem()->numRigidBodies() - 1;//wrap back to the last index
+	else if (debugTargetIndex >= (int)getGlobalRigidBodySystem()->numRigidBodies())
 		debugTargetIndex = 0;//wrap forward to the first index
-	debugPhys = getGlobalParticleSystem()->getParticle(debugTargetIndex);
+	debugPhys = getGlobalRigidBodySystem()->getRigidBody(debugTargetIndex);
 
 	//Handle Debug
 	if (gDebugPhysics || gDebugGraphics)
@@ -393,7 +350,6 @@ void RenderScene(void)
 	//Draw all models
 	model1->Draw(RENDER_DATA);
 	model2->Draw(RENDER_DATA);
-	aggregate1->Draw(RENDER_DATA);
 	ground->Draw(RENDER_DATA);
 
 	UpdateUI();
@@ -522,16 +478,15 @@ void SpecialKeys(int key, int x, int y)
 void create()
 {
 	DataSystem::instantiateGlobal();
-	ParticleSystem::InstantiateGlobal();
+	RigidBodySystem::InstantiateGlobal();
 
 	mainView = new CameraView();
 
 	gcSimulationScale.setFactor(1.0f);
 
 	//Create Objects
-	model1 = new ParticleObject(5.0f, "Bonus Model");
-	model2 = new ParticleObject(10.0f, "Falling Model");
-	aggregate1 = new CubeAggregate(CubeVolume(1.0f, 1.0f, 1.0f), 15.0f, "Aggregate 1");
+	model1 = new RigidObject(5.0f, "Bonus Model");
+	model2 = new RigidObject(10.0f, "Falling Model");
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
 void Update()
@@ -541,24 +496,7 @@ void Update()
 	//physics
 	if (!gPauseSimulation)
 	{
-	gpParticleSystem->PhysicsUpdate(elapsedSeconds);
-	gpParticleSystem->UpdateForces(elapsedSeconds);
-	gpParticleSystem->UpdateContacts(elapsedSeconds);
-	}
-
-	//Check for and create final link
-	if (finalLink == nullptr)
-	{
-		if (finalTrigger >= Vector3f::Distance(
-			model1->getPhysicsPosition(), aggregate1->getPhysicsPosition()))//in range
-		{
-			//create link between model1 and aggregate1
-			finalLink = new ParticleRod();
-			finalLink->linkA = model1;
-			finalLink->linkB = aggregate1;
-			finalLink->length = link1Length;
-			getGlobalParticleSystem()->ManageParticleContactGenerator(finalLink);
-		}
+		gpRigidBodySystem->PhysicsUpdate(elapsedSeconds);
 	}
 
 	//graphics
@@ -581,10 +519,6 @@ void cleanup()
 	delete model2;
 	model2 = nullptr;
 
-	aggregate1->Unmanage();
-	delete aggregate1;
-	aggregate1 = nullptr;
-
 	/*prevent end of program crash due to glut extra update
 	delete modelLink1;
 	modelLink1 = nullptr;
@@ -596,10 +530,7 @@ void cleanup()
 	ground = nullptr;
 	*/
 
-	delete worldGrav;
-	worldGrav = nullptr;
-
-	ParticleSystem::ClearGlobal();
+	RigidBodySystem::ClearGlobal();
 	DataSystem::clearGlobal();
 }
 

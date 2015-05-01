@@ -36,6 +36,7 @@ struct Bounding
 		PLANE,
 		SPHERE,
 		CUBE,
+		BOX = CUBE, 
 
 		NUM_BOUND_TYPES
 	};

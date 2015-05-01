@@ -44,7 +44,11 @@ protected:
 
 public:
 	MatrixR();
-	MatrixR(uint rows, uint columns);
+	MatrixR(uint rows, uint columns)
+		: mRows(rows), mCols(columns)
+	{
+		maMatrixValues = new matType[Count()];
+	};
 	MatrixR(REF(nah::CountedArray<matType>) inArray);
 	virtual ~MatrixR() { clearMatrix();	};
 

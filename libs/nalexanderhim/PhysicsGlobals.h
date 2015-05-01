@@ -21,4 +21,9 @@ extern doubleFactor gcSimulationScale;
 class ParticleSystem;
 extern ParticleSystem* getGlobalParticleSystem();
 extern ParticleSystem* gpParticleSystem;
+
+class RigidBodySystem;
+extern RigidBodySystem* getGlobalRigidBodySystem();
+extern RigidBodySystem* gpRigidBodySystem;
+
 #endif // PhysicsGlobals_h__

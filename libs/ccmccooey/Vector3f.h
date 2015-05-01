@@ -26,6 +26,7 @@
 //pre-engine declarations
 enum Axis;
 typedef float ufloat;
+typedef unsigned int uint;
 
 class Vector3f
 {
@@ -80,6 +81,17 @@ public:
 		//Comparison
 	bool Vector3f::operator==(VectParam other) const;
 	bool Vector3f::operator!=(VectParam other) const;
+		//Accessor
+	float& operator [](uint index)
+	{
+		if (index == 0)
+			return x;
+		else if (index == 1)
+			return y;
+		else if (index == 2)
+			return z;
+		else return z;//TODO: throw a tantrum
+	};//[NAH]
 
 		//Conversion
 	friend std::ostream& Vector3f::operator<<(std::ostream& stream, const Vector3f& vector);

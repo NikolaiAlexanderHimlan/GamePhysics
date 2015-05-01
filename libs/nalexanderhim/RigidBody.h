@@ -9,18 +9,54 @@ I certify that this assignment is entirely my own work.
 Based on Ian Millington's cyclone physics engine.
 */
 #include "PhysicsBase.h"
+#include "ManagedBase.h"
 
 //TODO: CONSIDER: move to .cpp
 #include "IntertiaTensor.h"
 #include "Quaternion.h"
 #include "Matrix44r.h"
+#include "Boundings.h"
 
 class RigidBody :
 	public PhysicsBase
+	, public ManagedBase
 {
+public:
+	//HACK: rather than messing with my fairly complicated Boundings class, making a simplified version which is specific to RigidBody.
+	struct RigidBounds {
+		Vector3f direction;
+		float width, length, height;
+		Bounding::BoundType collider;
+
+		void setAll(float newVal) {
+			width = newVal;
+			length = newVal;
+			height = newVal;
+		};
+
+		static RigidBounds BoundsPlane(REF(Vector3f) normal, float width, float length);
+		static RigidBounds BoundsSphere(float diameter) {
+			RigidBounds newBounds;
+			newBounds.collider = Bounding::SPHERE;
+			newBounds.setAll(diameter);
+			return newBounds;
+		};
+		static RigidBounds BoundsBox(float width, float length, float height) {
+			RigidBounds newBounds;
+			newBounds.collider = Bounding::CUBE;
+			newBounds.width = width;
+			newBounds.length = length;
+			newBounds.height = height;
+			return newBounds;
+		};
+	};
 	//TODO: EulerTransform class, separate transform object using Quaternion, so as to not mess up the existing Transform object.
 protected:
+	virtual ManagerBase* getManager() const;
+
 	std::string mName = "RigidBody";
+
+	RigidBounds mBounds;
 
 	/**
 	* Holds the inverse of the body's inertia tensor.
@@ -46,18 +82,47 @@ protected:
 	// Holds the angular velocity, or rotation, or the rigid body in world space.
 	Vector3f mRotationVelocity;
 
+	//Holds the accumulated torque to be applied at the next integration step.
+	Vector3f mTorqueAccum;
+
 	//TODO: WARNING: Unknown! Should these be variables or calculated properties?
 	//Holds the amount of motion of the body. This is a recently weighted mean that can be used to put a body to sleep.
 	//real motion;
 	
 	//Calculations
-	virtual Matrix44r calcTransformMatrix() const;
+	virtual Matrix44r calcTransformMatrix() const
+	{ return getRigidTransform();	};
+
+	//Actions
+	void clearAccumulators()
+	{
+		__super::clearAccumulators();
+		mTorqueAccum = Vector3f::zero;
+	};
 
 public:
-	RigidBody();
-	virtual ~RigidBody();
+	explicit RigidBody(real initialMass, std::string name = "")
+		: PhysicsBase(initialMass, name)
+	{
+	};
+	virtual ~RigidBody()
+	{
+	};
+
+	//GameLoop
+	inline virtual void PhysicsUpdate(Time elapsedSeconds)
+	{
+		//TODO: override UpdatePosition and UpdateVelocity to take torque and rotational velocity into account.
+		UpdatePosition(elapsedSeconds);
+
+		UpdateVelocity(elapsedSeconds);
+
+		//Update Physics
+		__super::PhysicsUpdate(elapsedSeconds);
+	};
 
 	//Getters
+	REF(RigidBounds) getBounds(void) { return mBounds;	};
 	/**
 	* Fills the given quaternion with the current value of the rigid body's orientation.
 	* @param orientation A pointer to a quaternion to receive the orientation data.
@@ -67,7 +132,7 @@ public:
 	* Gets the orientation of the rigid body.
 	* @return The orientation of the rigid body.
 	*/
-	REF(Quaternion) getOrientation() const;
+	REF(Quaternion) getOrientation() const { return mOrientation;	};
 
 	/**
 	* Copies the current inertia tensor of the rigid body into the given matrix.
@@ -112,6 +177,7 @@ public:
 	real getAngularDamping() const;
 
 	//Setters
+	void setBounds(REF(RigidBounds) newBounds) { mBounds = newBounds;	};
 	void setOrientation(REF(Quaternion) orientation);
 	/**
 	* Sets the inertia tensor for the rigid body.
@@ -168,7 +234,12 @@ public:
 	* @note Transforming a vector by this matrix turns it from the body's local space to world space.
 	* @return The transform matrix for the rigid body.
 	*/
-	Matrix44r getRigidTransform() const;
+	Matrix44r getRigidTransform() const
+	{
+		Matrix44r tranform;
+		getRigidTransform(&tranform);
+		return tranform;
+	};
 	/**
 	* Fills the given matrix data structure with a transformation representing the rigid body's position and orientation.
 	* @note Transforming a vector by this matrix turns it from the body's local space to world space.
@@ -237,6 +308,16 @@ public:
 
 	//Actions
 	// Applies the given change in rotation.
+	virtual bool addForce(REF(Vector3f) forceVector)
+	{
+		//TODO: implement
+		return false;
+	};
+	virtual bool addImpulse(REF(Vector3f) impulseVector)
+	{
+		//TODO: implement
+		return false;
+	};
 	bool addRotationVelocity(REF(Vector3f) deltaRotation);
 	/**
 	* Adds the given torque to the rigid body.
@@ -260,6 +341,12 @@ public:
 	* @param point The location at which to apply the force, in body-coordinates.
 	*/
 	void addForceAtBodyPoint(REF(Vector3f) force, REF(Vector3f) point);
+
+	inline void clearPhysics(bool clearConstAccel = true)
+	{
+		__super::clearPhysics(clearConstAccel);
+		mTorqueAccum = 0.0f;
+	};
 };
 
 #endif // RigidBody_h__
