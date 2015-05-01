@@ -36,7 +36,7 @@ private:
 public:
 	//Getters
 	inline REF(Transform) getLocalTransform() const { return mLocalTransform;	};
-	virtual inline Transform& refLocalTransform() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
+	inline virtual Transform& refLocalTransform() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
 
 	//Setters
 	inline void setLocalTransform(REF(Transform) newTransform) { refLocalTransform() = newTransform;	};//done using getLocalTransformRef for convenience to subclasses

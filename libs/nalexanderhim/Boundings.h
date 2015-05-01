@@ -45,14 +45,14 @@ struct Bounding
 	//Checks with another set of bounds for an overlap
 	//(What it actually does is figure out this bounds's closest point then checks if the other bounds contains that point)
 	//@param  Overlap amount
-	virtual bool CheckOverlap(const Bounding& otherBounds, const Vector3f& boundsLocation, const Vector3f& otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
 	{
 		return otherBounds.Contains(otherLocation, boundsLocation, overlapAmount);
 	};
 
 	//checks if a given point is within bounds
 	//@return Depth from the edge of bounds
-	virtual bool Contains(const Vector3f& boundsLocation, const Vector3f& checkLocation, OUT_PARAM(real) overlapAmount) const
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
 	{
 		OUT_SET(overlapAmount, 0);
 		return boundsLocation == checkLocation;
@@ -76,7 +76,7 @@ struct PlaneBounding
 	bool impassable = false;//is it possible for an object to be on the opposite side of the wall from the normal?
 	bool infinite = false;//should the width/length not matter?
 
-	virtual bool CheckOverlap(const Bounding& otherBounds, const Vector3f& boundsLocation, const Vector3f& otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
 	{
 		//Generate a vector with the correct location along the normal and otherLocation filling in the remaining data
 		//NOTE: the closer to 1 the axis value in normal is, the less relevant otherLocation is
@@ -94,7 +94,7 @@ struct PlaneBounding
 		return otherBounds.Contains(otherLocation, wallPoint, overlapAmount);
 	};
 
-	virtual bool Contains(const Vector3f& boundsLocation, const Vector3f& checkLocation, OUT_PARAM(real) overlapAmount) const
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
 	{
 		bool doesContain = false;
 		real overlap;
@@ -122,7 +122,7 @@ struct SphereBounding
 
 	SphereBounding(REF(SphereVolume) boundingVolume) : SphereVolume(boundingVolume) {};
 
-	virtual bool CheckOverlap(const Bounding& otherBounds, const Vector3f& boundsLocation, const Vector3f& otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
 	{
 		//1st, calculate a vector to otherLocation with radius as the length.
 		Vector3f vectTo = Vector3f::Distancepoint(boundsLocation, otherLocation, radius);
@@ -134,15 +134,15 @@ struct SphereBounding
 		//3rd, check if the other bounds contains the location indicated by the calculated vector
 		//return otherBounds.Contains(otherLocation, vectTo);//cannot call directly due to inheritance funnyness, calling Bounding CheckOverlap
 		return otherBounds.Contains(otherLocation, vectTo, overlapAmount);
-	}
+	};
 
-	virtual bool Contains(const Vector3f& boundsLocation, const Vector3f& checkLocation, OUT_PARAM(real) overlapAmount) const
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
 	{
 		//check if distance to checkLocation is less than radius, return this as the result
 		real overlap = std::powf(radius, 2.0f) - Vector3f::DistanceSquared(boundsLocation, checkLocation);
 		OUT_SET(overlapAmount, overlap)
 		return overlap > 0;
-	}
+	};
 };
 
 struct CubeBounding

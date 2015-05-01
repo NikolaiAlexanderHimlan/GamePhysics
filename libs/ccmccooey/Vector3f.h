@@ -108,12 +108,11 @@ public:
 	{ return pow(x, 2.0f) + pow(y, 2.0f) + pow(z, 2.0f);	};//[NAH]
 
 	//returns a vector of length 1 in the direction of this vector
-	inline Vector3f getNormalized() const//[NAH]
-	{
+	inline Vector3f getNormalized() const {
 		Vector3f toNormalize = *this;
 		toNormalize.Normalize();
 		return toNormalize;
-	};
+	};//[NAH]
 
 	//Modifiers
 	inline void setLength(float length)//Normalize then multiply by the new length
@@ -140,7 +139,7 @@ public:
 			isEqual &= (z == rhs.z);
 
 		return isEqual;
-	}
+	}//[NAH]//compares the values of the vectors, ignoring values of 0
 	inline bool Greater_Any(VectParam rhs) const
 	{ return x > rhs.x || y > rhs.y || z > rhs.z;	};//[NAH]
 	inline bool Greater_All(VectParam rhs) const
@@ -167,7 +166,7 @@ public:
 		lhs.z += rhs.z;
 		return lhs;
 	};//[NAH]
-	inline static Vector3f Subtract(VectParam lhs, VectParam rhs) { return Add(lhs, -rhs);	};
+	inline static Vector3f Subtract(VectParam lhs, VectParam rhs) { return Add(lhs, -rhs);	};//[NAH]
 	/// <summary> Subtracts the right hand value from the vector if the value is not 0. </summary>
 	/// <param name="keepLeftOnZero">
 	/// If true, will use the values of the left hand vector if either value is 0. 

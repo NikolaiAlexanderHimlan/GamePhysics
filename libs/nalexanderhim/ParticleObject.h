@@ -29,7 +29,7 @@ protected:
 		setWorldPosition(FROM_SIMULATION_SCALE(mPhysicsPosition));
 		doRefreshPhysPosition = false;//would be redundant at this point
 	};
-	virtual inline void RefreshPhysicsPosition()//update the physics position based on the object position
+	inline virtual void RefreshPhysicsPosition()//update the physics position based on the object position
 	{
 		mPhysicsPosition = TO_SIMULATION_SCALE(getWorldTransform().position);
 		doRefreshPhysPosition = false;//would be redundant at this point

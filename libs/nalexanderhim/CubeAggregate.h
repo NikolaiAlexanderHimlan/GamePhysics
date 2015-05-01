@@ -18,7 +18,7 @@ class CubeAggregate
 
 protected:
 	void RefreshAggregatePositions();//moves all particles to match the graphical representation, used during initialization and graphics movement
-	virtual inline void RefreshPhysicsPosition()
+	inline virtual void RefreshPhysicsPosition()
 	{
 		__super::RefreshPhysicsPosition();
 		RefreshAggregatePositions();
@@ -34,7 +34,7 @@ public:
 		//GenerateCubeAggregate();
 	};
 
-	virtual inline REF(CubeVolume) getAggregateVolume() const { return mAggregateVolume;	};
+	inline virtual REF(CubeVolume) getAggregateVolume() const { return mAggregateVolume;	};
 
 	void GenerateCubeAggregate();
 };

@@ -21,7 +21,6 @@ MatrixR MatrixR::operator*(REF(MatrixR) rhs) const
 
 	MatrixR mult = MatrixR(numRows(), rhs.numCols());
 	VectorNf curRow;
-
 	for (uint i = 0; i < numRows(); i++)
 	{
 		curRow = getRowVector(i);
