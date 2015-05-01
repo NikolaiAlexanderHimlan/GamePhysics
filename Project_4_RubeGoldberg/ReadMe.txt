@@ -4,7 +4,7 @@ Purpose: Demonstrate implementation of RigidBody physics system, including Veloc
 
 My engine code is stored under [nalexanderhim] in the libs folder, separate from the project directory.
 
-GLUI: I have included the GLUI libs for both debug and release (labeled), visual studio didn't like having a different name for the lib file.
+GLUI: I have included the GLUI libs for both debug and release (labeled).
 
 NOTE: I appologize for being unable to refactor main in order to remove all the global data.
 

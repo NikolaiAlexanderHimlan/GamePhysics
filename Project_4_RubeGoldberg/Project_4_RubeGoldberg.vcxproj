@@ -76,7 +76,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\libs\nalexanderhim\$(Configuration);..\libs\GLTools\libs;..\libs\GLUI\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>nalexanderhim_tools3D.lib;freeglut_static.lib;glui32.lib;gltools.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>nalexanderhim_tools3D.lib;freeglut_static.lib;glui32_r.lib;gltools.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
