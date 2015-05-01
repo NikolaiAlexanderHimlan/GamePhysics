@@ -151,6 +151,9 @@
     <Filter Include="Header Files\Physics\Particles\MassAggregates">
       <UniqueIdentifier>{bf615ef9-c0bb-4a95-9ed9-1a28930991fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{ea7f80c7-5c1a-4225-a9f7-81a8b01dcaea}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\Physics\Rigid Body\Forces">
       <UniqueIdentifier>{c936ec24-1880-4366-adb0-f71d4d25e915}</UniqueIdentifier>
     </Filter>
@@ -493,7 +496,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="CodeStandard.txt" />
-    <Text Include="TODO.txt" />
+    <Text Include="TODO.txt">
+      <Filter>Documentation</Filter>
+    </Text>
+    <Text Include="CodeStandard.txt">
+      <Filter>Documentation</Filter>
+    </Text>
   </ItemGroup>
 </Project>
