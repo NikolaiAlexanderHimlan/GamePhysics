@@ -14,9 +14,8 @@ I certify that this assignment is entirely my own work.
 #include "PhysicsDefines.h"
 #include "ccmccooeyWrapper.h"
 #include "FloatFactor.h"
+#include "Boundings.h"
 #include "CodingDefines.h"
-
-class Bounding;
 
 //Physics Handler
 class Particle

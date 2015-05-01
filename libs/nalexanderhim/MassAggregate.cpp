@@ -74,13 +74,13 @@ bool MassAggregate::Draw(CameraView* renderView, GLShaderManager& shaderManager,
 	if (mRenderAggregate)
 	{
 		bool combineBool = true;
-		PhysicsObject* testParticle = nullptr;
+		ParticleObject* testParticle = nullptr;
 		for (uint i = 0; i < getNumLinks(); i++)
 		{
 			if (getLink(i)->linkA == this)
-				testParticle = dynamic_cast<PhysicsObject*>(getLink(i)->linkB);
+				testParticle = dynamic_cast<ParticleObject*>(getLink(i)->linkB);
 			else if (getLink(i)->linkB == this)
-				testParticle = dynamic_cast<PhysicsObject*>(getLink(i)->linkA);
+				testParticle = dynamic_cast<ParticleObject*>(getLink(i)->linkA);
 
 			//TODO: instead of requiring PhysicsObject, store a Model/Object3D and draw it at the position of each Particle
 			if (testParticle != nullptr)

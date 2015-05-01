@@ -17,7 +17,7 @@
 #include <CountedArray.h>
 #include <DataSystem.h>
 #include <StringTools.h>
-#include <PhysicsObject.h>
+#include <ParticleObject.h>
 #include <GroundArea.h>
 #include <ParticleGravity.h>
 #include <ParticleCable.h>
@@ -92,8 +92,8 @@ float viewDefaultDistance = 55.0f;//starting distance from any planet
 
 //physics objects
 std::vector<Particle*> gameObjects;
-PhysicsObject* model1;
-PhysicsObject* model2;
+ParticleObject* model1;
+ParticleObject* model2;
 CubeAggregate* aggregate1;
 
 //forces
@@ -529,8 +529,8 @@ void create()
 	gcSimulationScale.setFactor(1.0f);
 
 	//Create Objects
-	model1 = new PhysicsObject(5.0f, "Bonus Model");
-	model2 = new PhysicsObject(10.0f, "Falling Model");
+	model1 = new ParticleObject(5.0f, "Bonus Model");
+	model2 = new ParticleObject(10.0f, "Falling Model");
 	aggregate1 = new CubeAggregate(CubeVolume(1.0f, 1.0f, 1.0f), 15.0f, "Aggregate 1");
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
 }
@@ -541,7 +541,7 @@ void Update()
 	//physics
 	if (!gPauseSimulation)
 	{
-	gpParticleSystem->UpdatePhysics(elapsedSeconds);
+	gpParticleSystem->PhysicsUpdate(elapsedSeconds);
 	gpParticleSystem->UpdateForces(elapsedSeconds);
 	gpParticleSystem->UpdateContacts(elapsedSeconds);
 	}

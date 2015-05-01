@@ -117,6 +117,7 @@
     <ClCompile Include="ParticleRod.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleWall.cpp" />
+    <ClCompile Include="ParticleObject.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="Rotation3D.cpp" />
     <ClCompile Include="RotationMath.cpp" />
@@ -179,7 +180,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PhysicsDefines.h" />
-    <ClInclude Include="PhysicsObject.h" />
+    <ClInclude Include="ParticleObject.h" />
     <ClInclude Include="PrecisionMath.h" />
     <ClInclude Include="Primitives.h" />
     <ClInclude Include="PrismAggregate.h" />

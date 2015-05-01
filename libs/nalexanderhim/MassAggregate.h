@@ -7,7 +7,7 @@ Assignment: pa 3
 Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
-#include "PhysicsObject.h"
+#include "ParticleObject.h"
 #include <vector>
 #include "CodingDefines.h"
 #include "CountedArray.h"
@@ -18,7 +18,7 @@ class ParticleLink;
 
 //TODO: //CONSIDER: generate model batch by using the links, mesh will deform and shape to the particles
 class MassAggregate
-	: public PhysicsObject
+	: public ParticleObject
 {
 protected:
 	bool mRenderAggregate = false;//should the aggregate particles be rendered or the model
@@ -36,7 +36,7 @@ protected:
 
 public:
 	explicit MassAggregate(real mass, std::string name = "")
-		: PhysicsObject(mass, name)
+		: ParticleObject(mass, name)
 	{
 	};
 

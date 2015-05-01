@@ -16,7 +16,7 @@ I certify that this assignment is entirely my own work.
 //HACK: WARNING: mpBounds does not account for scale!
 //TODO: CONSIDER: professor proposed that PhysicsObject should contain instead of subclass Particle/Object3D.  This would allow for more controlled update/sync of position between the 2.
 //Combines Particle Physics with Graphical representation
-class PhysicsObject :
+class ParticleObject :
 	public Particle, public Object3D
 {
 private:
@@ -36,12 +36,12 @@ protected:
 	};
 
 public:
-	explicit PhysicsObject(real initialMass, std::string name = "")
+	explicit ParticleObject(real initialMass, std::string name = "")
 		: Particle(initialMass, name), Object3D()
 	{
 		doRefreshPhysPosition = true;//refresh at least once to sync them initially
 	};
-	virtual ~PhysicsObject(){};
+	virtual ~ParticleObject(){};
 
 	virtual void PhysicsUpdate(Time elapsedSeconds)
 	{
@@ -66,25 +66,9 @@ public:
 
 	//Calculations
 	//TODO: WARNING: All the following need to convert their values from graphics to simulation
-	inline void setBatchPlane(float width, float length, Axis facing = Y, bool inv = false /*Face along the negative edge of the axis*/)
-	{
-		setBounds(new PlaneBounding(width, length, Vector3f::AxisNormal(facing) *(inv ? -1.0f : 1.0f)));
-		Object3D::setBatchPlane(width, length, facing, inv);
-	};
-	inline void setBatchTriangle(float distUp, float distLeft, float distRight /*TODO: optional color parameters*/)//distance of each corner from the center
-	{
-		setBounds(new PlaneBounding(distLeft + distRight, distUp, FORWARD));
-		Object3D::setBatchTriangle(distUp, distLeft, distRight);
-	};
-	inline void setBatchCube(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/)
-	{
-		setBounds(new CubeBounding(CubeVolume(xDimension, zDimension, yDimension)));
-		Object3D::setBatchCube(xDimension, yDimension, zDimension);
-	};
-	inline void setBatchSphere(float radius, int numSegments = 8 /*TODO: optional color parameters*/)
-	{
-		setBounds(new SphereBounding(radius));
-		Object3D::setBatchSphere(radius, numSegments);
-	};
+	void setBatchPlane(float width, float length, Axis facing = Y, bool inv = false /*Face along the negative edge of the axis*/);
+	void setBatchTriangle(float distUp, float distLeft, float distRight /*TODO: optional color parameters*/);//distance of each corner from the center
+	void setBatchCube(float xDimension, float yDimension, float zDimension /*TODO: optional color parameters*/);
+	void setBatchSphere(float radius, int numSegments = 8 /*TODO: optional color parameters*/);
 };
 #endif

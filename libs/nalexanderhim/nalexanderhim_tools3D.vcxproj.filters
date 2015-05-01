@@ -240,6 +240,9 @@
     <ClCompile Include="Quaternion.cpp">
       <Filter>Source Files\Space3D</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleObject.cpp">
+      <Filter>Source Files\Common Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -335,7 +338,7 @@
     <ClInclude Include="PhysicsGlobals.h">
       <Filter>Header Files\Definitions</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsObject.h">
+    <ClInclude Include="ParticleObject.h">
       <Filter>Header Files\Common Objects</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
