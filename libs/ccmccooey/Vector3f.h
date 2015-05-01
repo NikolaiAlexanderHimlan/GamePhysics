@@ -64,9 +64,9 @@ public:
 	inline const Vector3f operator - () const { return Inverse();	};//[NAH]
 	
 		//Assignment
-	Vector3f& operator = ( const Vector3f& rhs );
 	//Should do this manually// Vector3f& operator = ( const float& rhs ) { x = rhs;	y = rhs;	z = rhs;	return *this;	};//[NAH]
 	Vector3f& operator *= ( float mult );
+	//Vector3f& operator = ( VectParam rhs );
 	inline Vector3f& operator += (VectParam rhs) { return *this = *this + rhs;	};//[NAH]
 	inline Vector3f& operator -= (VectParam rhs) { return *this = *this - rhs;	};//[NAH]
 	//Vector3f& operator *= ( VectParam rhs );//Require explicit call to either Multiply or DotProduct

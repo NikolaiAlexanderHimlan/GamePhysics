@@ -75,6 +75,7 @@ void Vector3f::Set(float X, float Y, float Z)
 }
 
 //assignment operator
+/*
 Vector3f& Vector3f::operator=( const Vector3f& rhs )
 {
 	x = rhs.x;
@@ -82,6 +83,7 @@ Vector3f& Vector3f::operator=( const Vector3f& rhs )
 	z = rhs.z;
 	return *this;
 }
+//*/
 
 //relative operators
 /*disabled multiplication operator
