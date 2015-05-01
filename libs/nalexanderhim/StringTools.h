@@ -39,8 +39,8 @@ namespace nah
 			string skipString;
 			skipString.push_back(skipChar);
 			return getSkipIndex(source, skipString, numSkips, startIndex);
-		}
-		static int getSkipIndex(const string& source, const string& skipString, int numSkips, int startIndex = 0);
+		};
+		static int getSkipIndex(REF(string) source, REF(string) skipString, int numSkips, int startIndex = 0);
 	public:
 		//StringTools(void);
 		//~StringTools(void);
@@ -65,49 +65,36 @@ namespace nah
 		{
 			for (int i = 0; i < (int)strToConvert.size(); i++){
 				strToConvert[i] = toupper(strToConvert[i]);
-			}
+			};
 			return strToConvert;
-		}
+		};
 		inline static string StringToLower(string strToConvert)
 		{
 			for (int i = 0; i < (int)strToConvert.size(); i++){
 				strToConvert[i] = tolower(strToConvert[i]);
-			}
+			};
 			return strToConvert;
-		}
+		};
 
-		inline static string replace(const string& forString, const string& replaceThis, const string& withThis)
+		inline static string replace(REF(string) forString, REF(string) replaceThis, REF(string) withThis)
 		{
 			string extraString = forString;
 			extraString.replace(forString.find(replaceThis), replaceThis.length(), withThis);
 			return extraString;
-		}
+		};
 #pragma region Substrings and Trimming
 		//parse a section of a string
 		//a negative number for endChar denotes getting the entire rest of the string after the start
 		//if endChar is not found, the entire rest of the line is returned
-		static string substring( const string& source, int startIndex, int endIndex = -1, bool includeStartIndex = true, bool includeEndIndex = true );
+		static string substring( REF(string) source, int startIndex, int endIndex = -1, bool includeStartIndex = true, bool includeEndIndex = true );
 #pragma region Substring - char Index
 		//TODO: figure out if the char Index substring functions should be changed to refer to the string Index substring functions to reduce duplicate funcitonality?
-		inline static string substring( const string& source, char startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
-		{ return substring(source, (int)source.find_first_of(startChar), endChar, includeStartChar, includeEndChar);	}
-		inline static string substring( const string& source, int startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
-		{ return substring(source, startChar, (int)source.find_first_of(endChar, startChar+1), includeStartChar, includeEndChar);	}
-		inline static string substring( const string& source, char startChar, int endChar = -1, bool includeStartChar = true, bool includeEndChar = true )
-		{ return substring(source, (int)source.find_first_of(startChar), endChar, includeStartChar, includeEndChar);	}
-		//************************************
-		// Method:    substring
-		// FullName:  nah::StringTools::substring
-		// Access:    public static 
-		// Returns:   std::string
-		// Parameter: const string(ref) source
-		// Parameter: char startChar
-		// Parameter: char endChar
-		// Parameter: unsigned int skipStartChars
-		// Parameter: unsigned int skipEndChars
-		// Parameter: bool includeStartChar
-		// Parameter: bool includeEndChar
-		//************************************
+		inline static string substring( REF(string) source, char startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
+		{ return substring(source, (int)source.find_first_of(startChar), endChar, includeStartChar, includeEndChar);	};
+		inline static string substring( REF(string) source, int startChar, char endChar, bool includeStartChar = true, bool includeEndChar = true )
+		{ return substring(source, startChar, (int)source.find_first_of(endChar, startChar+1), includeStartChar, includeEndChar);	};
+		inline static string substring( REF(string) source, char startChar, int endChar = -1, bool includeStartChar = true, bool includeEndChar = true )
+		{ return substring(source, (int)source.find_first_of(startChar), endChar, includeStartChar, includeEndChar);	};
 		/// <summary> Returns part of a string </summary>
 		/// <remarks> Making skip characters a separate function will reduce inline size by inlining the smaller function when able. </remarks>
 		/// <param name="source"> The string to create a substring from. </param>
@@ -123,24 +110,12 @@ namespace nah
 		/// <param name="includeStartChar"> should the starting character be included in the returned string? </param>
 		/// <param name="includeEndChar"> should the ending character be included in the returned string? </param>
 		/// <returns> A string containing the specified section of source. </returns>
-		inline static string substring( const string& source, char startChar, char endChar, unsigned int skipStartChars, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( REF(string) source, char startChar, char endChar, unsigned int skipStartChars, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
 		{
 			int startIndex = getSkipIndex(source, startChar, skipStartChars);
 			int endIndex = getSkipIndex(source, endChar, skipEndChars, startIndex);
 			return substring(source, startIndex, endIndex, includeStartChar, includeEndChar);
-		}
-		//************************************
-		// Method:    substring
-		// FullName:  nah::StringTools::substring
-		// Access:    public static 
-		// Returns:   std::string
-		// Parameter: const string(ref) source
-		// Parameter: char startChar
-		// Parameter: unsigned int skipStartChars
-		// Parameter: int endChar
-		// Parameter: bool includeStartChar
-		// Parameter: bool includeEndChar
-		//************************************
+		};
 		/// <summary> Returns part of a string </summary>
 		/// <remarks> while this function could be done with optional parameters, this way will help the inline be smaller. </remarks>
 		/// <param name="source"> The string to create a substring from. </param>
@@ -154,38 +129,25 @@ namespace nah
 		/// </param>
 		/// <param name="includeStartChar"> should the starting character be included in the returned string? </param>
 		/// <param name="includeEndChar"> should the ending character be included in the returned string? </param>
-		inline static string substring( const string& source, char startChar, int endIndex, unsigned int skipStartChars, bool includeStartChar = true, bool includeEndChar = true )
+		inline static string substring( REF(string) source, char startChar, int endIndex, unsigned int skipStartChars, bool includeStartChar = true, bool includeEndChar = true )
 		{
 			int startIndex = getSkipIndex(source, startChar, skipStartChars);
 			return substring(source, startIndex, endIndex, includeStartChar, includeEndChar);
-		}
-		inline static string substring( const string& source, int startIndex, char endChar, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
+		};
+		inline static string substring( REF(string) source, int startIndex, char endChar, unsigned int skipEndChars, bool includeStartChar = true, bool includeEndChar = true )
 		{
 			int endIndex = getSkipIndex(source, endChar, skipEndChars, startIndex);
 			string tempString = substring(source, startIndex, endIndex, includeStartChar, includeEndChar);
 			return tempString;
-		}
+		};
 #pragma endregion
 #pragma region Substring - string Index
-		inline static string substring( const string& source, const string& startString, const string& endString, bool includeStartString = true, bool includeEndString = true )
-		{ return substring(source, (int)(source.find(startString)+startString.length())-1, endString, includeStartString, includeEndString);	}
-		inline static string substring( const string& source, int startString, const string& endString, bool includeStartString = true, bool includeEndString = true )
-		{ return substring(source, startString, (int)source.find(endString, startString+1), includeStartString, includeEndString);	}
-		inline static string substring( const string& source, const string& startString, int endString = -1, bool includeStartString = true, bool includeEndString = true )
-		{ return substring(source, (int)(source.find(startString)+startString.length())-1, endString, includeStartString, includeEndString);	}
-		//************************************
-		// Method:    substring
-		// FullName:  nah::StringTools::substring
-		// Access:    public static 
-		// Returns:   std::string
-		// Parameter: const string(ref) source
-		// Parameter: const string(ref) startString
-		// Parameter: const string(ref) endString
-		// Parameter: unsigned int skipStartStrings
-		// Parameter: unsigned int skipEndStrings
-		// Parameter: bool includeStartString
-		// Parameter: bool includeEndString
-		//************************************
+		inline static string substring( REF(string) source, REF(string) startString, REF(string) endString, bool includeStartString = true, bool includeEndString = true )
+		{ return substring(source, (int)(source.find(startString)+startString.length())-1, endString, includeStartString, includeEndString);	};
+		inline static string substring( REF(string) source, int startString, REF(string) endString, bool includeStartString = true, bool includeEndString = true )
+		{ return substring(source, startString, (int)source.find(endString, startString+1), includeStartString, includeEndString);	};
+		inline static string substring( REF(string) source, REF(string) startString, int endString = -1, bool includeStartString = true, bool includeEndString = true )
+		{ return substring(source, (int)(source.find(startString)+startString.length())-1, endString, includeStartString, includeEndString);	};
 		/// <summary> Returns part of a string </summary>
 		/// <remarks> Making skip strings a separate function will reduce inline size by inlining the smaller function when able. </remarks>
 		/// <param name="source"> The string to create a substring from. </param>
@@ -201,24 +163,12 @@ namespace nah
 		/// <param name="includeStartString"> should the starting string be included in the returned string? </param>
 		/// <param name="includeEndString"> should the ending string be included in the returned string? </param>
 		/// <returns> A string containing the specified section of source. </returns>
-		inline static string substring( const string& source, const string& startString, const string& endString, unsigned int skipStartStrings, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( REF(string) source, REF(string) startString, REF(string) endString, unsigned int skipStartStrings, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
 		{
 			int startIndex = getSkipIndex(source, startString, skipStartStrings);
 			int endIndex = getSkipIndex(source, endString, skipEndStrings, startIndex);
 			return substring(source, startIndex, endIndex, includeStartString, includeEndString);
-		}
-		//************************************
-		// Method:    substring
-		// FullName:  nah::StringTools::substring
-		// Access:    public static 
-		// Returns:   std::string
-		// Parameter: const string(ref) source
-		// Parameter: const string(ref) startString
-		// Parameter: int endIndex
-		// Parameter: unsigned int skipStartStrings
-		// Parameter: bool includeStartString
-		// Parameter: bool includeEndString
-		//************************************
+		};
 		/// <summary> Returns part of a string </summary>
 		/// <remarks> while this function could be done with optional parameters, this way will help the inline be smaller. </remarks>
 		/// <param name="source"> The string to create a substring from. </param>
@@ -232,16 +182,16 @@ namespace nah
 		/// </param>
 		/// <param name="includeStartString"> should the starting string be included in the returned string? </param>
 		/// <param name="includeEndString"> should the ending string be included in the returned string? </param>
-		inline static string substring( const string& source, const string& startString, int endIndex, unsigned int skipStartStrings, bool includeStartString = true, bool includeEndString = true )
+		inline static string substring( REF(string) source, REF(string) startString, int endIndex, unsigned int skipStartStrings, bool includeStartString = true, bool includeEndString = true )
 		{
 			int startIndex = getSkipIndex(source, startString, skipStartStrings);
 			return substring(source, startIndex, endIndex, includeStartString, includeEndString);
-		}
-		inline static string substring( const string& source, int startIndex, const string& endString, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
+		};
+		inline static string substring( REF(string) source, int startIndex, REF(string) endString, unsigned int skipEndStrings, bool includeStartString = true, bool includeEndString = true )
 		{
 			int endIndex = getSkipIndex(source, endString, skipEndStrings, startIndex);
 			return substring(source, startIndex, endIndex, includeStartString, includeEndString);
-		}
+		};
 #pragma endregion
 
 		/// <summary> Splits a string into 2 parts and assigns them to the outputs. </summary>
@@ -254,12 +204,12 @@ namespace nah
 		/// <para> 1(true) = split character is not included in either output. </para>
 		/// <para> -1 = split character is put on the left output. </para>
 		/// </param>
-		inline static void splitString(string* outLeft, string* outRight, const string& source, int splitIndex, int dropSplit = true)
+		inline static void splitString(string* outLeft, string* outRight, REF(string) source, int splitIndex, int dropSplit = true)
 		{
 			//TODO: more efficient method than substring?
 			*outLeft = substring(source, 0, (int)splitIndex, true, dropSplit <= -1);//include the split character in outLeft if dropSplit is -1
 			*outRight = substring(source, (int)splitIndex, (int)source.length(), (dropSplit <= -1) ? false : !dropSplit, true);//don't include the split character if dropSplit is -1 or 1
-		}
+		};
 		/// <summary> Splits a string into 2 parts and assigns them to the outputs. </summary>
 		/// <param name="outLeft"> Output of the left side of the split. </param>
 		/// <param name="outRight"> Output of the right side of the split. </param>
@@ -270,7 +220,7 @@ namespace nah
 		/// <para> 1(true) = split character is not included in either output. </para>
 		/// <para> -1 = split character is put on the left output. </para>
 		/// </param>
-		inline static void splitString(string* outLeft, string* outRight, const string& source, char splitAt, int dropSplit = true)
+		inline static void splitString(string* outLeft, string* outRight, REF(string) source, char splitAt, int dropSplit = true)
 		{
 			int splitIndex = (int)source.find_first_of(splitAt);
 			if (splitIndex > 0)//valid split
@@ -281,35 +231,16 @@ namespace nah
 				*outRight = source;
 		};
 
-		//************************************
-		// Method:    trim
-		// FullName:  nah::StringTools::trim
-		// Access:    public static 
-		// Returns:   std::string
-		// Qualifier:
-		// Parameter: const string(ref) source
-		// Parameter: int numChars
-		// Parameter: bool trimEnd
-		//************************************
 		/// <summary> Trims the specified number of characters off the given string. </summary>
 		/// <param name="source"></param>
 		/// <param name="numChars"></param>
 		/// <param name="trimEnd">should the end of the string or the start of the string be trimmed?</param>
 		/// <returns></returns>
-		inline static string trim(const string& source, int numChars, bool trimEnd = true)
+		inline static string trim(REF(string) source, int numChars, bool trimEnd = true)
 		{
 			if(trimEnd) return substring(source, -1, int(source.length() - numChars), false, true);
 			else 		return substring(source, numChars);
-		}
-		//************************************
-		// Method:    trimWhitespace
-		// FullName:  nah::StringTools::trimWhitespace
-		// Access:    public static 
-		// Returns:   std::string
-		// Parameter: string source
-		// Parameter: bool trimStart
-		// Parameter: bool trimEnd
-		//************************************
+		};
 		/// <summary> Removes whitespace from the start and end of a string. </summary>
 		/// <remarks> Currently only trims spaces. </remarks>
 		//TODO: rename source to trimThis
@@ -318,7 +249,7 @@ namespace nah
 		/// <param name="trimStart"> Should the start of the string have whitespace removed? </param>
 		/// <param name="trimEnd"> Should the end of the string have whitespace removed? </param>
 		/// <returns></returns>
-		static string trimWhitespace( const string& source, bool trimStart = true, bool trimEnd = true)
+		static string trimWhitespace( REF(string) source, bool trimStart = true, bool trimEnd = true)
 		{
 			if(!trimStart && !trimEnd)//stop here if there isn't any trimming to do
 				return source;
@@ -339,14 +270,7 @@ namespace nah
 					trimEnd ?(int)source.find_last_not_of(' '):-1, true,true);
 			*/
 			return trimmed;
-		}
-		//************************************
-		// Method:    compressWhitespace
-		// FullName:  nah::StringTools::compressWhitespace
-		// Access:    public static 
-		// Returns:   std::string
-		// Parameter: const string(ref) source
-		//************************************
+		};
 		/// <summary>
 		/// Compress repeated whitespace characters (ex. spaces) into 1
 		/// <para> NOTE: Currently only compresses spaces. </para>
@@ -364,10 +288,10 @@ namespace nah
 					//HACK: this is probably very inefficient!
 					source.erase(whitePos+1,1);
 					whitePos = source.find("  ");
-				}
-			}
+				};
+			};
 			return source;
-		}
+		};
 		//TODO: documentation
 		static CountedArray<std::string> parseNewlines(const std::string& parseThis)
 		{
@@ -381,11 +305,11 @@ namespace nah
 				parsedLines[i] = substring(parseThis, 0,nl, i, true, false);
 			parsedLines[i] = substring(parseThis,nl,-1,i+1,false,true);
 			return parsedLines;
-		}
+		};
 #pragma endregion
 
 #pragma region Datatype parsing
-		static double parseSciNotation(const string& source);
+		static double parseSciNotation(REF(string) source);
 
 		//Custom Types
 		//TODO: move to relevant classes, better for them to depend on a system class (std::string) than for my StringTools to depend on my custom datatypes
@@ -396,16 +320,6 @@ namespace nah
 		///<returns> The number of Rectangles in the array. </returns>
 		static int parseRectangleArray( string source, Rectangle* arrayOut, char valueSeparator = ',', char rectSeparator = ' ' );//TODO: multi-char separator (ex. ", ")
 		static vector<Rectangle> parseRectangleVector(string source, char valueSeparator = ',', char rectSeparator = ' ' );//TODO: multi-char separator (ex. ", ")
-		//************************************
-		// Method:    parseIntCoordArray
-		// FullName:  nah::StringTools::parseIntCoordArray
-		// Access:    public static 
-		// Returns:   int
-		// Parameter: string source
-		// Parameter: IntCoord* arrayOut
-		// Parameter: char valueSeparator
-		// Parameter: char coordSeparator
-		//************************************
 		/// <summary> Parses a string into an array of IntCoords 
 		/// <para> NOT IMPLEMENTED! </para></summary>
 		/// <param name="source">The string to parse</param>
@@ -415,15 +329,6 @@ namespace nah
 		/// <param name="coordSeparator">what character is between each IntCoord</param>
 		/// <returns>the number of elements in the output array. Needed because c++ does not support array sizes. </returns>
 		static int parseIntCoordArray( string source, IntCoord* arrayOut, char valueSeparator = ',', char coordSeparator = ' ');//TODO: multi-char separator (ex. ", ")
-		//************************************
-		// Method:    parseIntCoordVector
-		// FullName:  nah::StringTools::parseIntCoordList
-		// Access:    public static 
-		// Returns:   std::vector(nah::IntCoord)
-		// Parameter: string source
-		// Parameter: char valueSeparator
-		// Parameter: char coordSeparator
-		//************************************
 		/// <summary> Parses an std::string into an std::vector of IntCoords. </summary>
 		/// <param name="source">The string to parse</param>
 		/// <param name="valueSeparator">what character is between each IntCoord value</param>
@@ -431,15 +336,6 @@ namespace nah
 		/// <returns> an std::vector of IntCoords parsed from the string </returns>
 		static vector<IntCoord> parseIntCoordVector( string source, char valueSeparator = ',', char coordSeparator = ' ');//TODO: multi-char separator (ex. ", ")
 		static forward_list<IntCoord> parseIntCoordList( string source, char valueSeparator = ',', char coordSeparator = ' ');//TODO: multi-char separator (ex. ", ")
-		//************************************
-		// Method:    parseGridCoordVector
-		// FullName:  nah::StringTools::parseGridCoordVector
-		// Access:    public static 
-		// Returns:   std::vector(nah::GridCoord)
-		// Parameter: string source
-		// Parameter: char valueSeparator
-		// Parameter: char coordSeparator
-		//************************************
 		/// <summary> Parses an std::string into an std::vector of GridCoords. </summary>
 		/// <param name="source"> The string to parse. </param>
 		/// <param name="valueSeparator"> What character is between each GridCoord value. </param>

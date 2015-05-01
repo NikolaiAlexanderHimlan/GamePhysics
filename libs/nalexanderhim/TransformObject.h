@@ -30,15 +30,15 @@ private:
 			lookAt(mpTargetTransform->getWorldTransform().position);
 		if (hasParent())
 		{}//parent is only relevant to world transform
-	}
+	};
 
 public:
 	//Getters
-	inline const Transform& getLocalTransform() const { return mLocalTransform;	};
+	inline REF(Transform) getLocalTransform() const { return mLocalTransform;	};
 	virtual inline Transform& refLocalTransform() { return mLocalTransform;	};//returns a modifiable reference, done as a function so modifications can be tracked
 
 	//Setters
-	inline void setLocalTransform(const Transform& newTransform) { refLocalTransform() = newTransform;	};//done using getLocalTransformRef for convenience to subclasses
+	inline void setLocalTransform(REF(Transform) newTransform) { refLocalTransform() = newTransform;	};//done using getLocalTransformRef for convenience to subclasses
 
 	//Properties
 	inline bool hasLock() const
@@ -47,7 +47,7 @@ public:
 			|| hasTarget()
 			|| hasParent()
 			;
-	}
+	};
 	inline bool hasTarget() const { return mpTargetTransform != nullptr;	};
 	inline bool hasParent() const { return mpParentTransform != nullptr;	};
 	const Transform getWorldTransform() const//calculates the world transform based on the local transform and parent world transform
@@ -73,47 +73,47 @@ public:
 	};
 
 	//Modifiers
-	void setWorldTransform(const Transform& newWorldTransform)
+	void setWorldTransform(REF(Transform) newWorldTransform)
 	{
 		setWorldPosition(newWorldTransform.position);
 		setWorldRotation(newWorldTransform.rotation);
 		setWorldScale(newWorldTransform.scale);
-	}
-	void setWorldPosition(const Vector3f& newWorldPosition)
+	};
+	void setWorldPosition(REF(Vector3f) newWorldPosition)
 	{
 		if (mpParentTransform == nullptr)
 		{
 			refLocalTransform().position = newWorldPosition;
 			return;
-		}
+		};
 		//Calculate new local position value
 		//TODO: parent rotation needs to affect position
 		refLocalTransform().position = (getLocalTransform().position / mpParentTransform->getWorldTransform().scale) - mpParentTransform->getWorldTransform().position;//HACK: simplified calculation
-	}
-	void setWorldRotation(const RotationVal& newWorldRotation)
+	};
+	void setWorldRotation(REF(RotationVal) newWorldRotation)
 	{
 		if (mpParentTransform == nullptr)
 		{
 			refLocalTransform().rotation = newWorldRotation;
 			return;
-		}
+		};
 		//Calculate new local rotation value
 		refLocalTransform().rotation = (getLocalTransform().rotation) - mpParentTransform->getWorldTransform().rotation;//rotation is affected by nothing else
-	}
-	void setWorldScale(const Vector3f& newWorldScale)
+	};
+	void setWorldScale(REF(Vector3f) newWorldScale)
 	{
 		if (mpParentTransform == nullptr)
 		{
 			refLocalTransform().scale = newWorldScale;
 			return;
-		}
+		};
 		//Calculate new local scale value
 		refLocalTransform().scale /= mpParentTransform->getWorldTransform().scale;
-	}
+	};
 
 	//Actions
 	//Lock to Transform, it should be noted that calling these should not actually affect the WorldPosition, though any subsequent movement by the parent should affect the world position
-	inline void lookAt(const Vector3f& lookHere)
+	inline void lookAt(REF(Vector3f) lookHere)
 	{ setWorldRotation(Rotation3D::calcLookAtRotation(getWorldTransform().position, lookHere));	};
 	inline void setTarget(const TransformObject* targetThis)//look at this transform and keep looking at it until the lock is released
 	{

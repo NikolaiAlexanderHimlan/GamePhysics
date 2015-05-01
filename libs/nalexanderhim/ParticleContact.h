@@ -62,7 +62,7 @@ protected:
 		contactNormal = Vector3f::zero;
 		particleMovementA = Vector3f::zero;
 		particleMovementB = Vector3f::zero;
-	}
+	};
 
 private:
 	/**

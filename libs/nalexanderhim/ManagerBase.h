@@ -55,7 +55,7 @@ public:
 		for (uint i = 0; i < numManaged(); i++)
 		{
 			deleteManage(i);
-		}
+		};
 	};
 };
 #endif

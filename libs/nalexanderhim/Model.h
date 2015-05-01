@@ -30,7 +30,7 @@ public:
 	Model(BatchData* batch)
 	{
 		setBatch(batch);
-	}
+	};
 	virtual ~Model();
 
 	//Getters

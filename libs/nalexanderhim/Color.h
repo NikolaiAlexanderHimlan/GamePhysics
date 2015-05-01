@@ -80,21 +80,21 @@ namespace nah
 			mGreen = green;
 			mBlue = blue;
 			mAlpha = alpha;
-		}
+		};
 		Color(ColorVal all = ALPHA_OPAQUE)
 		{
 			mRed = all;
 			mGreen = all;
 			mBlue = all;
 			mAlpha = all;
-		}
+		};
 
 		~Color(void){}
 
-		inline ColorVal rgbRed()	const { return mRed;	}
-		inline ColorVal rgbGreen()	const { return mGreen;	}
-		inline ColorVal rgbBlue()	const { return mBlue;	}
-		inline ColorVal rgbAlpha()	const { return mAlpha;	}
+		inline ColorVal rgbRed()	const { return mRed;	};
+		inline ColorVal rgbGreen()	const { return mGreen;	};
+		inline ColorVal rgbBlue()	const { return mBlue;	};
+		inline ColorVal rgbAlpha()	const { return mAlpha;	};
 
 		//the type used for abstract color values
 		AbstractColor getAbstractColor() const;

@@ -28,41 +28,41 @@ namespace nah
 		std::map<std::string, std::map<std::string, std::string>> mIniFileMap;
 		std::map<std::string, std::map<std::string, std::string>> mIniWriteQueue;//stores data to be written to .ini file
 
-		DataSystem(void) { mIniFileMap = std::map<std::string, std::map<std::string, std::string>>();	}
-		~DataSystem(void){ clearFileData();	}
+		DataSystem(void) { mIniFileMap = std::map<std::string, std::map<std::string, std::string>>();	};
+		~DataSystem(void){ clearFileData();	};
 
 		bool checkFileExtension(std::string& filenameReference)
 		{
 			//TODO: if filename does not end with an extension, append ".ini" to it
 
-		}
+		};
 
 	public:
 		//TODO: able to specify the data file formats you would like to read and only instantiate the system for those
-		inline static void instantiateGlobal(void){ gpDataReader = new DataSystem();	}
+		inline static void instantiateGlobal(void){ gpDataReader = new DataSystem();	};
 		inline static bool clearGlobal(void)
 		{
 			delete gpDataReader;
 			gpDataReader = nullptr;
 			return gpDataReader == nullptr;
-		}
+		};
 
 		bool readFileContents(const std::string& filename);
 		bool printFileConents(const std::string& filename);
 		bool readIniFile(const std::string& filename);
 		const std::string& getIniKeyValue(const std::string& section, const std::string& key);
-		//{ return mIniFileMap.find(section)->second.find(key)->second;	}
+		//{ return mIniFileMap.find(section)->second.find(key)->second;	};
 
 		inline bool clearFileData(void){
 			bool dataCleared = true;
 			dataCleared = dataCleared && clearIniData();
 			dataCleared = dataCleared && clearIniWriteQueue();
 			return dataCleared;
-		}
+		};
 		inline bool clearIniData(void){
 			mIniFileMap.clear();//I am unsure if this will clear the inner map successfully?
 			return mIniFileMap.empty();
-		}
+		};
 
 		///Same map is used for both reading and writing files
 		//TODO: decide if file should be created if it doesn't exist
@@ -74,7 +74,7 @@ namespace nah
 		{
 			mIniWriteQueue.clear();//I am unsure if this will clear the inner map successfully?
 			return mIniWriteQueue.empty();
-		}
+		};
 	};
 }
 

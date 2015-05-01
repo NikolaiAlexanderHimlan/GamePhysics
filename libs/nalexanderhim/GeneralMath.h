@@ -55,7 +55,7 @@ namespace nah
 		rootThis = sqrt(rootThis);
 		APPLY_SIGN(rootThis)
 		return rootThis;
-	}
+	};
 
 	//************************************
 	// Method:    checkWholeNumber
@@ -75,17 +75,17 @@ namespace nah
 	{
 		//return checkThis == floor(checkThis);
 		return fabs(checkThis - std::floor(checkThis)) < precision;
-	}
+	};
 
 	inline static bool equalsInRange(float rhs, float lhs, float range)
-	{ return abs(rhs-lhs) <= range;	}
+	{ return abs(rhs-lhs) <= range;	};
 
 	inline static int round(float roundThis)
 	{ 
 		if(roundThis >0) return (int)std::floor(roundThis+0.5f);
 		else if(roundThis <0) return (int)std::ceil(roundThis-0.5f);
 		return 0;//roundThis is 0
-	}
+	};
 
 	inline static float wrapFloat(float wrapThis, float maxWrap = 1.0f, float minWrap = 0.0f)
 	{
@@ -111,10 +111,10 @@ namespace nah
 		{
 			if (wrapThis < minWrap) wrapThis = minWrap;
 			else if (wrapThis > maxWrap) wrapThis = maxWrap;
-		}
+		};
 
 		return wrapThis;
-	}
+	};
 		//}
 	//}
 }

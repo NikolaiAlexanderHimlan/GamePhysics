@@ -24,7 +24,7 @@ public:
 		if(defaultGround)
 		{
 			InitializeDefault();
-		}
+		};
 	};
 	virtual ~GroundArea()
 	{};
@@ -34,7 +34,7 @@ public:
 	{
 		//setBatchPlane(width, length, UP);
 		setBatchCube(getWidth(), 0.01f, getLength());
-	}
+	};
 	void Initialize();
 
 	//Actions

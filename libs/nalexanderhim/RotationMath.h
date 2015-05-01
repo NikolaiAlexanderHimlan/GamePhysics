@@ -1,6 +1,5 @@
 #ifndef RotationMath_h__
 #define RotationMath_h__
-
 /*
 Author: Nikolai Alexander-Himlan
 Class: EPG-310 <Section 02>
@@ -8,7 +7,6 @@ Assignment: midterm
 Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
-
 #include "PrecisionMath.h"
 
 namespace nah
@@ -41,7 +39,7 @@ namespace nah
 		while (degrees > MAX_DEGREE)//check if greater than 360
 			degrees -=MAX_DEGREE;//reduce rotation until below 360
 		return degrees;//already positive
-	}
+	};
 	//************************************
 	// Method:    oppositeRotation_Degrees
 	// FullName:  nah::math::oppositeRotation_Degrees
@@ -58,9 +56,9 @@ namespace nah
 		if(degrees < MIN_DEGREE)//check negative
 			return degrees +HALF_DEGREE;//+360 to make positive then -180 to get the opposite
 		return degrees -HALF_DEGREE;//already positive, -180 to get the opposite
-	}
+	};
 	inline static float oppositeRotation_AbsDegrees(float degrees)
-	{ return absoluteRotation_Degrees(oppositeRotation_Degrees(degrees));	}
+	{ return absoluteRotation_Degrees(oppositeRotation_Degrees(degrees));	};
 #pragma endregion
 #pragma region Radians Math
 	//defined constants
@@ -74,7 +72,7 @@ namespace nah
 	inline static float absoluteRotation_Radians(float radians);
 	inline static float oppositeRotation_Radians(float radians);
 	inline static float oppositeRotation_AbsRadians(float radians)
-	;//{ return absoluteRotation_Radians(oppositeRotation_Radians(radians));	}
+	;//{ return absoluteRotation_Radians(oppositeRotation_Radians(radians));	};
 #pragma endregion
 #pragma region Conversion
 	//make these constants so the program doesn't keep having to do the same division
@@ -89,26 +87,26 @@ namespace nah
 		//trace("radical",degrees * Math.PI / 180);
 		float radians = (float)(degrees * TO_RADIAN);
 		return (radians);
-	}
+	};
 #define RadToDeg RadiansToDegrees
 	inline static float RadiansToDegrees(float radians)
 	{
 		//trace("severity",radians * 180/Math.PI);
 		float degrees = (float)(radians * TO_DEGREE);
 		return (degrees);
-	}
+	};
 #pragma endregion
 
 #pragma region Precision adjusted trig
 	//TODO: change case to match sin, cos, tan function case
 	//CONSIDER: overloaded functions instead of type indication character suffix
-	inline static float SinF_Precise(const float& radians) { return LimitPrecision(sin(radians));	};
-	inline static float CosF_Precise(const float& radians) { return LimitPrecision(cos(radians));	};
-	inline static float TanF_Precise(const float& radians);
+	inline static float SinF_Precise(REF(float) radians) { return LimitPrecision(sin(radians));	};
+	inline static float CosF_Precise(REF(float) radians) { return LimitPrecision(cos(radians));	};
+	inline static float TanF_Precise(REF(float) radians);
 
-	inline static double SinD_Precise(const double& radians);
-	inline static double CosD_Precise(const double& radians);
-	inline static double TanD_Precise(const double& radians);
+	inline static double SinD_Precise(REF(double) radians);
+	inline static double CosD_Precise(REF(double) radians);
+	inline static double TanD_Precise(REF(double) radians);
 #pragma endregion
 	//}
 }

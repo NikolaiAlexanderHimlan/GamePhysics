@@ -20,11 +20,11 @@ class CameraView
 public:
 	GLFrustum* viewFrustum;
 
-	CameraView(const Transform& initialTransform = Transform());
+	CameraView(REF(Transform) initialTransform = Transform());
 	~CameraView();
 
 	//Getters
-	inline GLFrustum* getViewFrustum() const { return viewFrustum;	}
+	inline GLFrustum* getViewFrustum() const { return viewFrustum;	};
 	void getViewProjection(OUT_PARAM(M3DMatrix44f) outProj) const;
 
 	//Calculations

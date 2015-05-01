@@ -34,7 +34,7 @@ struct SphereVolume
 		return nearVect;
 	};
 
-	inline Vector3f HighestPoint(const Vector3f& volumePos = Vector3f::zero, Axis upAxis = UP) const
+	inline Vector3f HighestPoint(REF(Vector3f) volumePos = Vector3f::zero, Axis upAxis = UP) const
 	{
 		Vector3f highPoint;
 
@@ -52,7 +52,7 @@ struct SphereVolume
 		default:
 			throw std::logic_error("Invalid Axis - SphereVolume - LowestPoint!");
 			break;
-		}
+		};
 
 		return volumePos + highPoint;
 	};
@@ -66,7 +66,7 @@ struct CubeVolume
 	CubeVolume(float cubeWidth, float cubeLength, float cubeHeight)
 		: width(cubeWidth), length(cubeLength), height(cubeHeight) {};
 
-	inline Vector3f VolumeVector() const { return Vector3f(width, height, length);	}
+	inline Vector3f VolumeVector() const { return Vector3f(width, height, length);	};
 
 	inline Vector3f NearestPoint(REF(Vector3f) toPos, REF(Vector3f) volumePos /* = Vector3f::zero */, OUT_PARAM(real) distanceToPos /* = nullptr */) const
 	{
@@ -92,7 +92,7 @@ struct CubeVolume
 		default:
 			throw std::logic_error("Invalid Axis - CubeVolume - LowestPoint!");
 			break;
-		}
+		};
 
 		return volumePos + highPoint;
 	};

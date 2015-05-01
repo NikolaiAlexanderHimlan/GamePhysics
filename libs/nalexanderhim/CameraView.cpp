@@ -12,7 +12,7 @@ I certify that this assignment is entirely my own work.
 #include <GLFrustum.h>
 #include <math3d.h>
 
-CameraView::CameraView(const Transform& initialTransform /*= Transform()*/)
+CameraView::CameraView(REF(Transform) initialTransform /*= Transform()*/)
 {
 	setLocalTransform(initialTransform);
 	viewFrustum = new GLFrustum();

@@ -73,10 +73,10 @@ public:
 			//KEY MISMATCH!
 			__debugbreak();
 			//throw std::logic_error("KEY MISMATCH!");
-		}
+		};
 		*/
 		delete ptr;//call normal delete function
-	}
+	};
 	inline void operator delete[](void *ptr, ManageID verifyID)
 	{
 		/*verification disabled
@@ -87,9 +87,9 @@ public:
 			//KEY MISMATCH!
 			__debugbreak();
 			//throw std::logic_error("KEY MISMATCH!");
-		}
+		};
 		*/
 		delete[] ptr;//call normal delete function
-	}
+	};
 };
 #endif

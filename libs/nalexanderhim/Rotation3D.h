@@ -28,12 +28,12 @@ public:
 		: Vector3f(vec3), radRotation(isRad) {};
 
 	//Getters
-	inline const bool& isRadians() const { return radRotation;	};
+	inline REF(bool) isRadians() const { return radRotation;	};
 	inline const bool isDegrees() const { return !isRadians();	};
 		//Gets the given value in the current rotation mode.
-	inline const float& getPitch() const { return x;	};
-	inline const float& getYaw() const { return y;		};
-	inline const float& getRoll() const { return z;		};
+	inline REF(float) getPitch() const { return x;	};
+	inline REF(float) getYaw() const { return y;		};
+	inline REF(float) getRoll() const { return z;		};
 		//Gets a reference to the given rotation value.
 	inline float& refPitch() { return x;	};
 	inline float& refYaw() { return y;		};
@@ -72,8 +72,8 @@ public:
 	void setYawRad(float radians);
 	void setRollRad(float radians);
 
-	void setRad(const Rotation3D& radians);
-	void setDeg(const Rotation3D& degrees);
+	void setRad(REF(Rotation3D) radians);
+	void setDeg(REF(Rotation3D) degrees);
 
 	//Calculations
 	inline Rotation3D Inverse() const { return Rotation3D(-getPitch(), -getYaw(), -getRoll(), isRadians());	};

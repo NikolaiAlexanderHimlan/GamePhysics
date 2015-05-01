@@ -33,7 +33,7 @@ void LOG_ERROR(const char* errorMessage)
 #include "ccmccooeyWrapper.h"
 #include "Color.h"
 
-void Debug_OpenGL::outputText(const Vector3f& location, const nah::Color& color, void* font, const char* text)
+void Debug_OpenGL::outputText(REF(Vector3f) location, const nah::Color& color, void* font, const char* text)
 {
 	const char* charText = text;// text.c_str();
 	int len = (int)strlen(charText);

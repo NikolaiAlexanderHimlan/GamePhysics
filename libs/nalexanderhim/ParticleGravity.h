@@ -21,6 +21,6 @@ protected:
 	virtual void UpdateForce(Particle* applyForceTo, Time forceDuration) const;
 
 public:
-	ParticleGravity(const Vector3f& gravityForce) : mGravity(gravityForce){};
+	ParticleGravity(REF(Vector3f) gravityForce) : mGravity(gravityForce){};
 };
 #endif // ParticleGravity_h__

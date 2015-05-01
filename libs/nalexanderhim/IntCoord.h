@@ -20,6 +20,7 @@ Champlain College
 
 //#include <cfloat>
 #include <string>
+#include "CodingDefines.h"
 //#include <Trackable.h>
 //#include <Vector2D.h>
 
@@ -40,7 +41,7 @@ namespace nah
 		IntCoord( int x = 0, int y = 0 );//constructor
 		IntCoord( int coord[2] );
 		IntCoord( Vector2D coord );
-		IntCoord( const IntCoord& rhs );//copy constructor
+		IntCoord( REF(IntCoord) rhs );//copy constructor
 		~IntCoord();//destructor
 
 #pragma region getters and setters
@@ -48,75 +49,75 @@ namespace nah
 		inline int getY() const { return mY;	};
 		inline void setX( int x ) { mX = x;	};
 		inline void setY( int y ) { mY = y;	};
-		inline IntCoord& setData(int newX, int newY) { setX(newX); setY(newY); return *this;	}
-		inline IntCoord& setData(const IntCoord& newValue) { return setData(newValue.getX(), newValue.getY());	}
+		inline IntCoord& setData(int newX, int newY) { setX(newX); setY(newY); return *this;	};
+		inline IntCoord& setData(REF(IntCoord) newValue) { return setData(newValue.getX(), newValue.getY());	};
 		inline int* ptrX() { return &mX;	};
 		inline int* ptrY() { return &mY;	};
 #pragma endregion
 
 #pragma region math functions
 		//using this-> to make it explicit what is happening
-		inline const IntCoord add(const IntCoord& rhs) const
-		{ return IntCoord(this->getX() + rhs.getX(), this->getY() + rhs.getY());	}
-		inline const IntCoord subtract(const IntCoord& rhs) const
-		{ return IntCoord(this->getX() - rhs.getX(), this->getY() - rhs.getY());	}
+		inline const IntCoord add(REF(IntCoord) rhs) const
+		{ return IntCoord(this->getX() + rhs.getX(), this->getY() + rhs.getY());	};
+		inline const IntCoord subtract(REF(IntCoord) rhs) const
+		{ return IntCoord(this->getX() - rhs.getX(), this->getY() - rhs.getY());	};
 		inline const IntCoord add(int addThis) const
-		{ return IntCoord(this->getX() + addThis, this->getY() + addThis);	}
+		{ return IntCoord(this->getX() + addThis, this->getY() + addThis);	};
 		inline const IntCoord subtract(int subtractThis) const
-		{ return IntCoord(this->getX() - subtractThis, this->getY() - subtractThis);	}
+		{ return IntCoord(this->getX() - subtractThis, this->getY() - subtractThis);	};
 		inline const IntCoord multiply(float multiplyBy) const
-		{ return IntCoord(int(this->getX()*multiplyBy), int(this->getY()*multiplyBy));	}
+		{ return IntCoord(int(this->getX()*multiplyBy), int(this->getY()*multiplyBy));	};
 		inline const IntCoord divide(float divideBy) const
-		{ return IntCoord(int(this->getX()/divideBy), int(this->getY()/divideBy));		}
+		{ return IntCoord(int(this->getX()/divideBy), int(this->getY()/divideBy));		};
 
 		const IntCoord absGet() const;//get an IntCoord which is the absolute version of this coord
 		inline IntCoord& absSet();//make this IntCoord absolute
 #pragma endregion
 
 #pragma region math operators
-		inline const IntCoord operator+(const IntCoord& rhs) const { return add(rhs);	}
-		inline const IntCoord operator-(const IntCoord& rhs) const { return subtract(rhs);	}
-		inline const IntCoord operator+(int rhs) const { return add(rhs);	}
-		inline const IntCoord operator-(int rhs) const { return subtract(rhs);	}
-		inline const IntCoord operator*(float rhs) const { return multiply(rhs);	}
-		inline const IntCoord operator/(float rhs) const { return divide(rhs);		}
+		inline const IntCoord operator+(REF(IntCoord) rhs) const { return add(rhs);	};
+		inline const IntCoord operator-(REF(IntCoord) rhs) const { return subtract(rhs);	};
+		inline const IntCoord operator+(int rhs) const { return add(rhs);		};
+		inline const IntCoord operator-(int rhs) const { return subtract(rhs);	};
+		inline const IntCoord operator*(float rhs) const { return multiply(rhs);	};
+		inline const IntCoord operator/(float rhs) const { return divide(rhs);	};
 
-		inline IntCoord& operator = ( const IntCoord& rhs ) { return setData(rhs);	}
-		inline IntCoord& operator += ( const IntCoord& rhs ){ return setData(add(rhs));	}
-		inline IntCoord& operator -= ( const IntCoord& rhs ){ return setData(subtract(rhs));	}
-		inline IntCoord& operator += ( int rhs ){ return setData(add(rhs));	}
-		inline IntCoord& operator -= ( int rhs ){ return setData(subtract(rhs));	}
-		inline IntCoord& operator *= ( float rhs ) { return setData(multiply(rhs));	}
-		inline IntCoord& operator /= ( float rhs ) { return setData(divide(rhs));		}
+		inline IntCoord& operator = ( REF(IntCoord) rhs ) { return setData(rhs);	};
+		inline IntCoord& operator += ( REF(IntCoord) rhs ){ return setData(add(rhs));	};
+		inline IntCoord& operator -= ( REF(IntCoord) rhs ){ return setData(subtract(rhs));	};
+		inline IntCoord& operator += ( int rhs ){ return setData(add(rhs));	};
+		inline IntCoord& operator -= ( int rhs ){ return setData(subtract(rhs));	};
+		inline IntCoord& operator *= ( float rhs ) { return setData(multiply(rhs));	};
+		inline IntCoord& operator /= ( float rhs ) { return setData(divide(rhs));	};
 #pragma endregion
 
 #pragma region comparison operators
-		inline bool operator > ( const IntCoord& rhs ) const { return greaterThan(rhs);	}
-		inline bool operator < ( const IntCoord& rhs ) const { return lessThan(rhs);	}
-		inline bool operator >= ( const IntCoord& rhs ) const { return greaterThanOrEquals(rhs);	}
-		inline bool operator <= ( const IntCoord& rhs ) const { return lessThanOrEquals(rhs);		}
-		inline bool operator == ( const IntCoord& rhs ) const;// { return equals(rhs);		}
-		inline bool operator != ( const IntCoord& rhs ) const { return !equals(rhs);	}
-		inline bool operator == ( int rhs ) const { return equals(rhs);		}
-		inline bool operator != ( int rhs ) const { return !equals(rhs);	}
+		inline bool operator > ( REF(IntCoord) rhs ) const { return greaterThan(rhs);	};
+		inline bool operator < ( REF(IntCoord) rhs ) const { return lessThan(rhs);	};
+		inline bool operator >= ( REF(IntCoord) rhs ) const { return greaterThanOrEquals(rhs);	};
+		inline bool operator <= ( REF(IntCoord) rhs ) const { return lessThanOrEquals(rhs);		};
+		inline bool operator == ( REF(IntCoord) rhs ) const;// { return equals(rhs);		};
+		inline bool operator != ( REF(IntCoord) rhs ) const { return !equals(rhs);	};
+		inline bool operator == ( int rhs ) const { return equals(rhs);		};
+		inline bool operator != ( int rhs ) const { return !equals(rhs);	};
 
 		//comparison functionality
-		inline bool greaterThan( const IntCoord& otherCoord ) const {
+		inline bool greaterThan( REF(IntCoord) otherCoord ) const {
 			//it is okay if one value is equal so long as are not both equal
 			if (equals(otherCoord)) return false;//if both values are equal, this coord is NOT greater than the other
 			return greaterThanOrEquals(otherCoord);//since the coords are not equal, this will return if greater than or not
-		}
-		inline bool lessThan( const IntCoord& otherCoord ) const {
+		};
+		inline bool lessThan( REF(IntCoord) otherCoord ) const {
 			//it is okay if one value is equal so long as are not both equal
 			if (equals(otherCoord)) return false;//if both values are equal, this coord is NOT less than the other
 			return lessThanOrEquals(otherCoord);//since the coords are not equal, this will return if less than or not
-		}
-		inline bool greaterThanOrEquals( const IntCoord& otherCoord ) const
-		{ return getX() >= otherCoord.getX() && getY() >= otherCoord.getY();	}
-		inline bool lessThanOrEquals( const IntCoord& otherCoord ) const
-		{ return getX() <= otherCoord.getX() && getY() <= otherCoord.getY();	}
-		inline bool equals( const IntCoord& otherCoord ) const { return (getX()==otherCoord.getX()) && (getY()==otherCoord.getY());	}
-		inline bool equals( int otherValue ) const { return (getX()==otherValue) && (getY()==otherValue);	}
+		};
+		inline bool greaterThanOrEquals( REF(IntCoord) otherCoord ) const
+		{ return getX() >= otherCoord.getX() && getY() >= otherCoord.getY();	};
+		inline bool lessThanOrEquals( REF(IntCoord) otherCoord ) const
+		{ return getX() <= otherCoord.getX() && getY() <= otherCoord.getY();	};
+		inline bool equals( REF(IntCoord) otherCoord ) const { return (getX()==otherCoord.getX()) && (getY()==otherCoord.getY());	};
+		inline bool equals( int otherValue ) const { return (getX()==otherValue) && (getY()==otherValue);	};
 #pragma endregion
 
 #pragma region type operators
@@ -135,8 +136,8 @@ namespace nah
 #pragma endregion
 
 #pragma region specific coord values
-		inline static IntCoord zero(void){ return IntCoord(0,0);	}
-		inline static IntCoord one(void){ return IntCoord(1,1);		}
+		inline static IntCoord zero(void){ return IntCoord(0,0);	};
+		inline static IntCoord one(void){ return IntCoord(1,1);		};
 #pragma endregion
 
 #pragma region feedback functions

@@ -24,28 +24,28 @@ public:
 	{
 		if (run)
 			Reset();
-	}
+	};
 
 	inline void Reset()
 	{
 		_start = high_resolution_clock::now();
-	}
+	};
 
 	inline timescale Elapsed() const
 	{
 		return std::chrono::duration_cast<timescale>(high_resolution_clock::now() - _start);
-	}
+	};
 	Time ElapsedSeconds() const
 	{
 		//return TO_SECONDS_FACTOR * Elapsed().count();
 		return std::chrono::duration_cast<timeSec>(high_resolution_clock::now() - _start).count();
-	}
+	};
 
 	template <typename T, typename Traits>
-	friend std::basic_ostream<T, Traits>& operator<<(std::basic_ostream<T, Traits>& out, const Timer& timer)
+	friend std::basic_ostream<T, Traits>& operator<<(std::basic_ostream<T, Traits>& out, REF(Timer) timer)
 	{
 		return out << timer.Elapsed().count();
-	}
+	};
 private:
 	high_resolution_clock::time_point _start;
 };

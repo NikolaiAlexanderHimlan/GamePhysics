@@ -25,7 +25,7 @@ public:
 
 	ParticleWall(float width, float length, Axis normalAxis, bool impassable = false)
 		: ParticleWall(width, length, Vector3f::AxisNormal(normalAxis)){};
-	ParticleWall(float width, float length, const Vector3f& normalVector, bool impassable = false)
+	ParticleWall(float width, float length, REF(Vector3f) normalVector, bool impassable = false)
 	{
 		mWallBounds.normal = normalVector;
 		mWallBounds.width = width;
@@ -34,10 +34,10 @@ public:
 	};
 
 	//Getters
-	inline const float& getWidth() const { return mWallBounds.width;	};
-	inline const float& getLength() const { return mWallBounds.length;	};
+	inline REF(float) getWidth() const { return mWallBounds.width;	};
+	inline REF(float) getLength() const { return mWallBounds.length;	};
 	inline VectParam getNormal() const { return mWallBounds.normal;	};
-	inline const bool& getImpassible() const { return mWallBounds.impassable;	};
+	inline REF(bool) getImpassible() const { return mWallBounds.impassable;	};
 
 	//Properties
 	inline Vector3f getGraphicsPosition() const { return FROM_SIMULATION_SCALE(physicsPosition);	};

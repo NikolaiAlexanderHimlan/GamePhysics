@@ -23,7 +23,7 @@ IntCoord::IntCoord(Vector2D coord)
 {
 }
 */
-IntCoord::IntCoord(const IntCoord& rhs)
+IntCoord::IntCoord(REF(IntCoord) rhs)
 	:mX( rhs.mX )
 	,mY( rhs.mY )
 {

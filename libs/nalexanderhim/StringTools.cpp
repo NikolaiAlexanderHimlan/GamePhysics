@@ -12,7 +12,7 @@ using namespace std;
 
 using namespace nah;
 
-int StringTools::getSkipIndex(const string& source, const string& skipString, int numSkips, int startIndex /*= 0*/)
+int StringTools::getSkipIndex(REF(string) source, REF(string) skipString, int numSkips, int startIndex /*= 0*/)
 {
 	int tempIndex = 0;
 	int skipIndex = startIndex;
@@ -26,7 +26,7 @@ int StringTools::getSkipIndex(const string& source, const string& skipString, in
 	return skipIndex;
 }
 
-std::string StringTools::substring(const string& source, int startIndex, int endIndex /*= -1*/, bool includeStartIndex /*= true*/, bool includeEndIndex /*= true */)
+std::string StringTools::substring(REF(string) source, int startIndex, int endIndex /*= -1*/, bool includeStartIndex /*= true*/, bool includeEndIndex /*= true */)
 {
 	if(source == "") { __debugbreak(); throw std::logic_error("empty string!");	}
 
@@ -41,7 +41,7 @@ std::string StringTools::substring(const string& source, int startIndex, int end
 }
 
 //parse datatypes
-double nah::StringTools::parseSciNotation(const string& source)
+double nah::StringTools::parseSciNotation(REF(string) source)
 {
 	const char SCI = 'e';
 	double number;

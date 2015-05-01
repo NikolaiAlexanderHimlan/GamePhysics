@@ -26,7 +26,7 @@ public:
 	Object3D(BatchData* batch)
 		: Model(batch)
 	{
-	}
+	};
 	virtual ~Object3D(){};
 
 	//Getters
