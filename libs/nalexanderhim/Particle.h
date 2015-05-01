@@ -14,8 +14,9 @@ I certify that this assignment is entirely my own work.
 #include "PhysicsDefines.h"
 #include "ccmccooeyWrapper.h"
 #include "FloatFactor.h"
-#include "Boundings.h"
 #include "CodingDefines.h"
+
+class Bounding;
 
 //Physics Handler
 class Particle
@@ -23,7 +24,7 @@ class Particle
 	, public PhysicsBase
 {
 private:
-	//Maintainers
+	//Refresh
 	inline void RecalculateMomentum(real oldMass)
 	{
 		//Get old momentum
@@ -37,9 +38,10 @@ protected:
 
 	std::string mName = "Particle";
 
+	//NOTE: reason it is a pointer is to allow subclasses to be used.
 	Bounding* mpBounds = new Bounding();//defines the physics boundary of the particle
 
-	//Maintainers
+	//GameLoop
 	inline void UpdatePosition(Time elapsedSeconds)
 	{
 		//Update Position
@@ -108,7 +110,7 @@ public:
 		mpBounds = nullptr;
 	};
 
-	//Maintainers
+	//GameLoop
 	virtual inline void PhysicsUpdate(Time elapsedSeconds)
 	{
 		UpdatePosition(elapsedSeconds);
@@ -121,36 +123,16 @@ public:
 	};
 
 	//Getters
-	inline REF(std::string) getName() const
-	{
-		static const std::string NULL_PARTICLE_NAME = "null particle";
-		if (this == nullptr)
-			return NULL_PARTICLE_NAME;
-		return mName;
-	};
 	inline REF(Bounding) getBounds() const { return *mpBounds;	};
-	inline REF(Vector3f) getVelocity() const
-	{
-		if (this == nullptr)
-			return Vector3f::zero;//if this is null return 0 vector
-		return mVelocityLinear;
-	};
 
 	//Setters
 	inline void setBounds(Bounding* newBounds) { SAFE_ASSIGN(mpBounds) = newBounds;	};
-	inline void setVelocity(REF(Vector3f) newVelocity) { mVelocityLinear = newVelocity;	};
 
 	//Properties
-	inline float getSpeed() const { return mVelocityLinear.Length();	};
-	Vector3f getMomentum() const;
-	inline Vector3f getForce() const
-	//TODO: NOTE: acceleration recalculated
-	{ return mAccumulator.force + (mAccumulator.acceleration * getMass()); };
-
-	//Manipulators
-	void setMomentum(REF(Vector3f) newMomentum);
+	inline Vector3f getForce() const { return mAccumulator.force + (mAccumulator.acceleration * getMass());	};
 
 	//Actions
+	// Applies the given change of force.
 	inline bool addForce(REF(Vector3f) forceVector)
 	{
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have forces acting on them
@@ -169,6 +151,6 @@ public:
 
 		return true;//applied impulse successfully
 	};
-	inline void clearPhysics() { clearForce(); setVelocity(0.0f);	};//HACK: publicly accessible
+	inline void clearPhysics() { clearForce(); setVelocityLinear(0.0f);	};//HACK: publicly accessible
 };
 #endif

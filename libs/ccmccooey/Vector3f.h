@@ -176,7 +176,6 @@ public:
 		lhs.z = lhs.z / rhs.z;
 		return lhs;
 	};//[NAH]
-	static float DotProduct(VectParam first, VectParam second);
 	static float CrossProductF(VectParam first, VectParam second);
 	static Vector3f CrossProduct(VectParam first, VectParam second);
 
@@ -212,8 +211,10 @@ public:
 	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)
 	{ return (rhs - lhs).GreaterEqual_All(checkBetween - lhs);	};//[NAH]
 
-	Vector3f asRad() const;//[NAH]
 	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
+		//Math & Calculations
+	static float Dot(VectParam lhs, VectParam rhs)
+	{ return (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z);	};//[NAH]
 	//TODO: try to find a better name for the NormalWeight functions
 	/// <summary> Takes a vector and a normal and returns the vector weighted against the normal.
 	/// <para> EX. weighting (6, 5, 8) against (0,1,0)[UP] would return (0, 5, 0). </para>

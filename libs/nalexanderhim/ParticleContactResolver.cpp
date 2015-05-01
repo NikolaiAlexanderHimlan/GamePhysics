@@ -59,21 +59,21 @@ void ParticleContactResolver::ResolveContacts(Time duration)
 		{
 			if (maContacts[i].contactA == maContacts[maxIndex].contactA)
 			{
-				maContacts[i].penetration -= Vector3f::DotProduct(moveA, maContacts[i].contactNormal);
+				maContacts[i].penetration -= Vector3f::Dot(moveA, maContacts[i].contactNormal);
 			}
 			else if (maContacts[i].contactA == maContacts[maxIndex].contactB)
 			{
-				maContacts[i].penetration -= Vector3f::DotProduct(moveB, maContacts[i].contactNormal);
+				maContacts[i].penetration -= Vector3f::Dot(moveB, maContacts[i].contactNormal);
 			}
 			if (maContacts[i].contactB != nullptr)//don't compare if B is null
 			{
 				if (maContacts[i].contactB == maContacts[maxIndex].contactA)
 				{
-					maContacts[i].penetration += Vector3f::DotProduct(moveA, maContacts[i].contactNormal);
+					maContacts[i].penetration += Vector3f::Dot(moveA, maContacts[i].contactNormal);
 				}
 				else if (maContacts[i].contactB == maContacts[maxIndex].contactB)
 				{
-					maContacts[i].penetration += Vector3f::DotProduct(moveB, maContacts[i].contactNormal);
+					maContacts[i].penetration += Vector3f::Dot(moveB, maContacts[i].contactNormal);
 				}
 			}
 		}

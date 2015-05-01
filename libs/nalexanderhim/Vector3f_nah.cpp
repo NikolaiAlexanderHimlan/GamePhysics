@@ -56,8 +56,6 @@ Vector3f Vector3f::ClampMaxKeepSign(VectParam clampThis, VectParam clampMax)
 		nah::ClampKeepSign(clampThis.z, std::abs(clampMax.z)));
 }
 
-Vector3f Vector3f::asRad() const { return Vector3f(nah::DegToRad(x), nah::DegToRad(y), nah::DegToRad(z));	};
-
 VectParam Vector3f::AxisNormal(Axis toNorm)
 {
 	switch (toNorm)

@@ -37,9 +37,9 @@ void ParticleContact::Resolve(Time duration)
 real ParticleContact::CalculateSeparatingVelocity() const
 {
 	if (contactA == nullptr) return 0;//contactA should never be null if the contact is valid
-	Vector3f relativeVelocity = contactA->getVelocity();
-	if (contactB != nullptr) relativeVelocity -= contactB->getVelocity();
-	return Vector3f::DotProduct(relativeVelocity, contactNormal);
+	Vector3f relativeVelocity = contactA->getVelocityLinear();
+	if (contactB != nullptr) relativeVelocity -= contactB->getVelocityLinear();
+	return Vector3f::Dot(relativeVelocity, contactNormal);
 }
 
 void ParticleContact::ResolveVelocity(Time duration)
@@ -77,12 +77,12 @@ void ParticleContact::ResolveVelocity(Time duration)
 
 	// Apply impulses: they are applied in the direction of the contact,
 	// and are proportional to the inverse mass.
-	contactA->setVelocity( contactA->getVelocity() +
+	contactA->setVelocityLinear( contactA->getVelocityLinear() +
 		impulsePerIMass * contactA->getMass().getFactor() );
 	if (contactB != nullptr)
 	{
 		// Particle 1 goes in the opposite direction
-		contactB->setVelocity( contactB->getVelocity() +
+		contactB->setVelocityLinear( contactB->getVelocityLinear() +
 			impulsePerIMass * -contactB->getMass().getFactor() );
 	}
 }

@@ -9,6 +9,7 @@ I certify that this assignment is entirely my own work.
 #define ParticleForceGenerator_h__
 
 #include "TimeDefines.h"
+#include "CodingDefines.h"
 
 class Particle;
 class ParticleSystem;
