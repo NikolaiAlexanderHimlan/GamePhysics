@@ -48,10 +48,19 @@ const Vector3f Transform::getUpVector() const
 {
 	float upX = 0.0f, upY = 0.0f, upZ = 0.0f;
 
+	//*Old method
+	//WARNING: WILL NOT WORK WITH ROLL!
+	Vector3f forVect = getForwardVector();
+	upX = 0.0f;//no x-axis without roll// forVect.x;
+	upY = -forVect.z;
+	upZ = forVect.y;
+	//*/
+	/*Attempted improvement
 	Vector3f crossVect = Vector3f::CrossProductF(getForwardVector(), getRightVector());
 	upX = crossVect.x;
 	upY = crossVect.y;
 	upZ = crossVect.z;
+	//*/
 
 	return Vector3f(upX, upY, upZ).getNormalized();
 }
@@ -59,10 +68,19 @@ const Vector3f Transform::getRightVector() const
 {
 	float rightX=0.0f, rightY=0.0f, rightZ=0.0f;
 
+	//*Old method
+	//WARNING: WILL NOT WORK WITH ROLL!
+	Vector3f forVect = getForwardVector();
+	rightX = forVect.z;
+	rightY = 0.0f;//no y-axis without roll// forVect.y;
+	rightZ = -forVect.x;
+	//*/
+	/*Attempted improvement
 	Vector3f crossVect = Vector3f::CrossProductF(getForwardVector(), &Vector3f(0.0f, 1.0f, 0.0f));//HACK: using the standard Up vector for cross means Roll will not work
 	rightX = crossVect.x;
 	rightY = crossVect.y;
 	rightZ = crossVect.z;
+	//*/
 
 	return Vector3f(rightX, rightY, rightZ).getNormalized();
 }
@@ -82,7 +100,7 @@ void Transform::calcRenderMatrix(OUT_PARAM(M3DMatrix44f) outResult) const
 
 	//Rotation
 	//m3dRotationMatrix44(rotateZ, (float)m3dDegToRad(rotation.z), 0.0f, 0.0f, 1.0f);
-	m3dRotationMatrix44(rotateY, (float)m3dDegToRad(rotation.y), 0.0f, 1.0f, 0.0f);
+	m3dRotationMatrix44(rotateY, (float)m3dDegToRad(rotation.y), 0.0f, -1.0f, 0.0f);
 	m3dRotationMatrix44(rotateX, (float)m3dDegToRad(rotation.x), 1.0f, 0.0f, 0.0f);
 	m3dMatrixMultiply44(rotateResult, rotateY, rotateX);
 	//m3dMatrixMultiply44(rotateResult, rotateResult, rotateZ);//this line causes Roll
