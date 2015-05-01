@@ -122,7 +122,7 @@ public:
 	};
 
 	//Getters
-	inline REF(Bounding) getBounds() const { return *mpBounds;	};
+	inline REF(Bounding) getBounds() const { return *SAFE_GET(mpBounds, new Bounding());	};
 
 	//Setters
 	inline void setBounds(Bounding* newBounds) { SAFE_ASSIGN(mpBounds) = newBounds;	};
