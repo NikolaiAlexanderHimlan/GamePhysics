@@ -12,6 +12,7 @@
 **********************************************************************/
 
 #include "Vector3f.h"
+#include <ostream>
 #include <sstream>
 #include <math.h>
 #include <string.h>

@@ -14,6 +14,7 @@
 #ifndef _VECTOR3F_H
 #define _VECTOR3F_H
 
+//TODO: try to move ostream to source .cpp file
 #include <ostream>
 
 //TODO: upon claim: 
@@ -113,6 +114,16 @@ public:
 		toNormalize.Normalize();
 		return toNormalize;
 	};//[NAH]
+
+	//Properties
+	//@param absolute Max absolute value, or max actual value.
+	inline float Max() const //TODO: bool absolute = false) const
+	{
+		float isMax = x;
+		if (isMax < y) isMax = y;
+		if (isMax < z) isMax = z;
+		return isMax;
+	};//[NAH] //Gets the largest value in the Vector3f.
 
 	//Modifiers
 	inline void setLength(float length)//Normalize then multiply by the new length
