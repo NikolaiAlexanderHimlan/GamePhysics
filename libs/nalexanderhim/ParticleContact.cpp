@@ -9,7 +9,6 @@ Based on Ian Millington's cyclone physics engine.
 #include "ParticleContact.h"
 #include "Particle.h"
 #include "DebugKeys.h"
-//#include "FloatFactor.h"
 
 #include <iostream>
 
@@ -78,12 +77,12 @@ void ParticleContact::ResolveVelocity(Time duration)
 	// Apply impulses: they are applied in the direction of the contact,
 	// and are proportional to the inverse mass.
 	contactA->setVelocityLinear( contactA->getVelocityLinear() +
-		impulsePerIMass * contactA->getMass().getFactor() );
+		impulsePerIMass * (float)contactA->getMass().getFactor());
 	if (contactB != nullptr)
 	{
 		// Particle 1 goes in the opposite direction
 		contactB->setVelocityLinear( contactB->getVelocityLinear() +
-			impulsePerIMass * -contactB->getMass().getFactor() );
+			impulsePerIMass * (float)-contactB->getMass().getFactor());
 	}
 }
 
@@ -97,16 +96,21 @@ void ParticleContact::ResolveInterpenetration(Time duration)
 	if (contactB != nullptr) totalInverseMass += contactB->getMass().getFactor();
 
 	// If all particles have infinite mass, then we do nothing.
-	if (contactA->hasInfiniteMass() && contactB->hasInfiniteMass()) return;
+	// Check if particle is null, has infinite mass if null
+	if (((contactA == nullptr)?true:
+			contactA->hasInfiniteMass()) &&
+		((contactB == nullptr)?true:
+			contactB->hasInfiniteMass()))
+		return;
 
 	// Find the amount of penetration resolution per unit of inverse mass.
 	Vector3f movePerIMass = contactNormal * (float)(penetration / totalInverseMass);
 
 	// Calculate the movement amounts.
-	particleMovementA = movePerIMass * contactA->getMass().getFactor();
+	particleMovementA = movePerIMass * (float)contactA->getMass().getFactor();
 	if (contactB != nullptr) {
 		particleMovementB =
-			movePerIMass * -contactB->getMass().getFactor();
+			movePerIMass * (float)-contactB->getMass().getFactor();
 	}
 	else {
 		particleMovementB = Vector3f::zero;

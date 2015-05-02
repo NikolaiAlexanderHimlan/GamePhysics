@@ -150,6 +150,7 @@
     <ClInclude Include="IntertiaTensor.h" />
     <ClInclude Include="Matrix33r.h" />
     <ClInclude Include="Matrix44r.h" />
+    <ClInclude Include="RealFactor.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="RigidBodyForceGenerator.h" />
     <ClInclude Include="RigidBodyGravity.h" />

@@ -8,7 +8,7 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "ccmccooeyWrapper.h"
-#include "FloatFactor.h"
+#include "RealFactor.h"
 #include "MathDefines.h"
 #include "CodingDefines.h"
 #include "TimeDefines.h"
@@ -33,7 +33,7 @@ protected:
 	*/
 	bool mCanSleep;
 
-	floatFactor mMass;//values <= 0 indicate infinite mass, since the math will not work with a mass of 0 anyway (no physics calculations)
+	realFactor mMass;//values <= 0 indicate infinite mass, since the math will not work with a mass of 0 anyway (no physics calculations)
 
 	/**
 	* Holds the amount of damping applied to linear motion.
@@ -85,7 +85,7 @@ protected:
 	};
 
 	//Setters
-	inline virtual void setMass(real newMass) { mMass = (float)newMass;	};
+	inline virtual void setMass(real newMass) { mMass = newMass;	};
 
 	//Calculations
 	//virtual Matrix44r calcTransformMatrix() const = 0;
@@ -123,9 +123,9 @@ public:
 
 	//Getters
 	inline REF(std::string) getName() const {
-		static const std::string NULL_PARTICLE_NAME = "null physics";
+		static const std::string NULL_PHYSICS_NAME = "null physics";
 		if (this == nullptr)
-			return NULL_PARTICLE_NAME;
+			return NULL_PHYSICS_NAME;
 		return mName;
 	};
 	// @returns true if the body is awake and responding to integration.
@@ -134,9 +134,9 @@ public:
 	bool getCanSleep() const { return mCanSleep;	};
 	inline REF(Vector3f) getPhysicsPosition() const { return mPhysicsPosition;	};
 	inline Vector3f& refPhysicsPosition() { return mPhysicsPosition;	};
-	inline REF(floatFactor) getMass() const {
-		if (this == nullptr)//can safely call on a null object, for contact resolution.
-			return floatFactor::ZERO;//if this is null, return infinite mass
+	inline REF(realFactor) getMass() const {
+		if (this == nullptr)//can safely call on a null object, ex. for contact resolution.
+			return realFactor::ZERO;//if this is null, return infinite mass
 		return mMass;
 	};
 	/**
@@ -175,7 +175,7 @@ public:
 	Vector3f getAcceleration() const;
 	// Calculate all the acceleration for this frame by taking force into account.
 	Vector3f getAccelerationAccum() const
-	{ return mAccelerationConstant + (mForceAccum * mMass.getFactor());	};
+	{ return mAccelerationConstant + (mForceAccum * (float)mMass.getFactor());	};
 	/**
 	* Fills the given vector with the current accumulated value for linear acceleration.
 	* The acceleration accumulators are set during the integration step.
@@ -240,7 +240,7 @@ public:
 	{ setAccelerationConst(Vector3f((float)x, (float)y, (float)z));	};
 
 	//Properties
-	inline bool hasInfiniteMass() const { return mMass <= 0.0f;	};
+	inline bool hasInfiniteMass() const { return getMass() <= 0.0f;	};
 	inline float getSpeed() const { return mVelocityLinear.Length();	};
 	Vector3f getMomentumLinear() const;
 

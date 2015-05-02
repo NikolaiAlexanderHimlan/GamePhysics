@@ -14,4 +14,5 @@
 * by using aggregation with pointers instead of subclassing, one could dynamically allocate a larger amount of them in a subclass (ex. ParticleObject::mpParticle* -> MassAggregate::mpParticle []) 
 * use NANs (Not A Number) to represent invalid indexes (numeric equivalent to null value)
 * You can subclass a generic T template.
+* clean up #includes
 

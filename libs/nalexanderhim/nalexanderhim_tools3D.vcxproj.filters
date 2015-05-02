@@ -491,6 +491,9 @@
     <ClInclude Include="RigidBodySystem.h">
       <Filter>Header Files\Physics\Rigid Body</Filter>
     </ClInclude>
+    <ClInclude Include="RealFactor.h">
+      <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="TODO.txt">

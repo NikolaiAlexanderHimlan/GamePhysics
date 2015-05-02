@@ -10,12 +10,7 @@ I certify that this assignment is entirely my own work.
 
 #include "ManagedBase.h"
 #include "PhysicsBase.h"
-#include "TimeDefines.h"
-#include "PhysicsDefines.h"
-#include "ccmccooeyWrapper.h"
-#include "FloatFactor.h"
 #include "Boundings.h"
-#include "CodingDefines.h"
 
 //Physics Handler
 class Particle
@@ -29,7 +24,7 @@ private:
 		//Get old momentum
 		Vector3f oldMomentum = mVelocityLinear * (float)oldMass;
 		//Calculate new velocity
-		mVelocityLinear = oldMomentum * getMass().getFactor();
+		mVelocityLinear = oldMomentum * (float)getMass().getFactor();
 	};
 
 protected:
@@ -43,7 +38,7 @@ protected:
 	//Setters
 	inline void setMass(real newMass)
 	{
-		floatFactor oldMass = getMass();
+		realFactor oldMass = getMass();
 		__super::setMass(newMass);
 		RecalculateMomentum(oldMass);
 	};
@@ -67,7 +62,7 @@ public:
 
 	//Properties
 	inline Vector3f getForceTotal() const
-	{ return mForceAccum + (mAccelerationConstant * getMass());	};
+	{ return mForceAccum + (mAccelerationConstant * (float)getMass());	};
 
 	//Actions
 	// Applies the given change of force.
@@ -81,7 +76,7 @@ public:
 		//TODO: verify that infinite mass objects cannot receive impulse
 		if (hasInfiniteMass()) return false;//objects with infinite mass cannot have impulses acting on them
 
-		mVelocityLinear += impulseVector * getMass().getFactor();
+		mVelocityLinear += impulseVector * (float)getMass().getFactor();
 
 		return true;//applied impulse successfully
 	};
