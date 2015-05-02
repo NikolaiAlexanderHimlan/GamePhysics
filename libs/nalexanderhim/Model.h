@@ -40,7 +40,7 @@ public:
 	//GL Batch
 	void setBatch(BatchData* batch, float maxDistVert =0.0f, float minDistVert =0.0f);
 	//TODO: setBatchPrimitive/Volume, takes a VolumeDefintition as a parameter (and optional color), don't need 50 billion functions like we do now
-	//Primitive batch functions need to be virtual so PhysicsObject can override them to create bounds
+	//Primitive batch functions need to be virtual so ParticleObject can override them to create bounds
 	//TODO: move functionality to static functions which return the batch
 	virtual void setBatchPlane(float width, float length, Axis facing = Y, bool inv = false /*Face along the negative edge of the axis*/);
 	//TODO: triangle function which takes 3 vectors

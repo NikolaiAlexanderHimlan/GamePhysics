@@ -393,17 +393,19 @@ void Model::setBatchSphere(float radius, int numSegments /*= 8 /*TODO: optional 
 	int counterCounter = 0;
 	for (int i = 0; i < numIndexes; i++)
 	{
-		vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].x;
-		vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].y;
-		vVerts[counterCounter++] = vectVerts[vectIndx[i] - 1].z;
+		if (vectIndx[i] >= numVerts)
+			vectIndx[i] -= numVerts;//has gone past the actual values, wrap around
+		vVerts[counterCounter++] = vectVerts[vectIndx[i]].x;
+		vVerts[counterCounter++] = vectVerts[vectIndx[i]].y;
+		vVerts[counterCounter++] = vectVerts[vectIndx[i]].z;
 	}
 	counterCounter = 0;
 	for (int i = 0; i < numIndexes; i++)
 	{
-		vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbRed();
-		vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbGreen();
-		vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbBlue();
-		vColors[counterCounter++] = colorVerts[vectIndx[i] - 1].rgbAlpha();
+		vColors[counterCounter++] = colorVerts[vectIndx[i]].rgbRed();
+		vColors[counterCounter++] = colorVerts[vectIndx[i]].rgbGreen();
+		vColors[counterCounter++] = colorVerts[vectIndx[i]].rgbBlue();
+		vColors[counterCounter++] = colorVerts[vectIndx[i]].rgbAlpha();
 	}
 	delete[] vectIndx;
 	delete[] vectVerts;

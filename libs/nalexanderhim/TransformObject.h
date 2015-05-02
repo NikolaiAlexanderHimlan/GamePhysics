@@ -15,7 +15,7 @@ I certify that this assignment is entirely my own work.
 class TransformObject
 {
 	//TODO: make class pure virtual
-	//TODO: pull transform (position) change check down from PhysicsObject
+	//TODO: pull transform (position) change check down from ParticleObject
 private:
 	const TransformObject* mpTargetTransform = nullptr;//look at
 	const TransformObject* mpParentTransform = nullptr;//move with

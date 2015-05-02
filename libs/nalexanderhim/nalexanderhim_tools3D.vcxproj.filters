@@ -240,9 +240,6 @@
     <ClCompile Include="Rotation3D.cpp">
       <Filter>Source Files\Space3D</Filter>
     </ClCompile>
-    <ClCompile Include="IntertiaTensor.cpp">
-      <Filter>Source Files\Physics\Rigid Body</Filter>
-    </ClCompile>
     <ClCompile Include="MatrixR.cpp">
       <Filter>Source Files\DataTypes</Filter>
     </ClCompile>

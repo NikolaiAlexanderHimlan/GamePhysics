@@ -14,7 +14,8 @@ I certify that this assignment is entirely my own work.
 #include "PhysicsGlobals.h"
 
 //HACK: WARNING: mpBounds does not account for scale!
-//TODO: CONSIDER: professor proposed that PhysicsObject should contain instead of subclass Particle/Object3D.  This would allow for more controlled update/sync of position between the 2.
+//TODO: CONSIDER: professor proposed that ParticleObject should contain instead of subclass Particle/Object3D.  This would allow for more controlled update/sync of position between the 2.
+//Unfortunately this would require that ParticleObject have it's own Update loop which would need to be called so it can sync the systems every frame.
 //Combines Particle Physics with Graphical representation
 class ParticleObject :
 	public Particle, public Object3D

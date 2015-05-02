@@ -6,11 +6,11 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "Color.h"
-
-#include <gl/glew.h>
-
+#include "RandMath.h"
 using namespace nah;
 
+//Data definition
+#include <gl/glew.h>
 const GLfloat nah::Color::MAX_COLOR = 1.0f;
 const GLfloat nah::Color::MIN_COLOR = 0.0f;
 
@@ -28,3 +28,11 @@ const Color nah::Color::DarkGreen = Color(0.0f, 0.392157f, 0.0f);
 const Color nah::Color::DarkRed = Color(0.545098f, 0.0f, 0.0f);
 const Color nah::Color::Orange = Color(1.0f, 0.647059f, 0.0f);
 
+Color nah::Color::RandomColor(bool randomAlpha /*= false*/)
+{
+	return Color(
+		math::randomFloat(MIN_COLOR, MAX_COLOR),
+		math::randomFloat(MIN_COLOR, MAX_COLOR),
+		math::randomFloat(MIN_COLOR, MAX_COLOR),
+		randomAlpha ? math::randomFloat(ALPHA_CLEAR, ALPHA_OPAQUE) : ALPHA_OPAQUE);
+}
