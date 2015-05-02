@@ -39,7 +39,7 @@ protected:
 	* Holds the amount of damping applied to linear motion.
 	* Damping is required to remove energy added through numerical instability in the integrator.
 	*/
-	real mDampingLinear = 0.999;
+	real mDampingLinear = 0.555;
 
 	//Holds the linear position of the particle in world space.
 	Vector3f mPhysicsPosition;
@@ -81,6 +81,7 @@ protected:
 		mVelocityLinear += (getAccelerationAccum()*(float)elapsedSeconds);
 
 		//Damping
+		double dampingPower = pow(mDampingLinear, elapsedSeconds);
 		mVelocityLinear *= (float)pow(mDampingLinear, elapsedSeconds);
 	};
 
@@ -111,6 +112,8 @@ public:
 	//GameLoop
 	inline virtual void PhysicsUpdate(Time elapsedSeconds)
 	{
+		if (hasInfiniteMass()) return;//skip physics update
+
 		UpdatePosition(elapsedSeconds);
 
 		UpdateVelocity(elapsedSeconds);

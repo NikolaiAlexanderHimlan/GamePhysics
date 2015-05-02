@@ -16,6 +16,8 @@ I certify that this assignment is entirely my own work.
 //HACK: WARNING: mpBounds does not account for scale!
 //TODO: CONSIDER: professor proposed that ParticleObject should contain instead of subclass Particle/Object3D.  This would allow for more controlled update/sync of position between the 2.
 //Unfortunately this would require that ParticleObject have it's own Update loop which would need to be called so it can sync the systems every frame.
+	//Unless it subclasses Particle, and contains an Object3D, then it just needs to pass that for rendering.  Since Object3D doesn't have any kind of update loop, there is no worry about it not being sync'd, since ParticleObject can just work off the Particle Update.
+
 //Combines Particle Physics with Graphical representation
 class ParticleObject :
 	public Particle, public Object3D
@@ -44,17 +46,28 @@ public:
 	};
 	virtual ~ParticleObject(){};
 
+	//HACK: synchronize
+	void Sync() { RefreshPhysicsPosition();	};
+
+	//GameLoop
 	virtual void PhysicsUpdate(Time elapsedSeconds)
 	{
 		//check if object position has been updated
 		if (doRefreshPhysPosition)
 		{
 			doRefreshPhysPosition = false;//has synced
-			RefreshPhysicsPosition();
+			//RefreshPhysicsPosition();
 		};
+		if (hasInfiniteMass()) return;//skip physics update
 
 		__super::PhysicsUpdate(elapsedSeconds);
 
+		//HACK:
+		Vector3f safeVal = getPhysicsPosition();
+		//HACK:
+		if (getName() == "Box_0")
+		if (safeVal != getPhysicsPosition())
+			__debugbreak();
 		RefreshObjectPosition();
 	};
 

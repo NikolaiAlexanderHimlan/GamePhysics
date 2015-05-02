@@ -98,9 +98,10 @@ vector<ParticleObject*> boxObjects;
 //TODO: load following data from file
 float groundPos = -5.0f;
 uint fallingCount = 10;
-uint boxCount = 5;
+uint boxCount = 6;
 ufloat fallingRadius = 0.5f;
 Vector3f boxSizeMin = Vector3f(0.5f, 0.5f, 0.5f);
+//Vector3f boxSizeMin = Vector3f(1.0f, 2.0f, 1.0f);//TODO: put back the non-testing min size
 Vector3f boxSizeMax = Vector3f(1.0f, 2.0f, 1.0f);
 Vector3f fallingPos = Vector3f(0, 5, 0);
 Vector3f boxPos = Vector3f(0.0f, groundPos, 0.0f);
@@ -114,7 +115,7 @@ float gravityForce = 5.0f;
 ParticleGravity* worldGrav = nullptr;
 
 //contacts
-uint maxContacts = fallingCount * boxCount * 2;//TODO: update based on number of particles
+uint maxContacts = (fallingCount+1) * (boxCount+1) * 2;//TODO: update based on number of particles
 GroundArea* ground;
 ParticleCollisionGenerator* collider;
 
@@ -187,6 +188,7 @@ void setupWorld()
 		model1Position[2] = fallingPos.z + startZ + (curRow * fallingSpacing)
 				+ (heightCount * fallingRadius * 0.5f);//Z, in/out
 		fallingObjects[i]->refLocalTransform().position = (model1Position);
+		fallingObjects[i]->Sync();
 
 		curRow++;//next row
 		if (curRow >= rowCount)
@@ -202,7 +204,7 @@ void setupWorld()
 	}
 
 	rowCount = (int)sqrt(boxCount);
-	colCount = boxCount / rowCount;//estimation
+	colCount = boxCount / (rowCount+1);//estimation
 	curRow = 0;
 	curCol = 0;
 	float xSpacing, zSpacing;
@@ -222,6 +224,7 @@ void setupWorld()
 		model2Position[2] = boxPos.z + startZ + (curRow * zSpacing)
 			+ (0.5f * boxObjects[j]->getBounds().getDimensions().z);//Z, in/out
 		boxObjects[j]->refLocalTransform().position = (model2Position);
+		boxObjects[j]->Sync();
 
 		curRow++;//next row
 		if (curRow >= rowCount)

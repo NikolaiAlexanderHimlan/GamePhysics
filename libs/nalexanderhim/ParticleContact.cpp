@@ -80,9 +80,12 @@ void ParticleContact::ResolveVelocity(Time duration)
 		impulsePerIMass * (float)contactA->getMass().getFactor());
 	if (contactB != nullptr)
 	{
+		if (!contactB->hasInfiniteMass())
+		{
 		// Particle 1 goes in the opposite direction
 		contactB->setVelocityLinear( contactB->getVelocityLinear() +
 			impulsePerIMass * (float)-contactB->getMass().getFactor());
+		}
 	}
 }
 
