@@ -94,6 +94,7 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Boundings.cpp" />
     <ClCompile Include="CameraView.cpp" />
     <ClCompile Include="Color.cpp" />
     <ClCompile Include="CubeAggregate.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="ParticleWall.cpp" />
     <ClCompile Include="ParticleObject.cpp" />
+    <ClCompile Include="ParticleCollisionGenerator.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="RigidBodyForceGenerator.cpp" />
@@ -150,6 +152,7 @@
     <ClInclude Include="IntertiaTensor.h" />
     <ClInclude Include="Matrix33r.h" />
     <ClInclude Include="Matrix44r.h" />
+    <ClInclude Include="ParticleCollisionGenerator.h" />
     <ClInclude Include="RealFactor.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="RigidBodyForceGenerator.h" />

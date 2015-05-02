@@ -264,6 +264,12 @@
     <ClCompile Include="RigidBodySystem.cpp">
       <Filter>Source Files\Physics\Rigid Body</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleCollisionGenerator.cpp">
+      <Filter>Source Files\Physics\Particles\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Boundings.cpp">
+      <Filter>Source Files\Physics\Particles\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MeshData.h">
@@ -493,6 +499,9 @@
     </ClInclude>
     <ClInclude Include="RealFactor.h">
       <Filter>Header Files\Utilities\Math\FactorContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleCollisionGenerator.h">
+      <Filter>Header Files\Physics\Particles\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

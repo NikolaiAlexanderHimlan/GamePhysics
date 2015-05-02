@@ -9,11 +9,10 @@ Certification of Authenticity:
 I certify that this assignment is entirely my own work.
 */
 #include "ccmccooeyWrapper.h"
-#include "DebugDefines.h"
 #include "CodingDefines.h"
-#include "MathDefines.h"
-#include "GeneralMath.h"
 #include "SpaceDefines.h"
+#include "DebugDefines.h"
+#include "MathDefines.h"
 
 /* Bounding Function Default data
 static const BoundType BOUND_TYPE = ;
@@ -41,18 +40,20 @@ struct Bounding
 		NUM_BOUND_TYPES
 	};
 	static const BoundType BOUND_TYPE = BASIC;
+	BoundType getType() const { return BOUND_TYPE;	};
+	virtual Vector3f getDimensions() const { return Vector3f::zero;	};
 
 	//Checks with another set of bounds for an overlap
-	//(What it actually does is figure out this bounds's closest point then checks if the other bounds contains that point)
+	//(What it actually does is figure out this bound's closest point then checks if the other bounds contains that point)
 	//@param  Overlap amount
-	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr, OUT_PARAM(Vector3f) overlapNormal = nullptr) const
 	{
 		return otherBounds.Contains(otherLocation, boundsLocation, overlapAmount);
 	};
 
 	//checks if a given point is within bounds
 	//@return Depth from the edge of bounds
-	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount, OUT_PARAM(Vector3f) overlapNormal = nullptr) const
 	{
 		OUT_SET(overlapAmount, 0);
 		return boundsLocation == checkLocation;
@@ -76,42 +77,11 @@ struct PlaneBounding
 	bool impassable = false;//is it possible for an object to be on the opposite side of the wall from the normal?
 	bool infinite = false;//should the width/length not matter?
 
-	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
-	{
-		//Generate a vector with the correct location along the normal and otherLocation filling in the remaining data
-		//NOTE: the closer to 1 the axis value in normal is, the less relevant otherLocation is
-		//TODO: limit the range of wallPoint based on the width and length
-		Vector3f wallPoint = 
-			Vector3f::NormalWeight(boundsLocation, normal)//location of bounds is directly relevant based on the normal
-			+ Vector3f::InvertNormalWeight(otherLocation, normal);//other location is inversely relevant based on the normal
+	virtual Vector3f getDimensions() const { return Vector3f(width, 0.0f, length);	};
 
-		//checkLocation on opposite side from normal
-		//TODO: handle impassable
-		if (impassable)
-		{
-			LOGIC_ERR("impassible not implemented - PlanesBounding - Contains");
-		}
-		return otherBounds.Contains(otherLocation, wallPoint, overlapAmount);
-	};
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr, OUT_PARAM(Vector3f) overlapNormal = nullptr) const;
 
-	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
-	{
-		bool doesContain = false;
-		real overlap;
-
-		overlap = Vector3f::DistanceSquared(boundsLocation, checkLocation);
-
-		//checkLocation on opposite side from normal
-		//TODO: handle impassable
-		if (impassable)
-		{
-			if(overlap > 0)
-			LOGIC_ERR("impassible not implemented - PlanesBounding - Contains");
-		}
-		else overlap = nah::absInv((float)overlap);//if plane is not "impassable" then there cannot be a positive overlap
-		OUT_SET(overlapAmount, nah::sqrtKeepSign((float)overlap))
-		return doesContain;
-	};
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount, OUT_PARAM(Vector3f) overlapNormal = nullptr) const;
 };
 
 #include "VolumeDefinition.h"
@@ -122,27 +92,11 @@ struct SphereBounding
 
 	SphereBounding(REF(SphereVolume) boundingVolume) : SphereVolume(boundingVolume) {};
 
-	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
-	{
-		//1st, calculate a vector to otherLocation with radius as the length.
-		Vector3f vectTo = Vector3f::Distancepoint(boundsLocation, otherLocation, radius);
+	virtual Vector3f getDimensions() const { return Vector3f(radius, radius, radius);	};
 
-		//2nd, check if this vector passes the otherLocation, in which case there is definitely a collision
-		if(Vector3f::isBetween(boundsLocation, vectTo, otherLocation))
-			return true;
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr, OUT_PARAM(Vector3f) overlapNormal = nullptr) const;
 
-		//3rd, check if the other bounds contains the location indicated by the calculated vector
-		//return otherBounds.Contains(otherLocation, vectTo);//cannot call directly due to inheritance funnyness, calling Bounding CheckOverlap
-		return otherBounds.Contains(otherLocation, vectTo, overlapAmount);
-	};
-
-	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
-	{
-		//check if distance to checkLocation is less than radius, return this as the result
-		real overlap = std::powf(radius, 2.0f) - Vector3f::DistanceSquared(boundsLocation, checkLocation);
-		OUT_SET(overlapAmount, overlap)
-		return overlap > 0;
-	};
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount, OUT_PARAM(Vector3f) overlapNormal = nullptr) const;
 };
 
 struct CubeBounding
@@ -152,20 +106,11 @@ struct CubeBounding
 
 	CubeBounding(REF(CubeVolume) boundingVolume) : CubeVolume(boundingVolume) {};
 
-	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr) const
-	{
-		Vector3f closePoint = VolumeVector();
-		closePoint = Vector3f::Multiply(closePoint, 
-			Vector3f::DirectionTo(boundsLocation, otherLocation));
-		return otherBounds.Contains(otherLocation, closePoint, overlapAmount);
-	};
+	virtual Vector3f getDimensions() const { return VolumeVector() * 2.0f;	};
 
-	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount) const
-	{
-		Vector3f relativePoint = checkLocation - boundsLocation;
-		//Vector3f relativePoint = boundsLocation - checkLocation;
-		OUT_SET(overlapAmount, Vector3f::Subtract_NonZero(VolumeVector(), Vector3f::abs(relativePoint)).Length())
-		return VolumeVector().GreaterEqual_All(Vector3f::abs(relativePoint));
-	};
+	virtual bool CheckOverlap(REF(Bounding) otherBounds, REF(Vector3f) boundsLocation, REF(Vector3f) otherLocation, OUT_PARAM(real) overlapAmount = nullptr, OUT_PARAM(Vector3f) overlapNormal = nullptr) const;
+
+	virtual bool Contains(REF(Vector3f) boundsLocation, REF(Vector3f) checkLocation, OUT_PARAM(real) overlapAmount, OUT_PARAM(Vector3f) overlapNormal = nullptr) const;
 };
+typedef CubeBounding BoxBounding;
 #endif // Boundings_h__

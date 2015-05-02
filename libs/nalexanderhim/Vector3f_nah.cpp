@@ -74,3 +74,33 @@ VectParam Vector3f::AxisNormal(Axis toNorm)
 		break;
 	}
 }
+
+Vector3f Vector3f::MaxToAxis(VectParam toAxis, bool aboslute /*= false*/, bool keepSign /*= true*/)
+{
+	float xVal = aboslute ? std::abs(toAxis.x) : toAxis.x;
+	float yVal = aboslute ? std::abs(toAxis.y) : toAxis.y;
+	float zVal = aboslute ? std::abs(toAxis.z) : toAxis.z;
+	Axis isMax = X;
+	float curMax = xVal;
+	bool curSign = toAxis.x >= 0;//is positive
+
+	if(curMax < yVal)
+	{
+		isMax = Y;
+		curMax = yVal;
+		curSign = toAxis.y >= 0;
+	}
+	if(curMax < zVal)
+	{
+		isMax = Z;
+		curMax = zVal;
+		curSign = toAxis.z >= 0;
+	}
+
+	Vector3f axisData = AxisNormal(isMax);
+	if(keepSign)
+		if(!curSign)
+			axisData *= -1.0f;
+
+	return axisData;
+}

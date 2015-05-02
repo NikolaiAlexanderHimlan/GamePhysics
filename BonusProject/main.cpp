@@ -1,5 +1,6 @@
 //System
 #include <string>
+#include <vector>
 
 //OpenGL
 #include <GLTools.h>
@@ -22,6 +23,9 @@
 #include <GroundArea.h>
 #include <ParticleGravity.h>
 #include <RandMath.h>
+#include <ParticleCollisionGenerator.h>
+#include <Boundings.h>
+#include <ParticleObject.h>
 
 #define RENDER_DATA mainView, shaderManager, mvpMatrix /*the necessary parameters for calling draw*/
 
@@ -69,10 +73,11 @@ bool gDebugPhysics = true;
 Object3D* debugObj;
 Particle* debugPhys;
 int debugTargetIndex = 2;
-//TODO: start paused
-bool gPauseSimulation = false;
+bool gPauseSimulation = true;
+bool gStepFrame = false;//when true, will pause the simulation and set itself to false
 
 //UI
+GLUI_Control* simPauseBtn;
 GLUI_Control* camPosLocl;
 GLUI_Control* camPosWrld;
 GLUI_Control* targtIndx;
@@ -95,11 +100,12 @@ float groundPos = -5.0f;
 uint fallingCount = 10;
 uint boxCount = 5;
 ufloat fallingRadius = 0.5f;
-Vector3f boxSize = Vector3f(1.0f, 2.0f, 1.0f);
+Vector3f boxSizeMin = Vector3f(0.5f, 0.5f, 0.5f);
+Vector3f boxSizeMax = Vector3f(1.0f, 2.0f, 1.0f);
 Vector3f fallingPos = Vector3f(0, 5, 0);
 Vector3f boxPos = Vector3f(0.0f, groundPos, 0.0f);
 ufloat fallingSpacing = fallingRadius * 2.1f;
-ufloat boxSpacing = boxSize.Max() * 2.1f + 1.0f;
+ufloat boxSpacingFactor = 2.1f;
 real fallingMassMin = 5;
 real fallingMassMax = 10;
 
@@ -110,6 +116,7 @@ ParticleGravity* worldGrav = nullptr;
 //contacts
 uint maxContacts = fallingCount * boxCount * 2;//TODO: update based on number of particles
 GroundArea* ground;
+ParticleCollisionGenerator* collider;
 
 void ChangeSize(int w, int h)
 {
@@ -124,6 +131,11 @@ void ChangeSize(int w, int h)
 }
 
 //Implementation Functions
+void TogglePauseSimulation(int id = -1)
+{
+	gPauseSimulation = !gPauseSimulation;
+	simPauseBtn->set_int_val((int)gPauseSimulation);
+}
 
 //assign model batches to models here
 void setupModels()
@@ -131,15 +143,17 @@ void setupModels()
 	for (uint i = 0; i < fallingObjects.size(); i++)
 	{
 		fallingObjects[i]->setBatchSphere(fallingRadius);
-		//fallingObjects[i]->setBatchCube()
+		//fallingObjects[i]->setBatchCube(fallingRadius, fallingRadius, fallingRadius);
 	}
 	for (uint j = 0; j < boxObjects.size(); j++)
 	{
-		boxObjects[j]->setBatchCube(boxSize.x, boxSize.y, boxSize.z);
+		float sizeX = nah::math::randomFloat(boxSizeMin.x, boxSizeMax.x);
+		float sizeY = nah::math::randomFloat(boxSizeMin.y, boxSizeMax.y);
+		float sizeZ = nah::math::randomFloat(boxSizeMin.z, boxSizeMax.z);
+		boxObjects[j]->setBatchCube(sizeX, sizeY, sizeZ);
 	}
 }
-void setupWorld()
-{
+void setupView()
 	{//view setup
 		mainView->clearParent();
 		mainView->clearTarget();
@@ -154,19 +168,24 @@ void setupWorld()
 		mainView->setWorldPosition(viewPosition);
 		mainView->setWorldRotation(rotateView);
 	}
-
-	int rowCount = (int)sqrt(fallingCount);
-	int colCount = fallingCount / rowCount;//estimation
+void setupWorld()
+{
+	int rowCount = (int)(sqrt(fallingCount * 0.25f));
+	int colCount = (int)((fallingCount*0.5f) / (rowCount+1));//estimation
+	//TODO: offset spheres at various heights and horizontal positions so they can collide
 	int curRow = 0;
 	int curCol = 0;
+	int heightCount = 0;
 	float startX = colCount * fallingSpacing * -0.5f;
 	float startZ = rowCount * fallingSpacing * -0.5f;
 	for (uint i = 0; i < fallingObjects.size(); i++)
 	{
 		Vector3f model1Position;
-		model1Position[0] = fallingPos.x + startX + (curCol * fallingSpacing);//X, left/right
-		model1Position[1] = fallingPos.y + (0.5f * boxSize.y);//position at half height
-		model1Position[2] = fallingPos.z + startZ + (curRow * fallingSpacing);//Z, in/out
+		model1Position[0] = fallingPos.x + startX + (curCol * fallingSpacing)
+				+ (heightCount * fallingRadius * 0.5f);//X, left/right
+		model1Position[1] = fallingPos.y + fallingRadius + (heightCount * 2.1f * fallingRadius);//position at half height
+		model1Position[2] = fallingPos.z + startZ + (curRow * fallingSpacing)
+				+ (heightCount * fallingRadius * 0.5f);//Z, in/out
 		fallingObjects[i]->refLocalTransform().position = (model1Position);
 
 		curRow++;//next row
@@ -175,21 +194,33 @@ void setupWorld()
 			curRow = 0;
 			curCol++;//next column
 		}
+		if(curCol >= colCount)
+		{
+			curCol = 0;
+			heightCount++;
+		}
 	}
 
 	rowCount = (int)sqrt(boxCount);
 	colCount = boxCount / rowCount;//estimation
 	curRow = 0;
 	curCol = 0;
-	startX = colCount * boxSpacing * -0.5f;
-	startZ = rowCount * boxSpacing * -0.5f;
+	float xSpacing, zSpacing;
 	//Double-Spaced boxes
 	for (uint j = 0; j < boxObjects.size(); j++)
 	{
+		//spacing calculation
+		xSpacing = boxSpacingFactor * boxObjects[j]->getBounds().getDimensions().x;
+		zSpacing = boxSpacingFactor * boxObjects[j]->getBounds().getDimensions().z;
+		startX = colCount * xSpacing * -0.5f;
+		startZ = rowCount * zSpacing * -0.5f;
+
 		Vector3f model2Position;
-		model2Position[0] = boxPos.x + startX + (curCol * boxSpacing);//X, left/right
-		model2Position[1] = boxPos.y + (0.5f * boxSize.y);//position at half height
-		model2Position[2] = boxPos.z + startZ + (curRow * boxSpacing);//Z, in/out
+		model2Position[0] = boxPos.x + startX + (curCol * xSpacing)
+			+ (0.5f * boxObjects[j]->getBounds().getDimensions().x);//X, left/right
+		model2Position[1] = boxPos.y + (0.5f * boxObjects[j]->getBounds().getDimensions().y);//position at half height
+		model2Position[2] = boxPos.z + startZ + (curRow * zSpacing)
+			+ (0.5f * boxObjects[j]->getBounds().getDimensions().z);//Z, in/out
 		boxObjects[j]->refLocalTransform().position = (model2Position);
 
 		curRow++;//next row
@@ -241,9 +272,26 @@ void SetupPhysics()
 	//initialize particle contact generation and register particle contacts
 	getGlobalParticleSystem()->InitContactGenerator(maxContacts);
 	getGlobalParticleSystem()->ManageParticleContactGenerator(ground);
+	getGlobalParticleSystem()->ManageParticleContactGenerator(collider);
 
 	ResetPhysics();
 }
+
+void ResetView(int id = -1)
+{
+	setupView();
+}
+void ResetSimulation(int id = -1)
+{
+	setupWorld();
+	ResetPhysics();
+}
+void StepSimulation(int id = -1)
+{
+	gStepFrame = true;
+	gPauseSimulation = false;
+}
+
 void setupUI()
 {
 	//setup and initialize GLUI
@@ -258,6 +306,12 @@ void setupUI()
 		GLUI_Panel* holdPanel = new GLUI_Panel(gluiWindow, "Debug Ctrl");
 		new GLUI_Checkbox(holdPanel, "Show Physics Debug", (int*)&gDebugPhysics);
 		new GLUI_Checkbox(holdPanel, "Show Graphics Debug", (int*)&gDebugGraphics);
+
+		holdPanel = new GLUI_Panel(gluiWindow, "Simulation Ctrl");
+		simPauseBtn = new GLUI_Checkbox(holdPanel, "Pause Simulation", (int*)&gPauseSimulation);
+		new GLUI_Button(holdPanel, "Reset View", -1, ResetView);
+		new GLUI_Button(holdPanel, "Reset Simulation", -1, ResetSimulation);
+		new GLUI_Button(holdPanel, "Simulation Step", -1, StepSimulation);
 
 		//Debug output
 		holdPanel = new GLUI_Panel(gluiWindow, "Debug Out");
@@ -291,9 +345,10 @@ void myInit()
 
 	//LoadData();
 
-	setupWorld();
-
 	setupModels();
+
+	setupView();
+	setupWorld();
 
 	SetupPhysics();
 
@@ -302,18 +357,12 @@ void myInit()
 	//mainView->clearParent();
 	//mainView->clearTarget();
 }
-void ResetView()
-{
-	setupWorld();
-}
-void ResetSimulation()
-{
-	ResetView();
-	ResetPhysics();
-};
 
 void UpdateUI()
 {
+	//sync values
+	//simPauseBtn->set_int_val((int)gPauseSimulation);
+
 	//Set debug targets
 	debugObj = ground;
 	if (debugTargetIndex < 0)
@@ -348,6 +397,7 @@ void UpdateUI()
 			std::string val = "beep";
 			collisionVal->set_text(("Ground Collision: " + val).c_str());//TODO: output collision information
 		}
+
 		static bool isRefreshed = false;
 		if (!isRefreshed)
 		{
@@ -436,12 +486,17 @@ void Keys(unsigned char key, int x, int y)
 		mainView->clearParent();
 	}
 }
+
 void SpecialKeys(int key, int x, int y)
 {
 	if (key == GLUT_KEY_HOME)//reset camera
+	{
+		ResetView();
 		ResetSimulation();
+	}
 	if (key == GLUT_KEY_END)//pause
-		gPauseSimulation = !gPauseSimulation;
+		TogglePauseSimulation();
+
 
 	//iterate through all the particles for debugging
 	if (key == GLUT_KEY_PAGE_UP)//previous particle
@@ -496,6 +551,7 @@ void create()
 		boxObjects.push_back(holdObject);
 	}
 	ground = new GroundArea(10.0f, 10.0f, -5.0f);
+	collider = new ParticleCollisionGenerator();
 }
 void Update()
 {
@@ -507,6 +563,11 @@ void Update()
 	gpParticleSystem->PhysicsUpdate(elapsedSeconds);
 	gpParticleSystem->UpdateForces(elapsedSeconds);
 	gpParticleSystem->UpdateContacts(elapsedSeconds);
+	}
+	if (gStepFrame)
+	{
+		gPauseSimulation = true;
+		gStepFrame = false;
 	}
 
 	//graphics
@@ -540,6 +601,8 @@ void cleanup()
 	/*prevent end of program crash due to glut extra update
 	delete ground;
 	ground = nullptr;
+
+	SAFE_DELETE(collider);
 	*/
 
 	delete worldGrav;

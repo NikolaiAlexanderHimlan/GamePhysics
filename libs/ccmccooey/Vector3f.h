@@ -230,13 +230,16 @@ public:
 	static Vector3f EulerForward(float pitch, float yaw, float roll);
 	static void vectorArrayToFloatArray(float floatArray[], const Vector3f* vectorArray, int vectorArraySize); //fill a float array from an array of vector3s
 
-	static inline bool isBetween(VectParam lhs, VectParam rhs, VectParam checkBetween)
-	{ return (rhs - lhs).GreaterEqual_All(checkBetween - lhs);	};//[NAH]
+	inline static bool isBetween(VectParam lhs, VectParam rhs, VectParam isBetween)
+	{ return (rhs - lhs).GreaterEqual_All(isBetween - lhs);	};//[NAH]
 
 	static const Vector3f& AxisNormal(Axis toNorm);//[NAH]
 		//Math & Calculations
 	static float Dot(VectParam lhs, VectParam rhs)
 	{ return (lhs.x * rhs.x) + (lhs.y * rhs.y) + (lhs.z * rhs.z);	};//[NAH]
+	// @param aboslute should absolute values be used for calculating the max value?
+	// @param keepSign should the sign of the max value be kept?
+	static Vector3f MaxToAxis(VectParam toAxis, bool aboslute = true, bool keepSign = true);//[NAH] //Converts the largest value of the vector to a normalized axis vector.
 	//TODO: try to find a better name for the NormalWeight functions
 	/// <summary> Takes a vector and a normal and returns the vector weighted against the normal.
 	/// <para> EX. weighting (6, 5, 8) against (0,1,0)[UP] would return (0, 5, 0). </para>
